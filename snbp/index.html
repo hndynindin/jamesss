@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SNBP SmartPath — Sistem Analisis, Simulasi & Pemeringkatan SNBP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">SP</div>
+        <div>
+          <div class="brand-name">SNBP SmartPath</div>
+          <div class="brand-sub">SPK &amp; Simulasi SNBP 2026</div>
+        </div>
+      </div>
+
+      <div class="access-pill">
+        <span class="dot-live"></span>
+        <span>Tanpa Login — Langsung Pakai</span>
+      </div>
+
+      <nav class="nav-menu" aria-label="Menu Utama">
+        <button class="nav-item active" data-tab="dashboard">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard &amp; Analisis</span>
+        </button>
+        <button class="nav-item" data-tab="panduan">
+          <span class="nav-icon">📖</span>
+          <span>Tujuan &amp; Alur Tes</span>
+        </button>
+        <button class="nav-item" data-tab="rapor">
+          <span class="nav-icon">📘</span>
+          <span>Nilai Rapor (Sem 1–5)</span>
+        </button>
+        <button class="nav-item" data-tab="prestasi">
+          <span class="nav-icon">🏆</span>
+          <span>Prestasi &amp; Portofolio</span>
+        </button>
+        <button class="nav-item" data-tab="simulasi">
+          <span class="nav-icon">🎯</span>
+          <span>Cek Peluang &amp; PTN</span>
+        </button>
+        <button class="nav-item" data-tab="eligible">
+          <span class="nav-icon">🏫</span>
+          <span>Pemeringkatan Sekolah</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">Status Sesi Aktif</div>
+        <div class="role-badge" id="activeRoleBadge">Mode: Siswa (Tanpa Login)</div>
+        <p class="sidebar-card-desc" id="activeUserDesc">
+          Data tersimpan otomatis di browser Anda.
+        </p>
+        <div class="sidebar-actions">
+          <button class="btn btn-outline btn-sm" id="openDemoLoginBtn">Simulasi Login Demo</button>
+          <button class="btn btn-ghost btn-sm" id="resetDataBtn">Reset Data Demo</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrap">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">☰</button>
+          <div>
+            <h1 class="page-title" id="pageTitle">Dashboard &amp; Analisis Kelayakan</h1>
+            <p class="page-subtitle" id="pageSubtitle">Ringkasan nilai rapor, indeks prestasi, dan peluang lolos SNBP
+            </p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="student-chip" id="studentChip">
+            <span class="avatar" id="avatarInitial">AR</span>
+            <div>
+              <div class="chip-name" id="chipName">Aulia Rahman</div>
+              <div class="chip-meta" id="chipMeta">SMKN 1 • Akreditasi A</div>
+            </div>
+          </div>
+          <button class="btn btn-outline btn-sm" data-goto="panduan">📖 Panduan Tes</button>
+          <button class="btn btn-primary btn-sm" id="printReportBtn">🖨️ Cetak Laporan</button>
+        </div>
+      </header>
+
+      <main class="content">
+        <!-- TAB 1: DASHBOARD -->
+        <section class="tab-panel active" id="tab-dashboard">
+          <div class="guide-banner">
+            <div>
+              <strong>Selamat Datang di SNBP SmartPath!</strong>
+              <span> Aplikasi simulasi kelayakan, analisis rapor (Sem 1–5), dan pemeringkatan PDSS SNBP. Langsung pakai
+                tanpa login.</span>
+            </div>
+            <div class="guide-banner-actions">
+              <button class="btn btn-outline btn-sm" data-goto="panduan">📖 Tujuan &amp; Alur</button>
+              <button class="btn btn-primary btn-sm" data-start-test="true">🚀 Mulai Tes Baru</button>
+            </div>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">Rata-rata Rapor (Sem 1–5)</div>
+              <div class="kpi-value" id="kpiAvgRapor">0.00</div>
+              <div class="kpi-trend positive" id="kpiRaporTrend">Memuat tren...</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Skor Prestasi &amp; Portofolio</div>
+              <div class="kpi-value" id="kpiPrestasi">0</div>
+              <div class="kpi-trend" id="kpiPrestasiCount">0 sertifikat terverifikasi</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Indeks Peluang Pilihan 1</div>
+              <div class="kpi-value" id="kpiPeluang1">0%</div>
+              <div class="kpi-trend" id="kpiProdi1Name">Belum dipilih</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Status Kuota Sekolah</div>
+              <div class="kpi-value" id="kpiEligibleStatus">Eligible</div>
+              <div class="kpi-trend" id="kpiEligibleRank">Peringkat #1 dari 120 siswa</div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>Grafik Tren Nilai Rapor (Semester 1–5)</h2>
+                  <p>Konsistensi kenaikan nilai sangat memengaruhi penilaian SNBP</p>
+                </div>
+                <span class="badge badge-info" id="trendBadge">Stabil Naik</span>
+              </div>
+              <div class="chart-box">
+                <canvas id="raporChart" width="600" height="260" aria-label="Grafik tren nilai rapor"></canvas>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>Profil &amp; Target PTN Siswa</h2>
+                  <p>Sesuaikan identitas siswa dan aturan provinsi asal</p>
+                </div>
+              </div>
+              <form id="profileForm" class="form-grid">
+                <div class="form-group">
+                  <label for="inputNama">Nama Lengkap Siswa</label>
+                  <input type="text" id="inputNama" required />
+                </div>
+                <div class="form-group">
+                  <label for="inputSekolah">Asal Sekolah</label>
+                  <input type="text" id="inputSekolah" required />
+                </div>
+                <div class="form-group">
+                  <label for="inputProvinsi">Provinsi Sekolah</label>
+                  <select id="inputProvinsi">
+                    <option value="DKI Jakarta">DKI Jakarta</option>
+                    <option value="Jawa Barat">Jawa Barat</option>
+                    <option value="Jawa Tengah">Jawa Tengah</option>
+                    <option value="DI Yogyakarta">DI Yogyakarta</option>
+                    <option value="Jawa Timur">Jawa Timur</option>
+                    <option value="Banten">Banten</option>
+                    <option value="Sumatera Utara">Sumatera Utara</option>
+                    <option value="Sulawesi Selatan">Sulawesi Selatan</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="inputAkreditasi">Akreditasi Sekolah</label>
+                  <select id="inputAkreditasi">
+                    <option value="A">Akreditasi A (Kuota 40%)</option>
+                    <option value="B">Akreditasi B (Kuota 25%)</option>
+                    <option value="C">Akreditasi C (Kuota 5%)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="inputJurusan">Bidang Keahlian / Jurusan</label>
+                  <select id="inputJurusan">
+                    <option value="RPL / Informatika">RPL / Teknik Informatika (SMK)</option>
+                    <option value="TKJ / Jaringan">TKJ / Teknik Komputer Jaringan (SMK)</option>
+                    <option value="IPA / Saintek">SMA - MIPA / Saintek</option>
+                    <option value="IPS / Soshum">SMA - IPS / Soshum</option>
+                    <option value="Akuntansi / Bisnis">Akuntansi &amp; Bisnis (SMK)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="inputAlumni">Indeks Alumni di PTN Target (0–100)</label>
+                  <input type="number" id="inputAlumni" min="0" max="100" value="78" />
+                </div>
+                <div class="form-actions full-width">
+                  <button type="submit" class="btn btn-primary">Simpan Profil Siswa</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Ringkasan Rekomendasi Strategis SNBP</h2>
+                <p>Dihitung menggunakan metode Simple Additive Weighting (SAW) berdasarkan bobot komponen SNBP</p>
+              </div>
+              <button class="btn btn-outline btn-sm" data-goto="simulasi">Atur Pilihan PTN →</button>
+            </div>
+            <div class="recommendation-box" id="dashboardSummaryBox"></div>
+          </div>
+        </section>
+
+        <!-- TAB PANDUAN: TUJUAN, KEGUNAAN & ALUR TES -->
+        <section class="tab-panel" id="tab-panduan">
+          <div class="card guide-hero">
+            <div>
+              <span class="badge badge-info">Dokumentasi &amp; Panduan Penguji</span>
+              <h2 style="margin-top:10px;font-size:1.35rem;">Tentang Aplikasi SNBP SmartPath</h2>
+              <p style="margin-top:6px;color:var(--text-muted);max-width:780px;">
+                <strong>SNBP SmartPath</strong> adalah aplikasi web Sistem Pendukung Keputusan (SPK) &amp; Simulasi
+                Seleksi Nasional Berdasarkan Prestasi (SNBP) yang dirancang untuk membantu siswa kelas XII dan Guru BK
+                dalam menganalisis kelayakan akademik, menghitung peluang lolos PTN, serta mensimulasikan pemeringkatan
+                kuota <em>eligible</em> PDSS sekolah secara akurat.
+              </p>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+              <button class="btn btn-primary" data-start-test="true">🚀 Mulai Tes Baru (Kosongkan Nilai)</button>
+              <button class="btn btn-outline" data-goto="simulasi">🎯 Langsung Cek Peluang PTN</button>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>🎯 Tujuan Aplikasi</h2>
+                  <p>Mengapa sistem ini dibangun</p>
+                </div>
+              </div>
+              <ul class="guide-list">
+                <li><strong>Mengukur Kelayakan Sejak Dini:</strong> Mengevaluasi tren nilai rapor semester 1–5 dan
+                  portofolio prestasi sebelum pendaftaran SNBP dibuka.</li>
+                <li><strong>Objektivitas Pemilihan PTN:</strong> Menghitung estimasi peluang lolos berbasis metode
+                  pembobotan <em>Simple Additive Weighting</em> (SAW).</li>
+                <li><strong>Transparansi Kuota Sekolah:</strong> Membantu pemeringkatan siswa <em>eligible</em> sesuai
+                  akreditasi sekolah (A: 40%, B: 25%, C: 5%).</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>💡 Kegunaan Untuk Pengguna</h2>
+                  <p>Manfaat bagi Siswa &amp; Guru BK</p>
+                </div>
+              </div>
+              <ul class="guide-list">
+                <li><strong>Untuk Siswa:</strong> Memantau grafik tren nilai rapor, menghitung poin sertifikat lomba
+                  (Top 3 terbaik), serta memvalidasi aturan provinsi asal pada Pilihan 1 &amp; 2 PTN.</li>
+                <li><strong>Untuk Guru BK / Operator PDSS:</strong> Menyusun simulasi ranking siswa per jurusan,
+                  memantau batas kuota <em>eligible</em>, mengekspor data ke CSV, dan mencetak laporan analisis.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>🧭 Alur Penggunaan &amp; Cara Memulai Tes (6 Langkah)</h2>
+                <p>Klik tombol pada tiap langkah untuk langsung menguji fitur terkait</p>
+              </div>
+            </div>
+            <div class="steps-grid">
+              <div class="step-card">
+                <div class="step-num">1</div>
+                <h4>Atur Profil &amp; Sekolah</h4>
+                <p>Isi nama siswa, asal sekolah, provinsi, akreditasi (A/B/C), dan jurusan di Dashboard.</p>
+                <button class="btn btn-outline btn-sm" data-goto="dashboard">Buka Dashboard →</button>
+              </div>
+              <div class="step-card">
+                <div class="step-num">2</div>
+                <h4>Input Nilai Rapor Sem 1–5</h4>
+                <p>Ubah nilai mata pelajaran umum &amp; kejuruan atau tambah mapel baru. Rata-rata dihitung otomatis.
+                </p>
+                <button class="btn btn-outline btn-sm" data-goto="rapor">Input Rapor →</button>
+              </div>
+              <div class="step-card">
+                <div class="step-num">3</div>
+                <h4>Tambahkan Prestasi</h4>
+                <p>Masukkan sertifikat lomba (Kabupaten s.d. Internasional). Sistem otomatis menghitung 3 prestasi
+                  terbaik.</p>
+                <button class="btn btn-outline btn-sm" data-goto="prestasi">Isi Prestasi →</button>
+              </div>
+              <div class="step-card">
+                <div class="step-num">4</div>
+                <h4>Cek Peluang &amp; Aturan Provinsi</h4>
+                <p>Pilih Prodi Pilihan 1 &amp; 2, lihat persentase peluang SAW, validasi provinsi, serta rekomendasi
+                  alternatif.</p>
+                <button class="btn btn-outline btn-sm" data-goto="simulasi">Cek Peluang →</button>
+              </div>
+              <div class="step-card">
+                <div class="step-num">5</div>
+                <h4>Uji Pemeringkatan PDSS</h4>
+                <p>Simulasikan total siswa jurusan, tambah siswa ke ranking, dan ekspor hasil pemeringkatan ke CSV.</p>
+                <button class="btn btn-outline btn-sm" data-goto="eligible">Lihat Ranking →</button>
+              </div>
+              <div class="step-card">
+                <div class="step-num">6</div>
+                <h4>Uji Login Demo &amp; Cetak</h4>
+                <p>Coba akun demo Siswa/Guru BK (opsional), cetak laporan hasil tes, atau Reset Data Demo kapan saja.
+                </p>
+                <button class="btn btn-outline btn-sm" id="guideOpenLoginBtn">Buka Akun Demo →</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: NILAI RAPOR -->
+        <section class="tab-panel" id="tab-rapor">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Input Nilai Rapor Semester 1 s.d. 5</h2>
+                <p>Masukkan nilai pengetahuan/akhir (skala 0–100). Rata-rata otomatis diperbarui.</p>
+              </div>
+              <div class="header-actions">
+                <button class="btn btn-outline btn-sm" id="clearRaporBtn">🗑️ Kosongkan Nilai</button>
+                <button class="btn btn-outline btn-sm" id="fillDemoRaporBtn">⚡ Isi Contoh Demo</button>
+                <button class="btn btn-outline btn-sm" id="addSubjectBtn">+ Tambah Mapel</button>
+                <button class="btn btn-primary btn-sm" id="saveRaporBtn">Simpan Nilai</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table" id="raporTable">
+                <thead>
+                  <tr>
+                    <th>Mata Pelajaran</th>
+                    <th>Kategori</th>
+                    <th>Sem 1</th>
+                    <th>Sem 2</th>
+                    <th>Sem 3</th>
+                    <th>Sem 4</th>
+                    <th>Sem 5</th>
+                    <th>Rata-rata</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="raporTableBody"></tbody>
+                <tfoot>
+                  <tr class="summary-row">
+                    <td colspan="2"><strong>Rata-rata Per Semester</strong></td>
+                    <td id="avgSem1">0.0</td>
+                    <td id="avgSem2">0.0</td>
+                    <td id="avgSem3">0.0</td>
+                    <td id="avgSem4">0.0</td>
+                    <td id="avgSem5">0.0</td>
+                    <td id="avgAllSem"><strong>0.00</strong></td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: PRESTASI -->
+        <section class="tab-panel" id="tab-prestasi">
+          <div class="grid-2-asym">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>Tambah Prestasi / Sertifikat</h2>
+                  <p>Maksimal 3 prestasi terbaik diunggah pada portal SNBP resmi</p>
+                </div>
+              </div>
+              <form id="prestasiForm" class="form-stack">
+                <div class="form-group">
+                  <label for="prestasiNama">Nama Lomba / Kompetisi / Sertifikasi</label>
+                  <input type="text" id="prestasiNama" placeholder="Contoh: LKS Web Technologies" required />
+                </div>
+                <div class="form-group">
+                  <label for="prestasiTingkat">Tingkat Kejuaraan</label>
+                  <select id="prestasiTingkat">
+                    <option value="Internasional">Internasional (Bobot Dasar 40)</option>
+                    <option value="Nasional">Nasional (Bobot Dasar 30)</option>
+                    <option value="Provinsi">Provinsi (Bobot Dasar 20)</option>
+                    <option value="Kabupaten/Kota">Kabupaten / Kota (Bobot Dasar 12)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prestasiJuara">Peringkat / Capaian</label>
+                  <select id="prestasiJuara">
+                    <option value="Juara 1">Juara 1 / Medali Emas (+10)</option>
+                    <option value="Juara 2">Juara 2 / Medali Perak (+7)</option>
+                    <option value="Juara 3">Juara 3 / Medali Perunggu (+5)</option>
+                    <option value="Finalis">Finalis / Harapan (+2)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prestasiTahun">Tahun Perolehan</label>
+                  <input type="number" id="prestasiTahun" min="2020" max="2026" value="2025" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Tambah ke Portofolio</button>
+              </form>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h2>Daftar Prestasi Tercatat</h2>
+                  <p>Skor total dibatasi maksimal 100 poin indeks prestasi</p>
+                </div>
+                <span class="badge badge-success" id="totalPrestasiBadge">Skor: 0 / 100</span>
+              </div>
+              <div id="prestasiList" class="prestasi-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: SIMULASI PTN -->
+        <section class="tab-panel" id="tab-simulasi">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Pemilihan Program Studi &amp; Cek Peluang SNBP</h2>
+                <p>Aturan resmi: Jika memilih 2 prodi, salah satu PTN wajib berada di provinsi yang sama dengan sekolah
+                  asal.</p>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="choice-card">
+                <div class="choice-header">
+                  <span class="choice-tag">Pilihan 1 (Prioritas Utama)</span>
+                </div>
+                <div class="form-group">
+                  <label for="selectProdi1">Pilih PTN &amp; Program Studi</label>
+                  <select id="selectProdi1"></select>
+                </div>
+                <div id="resultProdi1" class="prodi-analysis"></div>
+              </div>
+
+              <div class="choice-card">
+                <div class="choice-header">
+                  <span class="choice-tag secondary">Pilihan 2 (Opsional)</span>
+                </div>
+                <div class="form-group">
+                  <label for="selectProdi2">Pilih PTN &amp; Program Studi</label>
+                  <select id="selectProdi2"></select>
+                </div>
+                <div id="resultProdi2" class="prodi-analysis"></div>
+              </div>
+            </div>
+
+            <div id="provinceRuleAlert" class="alert-box" style="display: none;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Rekomendasi Prodi Alternatif Terbaik (SPK)</h2>
+                <p>3 program studi paling realistis dan linier dengan jurusan serta skor Anda saat ini</p>
+              </div>
+            </div>
+            <div id="altRecommendations" class="recommendation-box"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Katalog Daya Tampung &amp; Rekomendasi Prodi</h2>
+                <p>Filter berdasarkan jenjang atau cari PTN/jurusan untuk melihat kecocokan skor Anda</p>
+              </div>
+              <div class="filter-row">
+                <input type="search" id="searchProdiInput" placeholder="Cari PTN atau prodi..." />
+                <select id="filterJenjang">
+                  <option value="ALL">Semua Jenjang</option>
+                  <option value="S1">Sarjana (S1)</option>
+                  <option value="D4">Sarjana Terapan (D4)</option>
+                  <option value="D3">Diploma (D3)</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>PTN</th>
+                    <th>Program Studi</th>
+                    <th>Jenjang</th>
+                    <th>Provinsi</th>
+                    <th>Daya Tampung</th>
+                    <th>Peminat</th>
+                    <th>Keketatan</th>
+                    <th>Peluang Anda</th>
+                  </tr>
+                </thead>
+                <tbody id="catalogTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 5: PEMERINGKATAN SEKOLAH -->
+        <section class="tab-panel" id="tab-eligible">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2>Simulasi Pemeringkatan Siswa Eligible (PDSS)</h2>
+                <p>Menentukan siswa yang berhak mendaftar SNBP berdasarkan kuota akreditasi sekolah</p>
+              </div>
+              <div class="header-actions">
+                <button class="btn btn-outline btn-sm" id="exportCsvBtn">📥 Ekspor CSV</button>
+              </div>
+            </div>
+
+            <div class="eligible-controls">
+              <div class="stat-pill">
+                <span>Akreditasi Sekolah:</span>
+                <strong id="eligAkreditasi">A (40%)</strong>
+              </div>
+              <div class="stat-pill">
+                <span>Total Siswa Jurusan:</span>
+                <input type="number" id="totalSiswaInput" min="10" max="500" value="30" class="inline-num" />
+              </div>
+              <div class="stat-pill highlight">
+                <span>Kuota Eligible:</span>
+                <strong id="eligKuotaCount">12 Siswa</strong>
+              </div>
+            </div>
+
+            <form id="addStudentRankForm" class="inline-form">
+              <input type="text" id="rankNamaInput" placeholder="Nama siswa..." required />
+              <input type="text" id="rankNisnInput" placeholder="NISN (10 digit)" maxlength="10" required />
+              <input type="number" id="rankNilaiInput" placeholder="Rata-rata (0-100)" step="0.01" min="0" max="100"
+                required />
+              <button type="submit" class="btn btn-primary btn-sm">+ Tambah ke Ranking</button>
+            </form>
+
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Peringkat</th>
+                    <th>NISN</th>
+                    <th>Nama Siswa</th>
+                    <th>Rata-rata Rapor</th>
+                    <th>Status PDSS</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="eligibleTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal Simulasi Login Akun Demo -->
+  <div class="modal-backdrop" id="demoLoginModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 id="modalTitle">Simulasi Login &amp; Akun Demo Penguji</h2>
+        <button class="modal-close" id="closeModalBtn" aria-label="Tutup">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="demo-notice">
+          <strong>Info Penguji:</strong> Aplikasi ini mendukung mode <strong>"Tanpa login - langsung pakai"</strong>,
+          atau Anda dapat menguji autentikasi peran menggunakan akun demo di bawah ini.
+        </div>
+
+        <div class="demo-accounts-grid">
+          <div class="demo-account-box">
+            <div class="demo-role">Akun Siswa</div>
+            <div>Username: <code>siswa@snbp.demo</code></div>
+            <div>Password: <code>siswa123</code></div>
+            <button type="button" class="btn btn-outline btn-sm fill-demo-btn" data-user="siswa@snbp.demo"
+              data-pass="siswa123">Isi Otomatis Siswa</button>
+          </div>
+          <div class="demo-account-box">
+            <div class="demo-role">Akun Guru BK / Admin PDSS</div>
+            <div>Username: <code>gurubk@snbp.demo</code></div>
+            <div>Password: <code>admin123</code></div>
+            <button type="button" class="btn btn-outline btn-sm fill-demo-btn" data-user="gurubk@snbp.demo"
+              data-pass="admin123">Isi Otomatis Guru BK</button>
+          </div>
+        </div>
+
+        <form id="loginForm" class="form-stack">
+          <div class="form-group">
+            <label for="loginUsername">Username / Email</label>
+            <input type="text" id="loginUsername" placeholder="siswa@snbp.demo" required />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="Masukkan password..." required />
+          </div>
+          <div id="loginError" class="login-error" style="display:none;"></div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-ghost" id="guestModeBtn">Lanjut Tanpa Login</button>
+            <button type="submit" class="btn btn-primary">Masuk Akun Demo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

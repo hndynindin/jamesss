@@ -1,0 +1,965 @@
+{
+	"folders": [],
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>QuizGuard - Interactive Quiz & Exam Engine</title>
+<style>
+:root{
+  --bg:#f4f7fb;--card:#ffffff;--text:#132238;--muted:#5b6b7f;--line:#d9e2ec;
+  --primary:#1d4ed8;--primary2:#1e40af;--ok:#15803d;--bad:#b91c1c;--warn:#b45309;
+  --shadow:0 12px 32px rgba(15,23,42,.12);--radius:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+body{min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.55}
+.shell{max-width:1120px;margin:auto;padding:20px}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}
+.brand{font-size:1.25rem;font-weight:800;letter-spacing:.2px}
+.badge{padding:7px 11px;border-radius:999px;background:#e8eefc;color:#153b8f;font-weight:700;font-size:.86rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+.grid{display:grid;gap:18px}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+h1,h2,h3{margin-top:0}
+h1{font-size:clamp(1.8rem,5vw,3rem);line-height:1.05}
+p{line-height:1.55}
+.muted{color:var(--muted)}
+label{display:block;font-weight:700;margin-bottom:7px}
+input,select{width:100%;padding:12px 13px;border:1px solid #bac7d5;border-radius:12px;background:#fff;color:var(--text);outline:none}
+input:focus,select:focus{border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;background:#e7edf5;color:#1d2c42}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.primary:hover{background:var(--primary2)}
+.btn.danger{background:#fee2e2;color:#991b1b}
+.btn.success{background:#dcfce7;color:#166534}
+.btn.warn{background:#ffedd5;color:#9a3412}
+.hidden{display:none!important}
+.hero{padding:34px 24px;text-align:center}
+.hero p{max-width:760px;margin:0 auto 20px}
+.subjects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.subject{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff;text-align:left;transition:.15s transform,.15s box-shadow}
+.subject:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(15,23,42,.09)}
+.subject b{display:block;font-size:1rem;margin-bottom:5px}
+.subject small{color:var(--muted)}
+.exam-head{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-bottom:14px}
+.timer{font-size:1.25rem;font-weight:900;padding:10px 14px;border-radius:12px;background:#eff6ff;color:#1d4ed8;min-width:130px;text-align:center}
+.timer.low{background:#fff7ed;color:#c2410c}
+.progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:12px 0 20px}
+.progress>div{height:100%;background:#2563eb;width:0%}
+.qmeta{font-weight:800;color:#334155;margin-bottom:8px}
+.question{font-size:1.25rem;line-height:1.5;margin:0 0 18px}
+.options{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:38px 1fr;gap:10px;align-items:start;border:1px solid #cbd5e1;border-radius:14px;padding:12px;background:#fff;text-align:left}
+.opt:hover:not(:disabled){border-color:#60a5fa;background:#f8fbff}
+.opt .letter{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#edf2f7;font-weight:900}
+.opt.correct{border-color:#22c55e;background:#f0fdf4}
+.opt.wrong{border-color:#ef4444;background:#fef2f2}
+.feedback{margin-top:16px;border-radius:14px;padding:14px 16px;font-weight:800}
+.feedback.ok{background:#dcfce7;color:#166534}
+.feedback.bad{background:#fee2e2;color:#991b1b}
+.feedback.info{background:#eff6ff;color:#1e40af}
+.stat{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.stat .n{font-size:2rem;font-weight:900}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 9px;vertical-align:top}
+th{background:#f8fafc;position:sticky;top:0}
+.status{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.78rem;font-weight:800}
+.status.active{background:#dbeafe;color:#1e40af}
+.status.done{background:#dcfce7;color:#166534}
+.status.locked{background:#fee2e2;color:#991b1b}
+.notice{border-left:4px solid #3b82f6;background:#eff6ff;padding:12px 14px;border-radius:8px;margin:14px 0}
+.notice.warn{border-color:#f59e0b;background:#fff7ed}
+.notice.bad{border-color:#ef4444;background:#fef2f2}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.72);display:grid;place-items:center;padding:16px;z-index:9999}
+.modal .box{max-width:560px;width:100%;background:#fff;border-radius:20px;padding:24px;box-shadow:var(--shadow)}
+.lock-screen{position:fixed;inset:0;background:#450a0a;color:#fff;z-index:10000;display:grid;place-items:center;padding:20px;text-align:center}
+.lock-screen .inner{max-width:650px}
+.lock-screen h1{font-size:clamp(2rem,8vw,4rem)}
+.qr{width:220px;height:220px;object-fit:contain;border:1px solid var(--line);border-radius:12px;background:#fff}
+.watermark{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;opacity:.055;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(5,1fr);transform:rotate(-20deg);font-size:18px;font-weight:900}
+.watermark span{display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.small{font-size:.9rem}
+hr{border:0;border-top:1px solid var(--line);margin:20px 0}
+@media(max-width:760px){
+  .shell{padding:12px}
+  .card{padding:16px;border-radius:14px}
+  .grid.two,.grid.three,.subjects{grid-template-columns:1fr}
+  .topbar{align-items:flex-start}
+  .exam-head{grid-template-columns:1fr}
+  .timer{width:100%}
+  .hero{padding:24px 14px}
+  .subject{padding:15px}
+  .question{font-size:1.12rem}
+}
+@media print{body{display:none!important}}
+</style>
+</head>
+<body>
+<div id="app" class="shell"></div>
+<div id="watermark" class="watermark hidden"></div>
+<div id="lockScreen" class="lock-screen hidden">
+  <div class="inner">
+    <h1>UJIAN TERKUNCI</h1>
+    <p id="lockMessage">Pelanggaran terdeteksi. Ujian hanya dapat dilanjutkan setelah direset oleh guru.</p>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   QUIZGUARD - 1 FILE APP
+   HTML + CSS + JS Native + localStorage
+   ========================================================= */
+
+const APP_KEY = "quizguard_v1";
+const TEACHER_PIN = "1234";
+const SUBJECTS = {
+  bindo:{name:"Bahasa Indonesia", count:25, minutes:60},
+  pkwu:{name:"PKWU", count:25, minutes:60},
+  tkj:{name:"TKJ", count:20, minutes:120},
+  bing:{name:"Bahasa Inggris", count:25, minutes:60, modes:["reading","listening"]},
+  mtk:{name:"Matematika", count:20, minutes:120},
+  pai:{name:"PAI", count:25, minutes:60},
+  pkn:{name:"PKN", count:25, minutes:60},
+  pjok:{name:"PJOK", count:25, minutes:60},
+  ipas:{name:"IPAS", count:25, minutes:60}
+};
+
+const $ = (s)=>document.querySelector(s);
+const app = $("#app");
+
+function defaultState(){
+  return {
+    profile:{name:"",className:""},
+    attempts:[],
+    activeExam:null,
+    teacherLoggedIn:false,
+    lastView:"home"
+  };
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem(APP_KEY);
+    return raw ? {...defaultState(),...JSON.parse(raw)} : defaultState();
+  }catch(e){
+    console.error(e);
+    return defaultState();
+  }
+}
+let state=loadState();
+function saveState(){ localStorage.setItem(APP_KEY,JSON.stringify(state)); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+function esc(v=""){ return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])); }
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function clamp(n,min,max){ return Math.max(min,Math.min(max,n)); }
+function nowISO(){ return new Date().toISOString(); }
+function scoreOf(correct,total){ return total ? Math.round((correct/total)*100) : 0; }
+
+function layout(content, badge="QuizGuard"){
+  return `
+  <div class="topbar">
+    <div class="brand">🛡️ QuizGuard</div>
+    <div class="badge">${esc(badge)}</div>
+  </div>
+  ${content}`;
+}
+
+/* ---------- Bank Soal ---------- */
+const Q = (q,correct,wrong,extra={}) => ({q,correct,wrong,...extra});
+
+const BANK = {
+bindo:[
+Q("Kalimat yang memiliki satu subjek dan satu predikat disebut ...","kalimat tunggal",["kalimat majemuk","kalimat langsung","kalimat tidak langsung","kalimat perintah"]),
+Q("Teks yang berisi langkah-langkah melakukan sesuatu disebut ...","teks prosedur",["teks narasi","teks eksposisi","teks deskripsi","teks anekdot"]),
+Q("Gagasan utama dalam paragraf disebut ...","ide pokok",["kata hubung","kalimat penjelas","majas","simpulan"]),
+Q("Lawan kata 'optimis' adalah ...","pesimis",["aktif","realistis","positif","semangat"]),
+Q("Kata baku yang benar adalah ...","aktivitas",["aktifitas","aktipitas","aktifitaz","aktivytas"]),
+Q("Teks yang bertujuan meyakinkan pembaca dengan alasan logis disebut ...","argumentasi",["deskripsi","narasi","prosedur","anekdot"]),
+Q("Penggunaan tanda baca untuk mengakhiri kalimat berita adalah ...","titik",["koma","tanda tanya","titik dua","tanda seru"]),
+Q("Kata 'berlari' mendapat imbuhan ...","ber-",["me-","di-","ter-","pe-"]),
+Q("Kata hubung yang menyatakan sebab adalah ...","karena",["tetapi","dan","atau","kemudian"]),
+Q("Ringkasan singkat dari isi bacaan disebut ...","rangkuman",["dialog","judul","catatan kaki","lampiran"]),
+Q("Tokoh yang menentang tokoh utama disebut ...","antagonis",["protagonis","narator","figuran","moderator"]),
+Q("Latar dalam karya sastra mencakup ...","tempat, waktu, dan suasana",["judul dan tema","tokoh dan amanat","dialog dan konflik","alur dan sudut pandang"]),
+Q("Pesan yang ingin disampaikan pengarang disebut ...","amanat",["alur","tema","latar","tokoh"]),
+Q("Cerita yang disusun berdasarkan urutan waktu menggunakan alur ...","maju",["mundur","campuran","sorot balik","acak"]),
+Q("Kalimat yang berisi perintah disebut ...","kalimat imperatif",["kalimat deklaratif","kalimat interogatif","kalimat pasif","kalimat majemuk"]),
+Q("Kata tanya untuk menanyakan alasan adalah ...","mengapa",["siapa","kapan","di mana","berapa"]),
+Q("Sinonim kata 'cermat' adalah ...","teliti",["ceroboh","lambat","keras","singkat"]),
+Q("Antonim kata 'hemat' adalah ...","boros",["rajin","pelit","cukup","murah"]),
+Q("Teks yang menggambarkan objek secara rinci disebut ...","deskripsi",["prosedur","eksposisi","negosiasi","laporan"]),
+Q("Paragraf yang gagasan utamanya terletak di awal disebut ...","deduktif",["induktif","campuran","naratif","persuasif"]),
+Q("Kata 'membaca' memiliki kata dasar ...","baca",["membac","memba","baca-an","pembaca"]),
+Q("Majas yang membandingkan secara langsung tanpa kata pembanding disebut ...","metafora",["personifikasi","hiperbola","litotes","ironi"]),
+Q("Kalimat langsung biasanya ditandai dengan ...","tanda petik",["tanda kurung","garis miring","titik koma","elipsis"]),
+Q("Tujuan teks laporan hasil observasi adalah ...","menyajikan informasi berdasarkan pengamatan",["menghibur pembaca","menceritakan pengalaman pribadi","memberi perintah","menjual produk"]),
+Q("Kata baku yang tepat adalah ...","risiko",["resiko","riziko","riskio","riesiko"])
+],
+pkwu:[
+Q("Kegiatan menciptakan nilai tambah melalui usaha disebut ...","kewirausahaan",["konsumsi","distribusi","tabungan","administrasi"]),
+Q("Orang yang menjalankan usaha disebut ...","wirausahawan",["konsumen","distributor","auditor","operator"]),
+Q("Modal yang berasal dari pemilik usaha disebut ...","modal sendiri",["utang dagang","pinjaman luar","subsidi konsumen","beban tetap"]),
+Q("Selisih antara pendapatan dan biaya disebut ...","laba",["aset","utang","modal kerja","stok"]),
+Q("Kegiatan mengenalkan produk kepada calon pembeli disebut ...","promosi",["produksi","inventarisasi","rekrutmen","audit"]),
+Q("Kemasan produk terutama berfungsi untuk ...","melindungi dan menarik minat pembeli",["menaikkan pajak","mengurangi kualitas","menghapus merek","menghilangkan informasi"]),
+Q("Analisis SWOT terdiri atas ...","strength, weakness, opportunity, threat",["sales, work, order, target","stock, warehouse, output, tax","strategy, work, operation, trade","service, warranty, offer, trend"]),
+Q("Harga pokok produksi berkaitan dengan ...","biaya menghasilkan produk",["jumlah pelanggan","warna kemasan","nama merek","lokasi rumah"]),
+Q("Target pasar adalah ...","kelompok konsumen yang dituju",["semua pesaing","semua pemasok","pegawai tetap","pemilik modal"]),
+Q("Logo termasuk bagian dari ...","identitas merek",["biaya listrik","utang usaha","proses produksi","pajak penghasilan"]),
+Q("Salah satu ciri wirausaha adalah ...","berani mengambil risiko terukur",["menghindari semua keputusan","menolak perubahan","tidak membuat rencana","mengabaikan pelanggan"]),
+Q("BEP adalah kondisi ketika ...","total pendapatan sama dengan total biaya",["usaha selalu rugi","stok habis","utang nol","pegawai bertambah"]),
+Q("Survei pelanggan dilakukan untuk ...","mengetahui kebutuhan pasar",["menghapus produk","menambah pajak","mengurangi promosi","menutup usaha"]),
+Q("Produk yang memiliki keunikan dibanding pesaing memiliki ...","nilai diferensiasi",["beban tetap","utang lancar","penyusutan","arus kas negatif"]),
+Q("Catatan keluar masuk uang disebut ...","arus kas",["logo","merek","izin edar","segmentasi"]),
+Q("Diskon adalah ...","potongan harga",["tambahan pajak","biaya produksi","modal usaha","laba bersih"]),
+Q("Pelanggan yang kembali membeli menunjukkan ...","loyalitas pelanggan",["biaya tetap","utang usaha","stok mati","segmentasi acak"]),
+Q("Marketplace adalah ...","platform digital untuk transaksi jual beli",["gudang fisik","mesin produksi","surat izin","jenis pajak"]),
+Q("Kualitas pelayanan dapat memengaruhi ...","kepuasan pelanggan",["warna langit","jumlah hari","kode pos","suhu ruangan"]),
+Q("Rencana bisnis berfungsi sebagai ...","panduan menjalankan usaha",["pengganti produk","alat untuk menghapus biaya","jaminan pasti untung","cara menghindari konsumen"]),
+Q("Stok barang yang terlalu banyak dapat meningkatkan ...","biaya penyimpanan",["jumlah penjualan pasti","kepuasan otomatis","nilai merek otomatis","kecepatan produksi"]),
+Q("Pemasaran digital memanfaatkan ...","internet dan media digital",["hanya papan tulis","mesin fotokopi saja","surat pribadi saja","kalkulator saja"]),
+Q("Testimoni pelanggan dapat digunakan sebagai ...","bukti sosial",["modal tetap","utang jangka panjang","bahan baku","biaya listrik"]),
+Q("Salah satu tujuan pencatatan keuangan adalah ...","mengetahui kondisi usaha",["menghilangkan transaksi","menambah risiko","mengurangi data","menutup pemasaran"]),
+Q("Inovasi produk berarti ...","melakukan pembaruan atau pengembangan produk",["menghentikan semua perubahan","meniru tanpa modifikasi","menghapus merek","menjual tanpa target"])
+],
+tkj:[
+Q("Perangkat yang menghubungkan dua jaringan berbeda disebut ...","router",["switch","hub","repeater","access point"]),
+Q("Alamat IPv4 terdiri dari ...","32 bit",["16 bit","48 bit","64 bit","128 bit"]),
+Q("Protokol yang umum dipakai untuk mengakses halaman web aman adalah ...","HTTPS",["FTP","SMTP","DHCP","ARP"]),
+Q("Perangkat yang menghubungkan banyak host dalam satu LAN dan meneruskan frame berdasarkan MAC address adalah ...","switch",["router","modem","UPS","printer"]),
+Q("Perintah Windows untuk melihat konfigurasi IP adalah ...","ipconfig",["ls","pwd","mkdir","nano"]),
+Q("Perintah yang umum digunakan untuk menguji keterjangkauan host adalah ...","ping",["format","copy","tree","tasklist"]),
+Q("DNS berfungsi untuk ...","menerjemahkan nama domain menjadi alamat IP",["membagi daya listrik","menyimpan file lokal","mencetak dokumen","mengatur suhu CPU"]),
+Q("DHCP berfungsi untuk ...","memberikan konfigurasi IP secara otomatis",["mengenkripsi file","menghapus virus","membuat website","mengubah MAC address"]),
+Q("Topologi yang menggunakan satu perangkat pusat disebut ...","star",["bus","ring","mesh","tree tanpa pusat"]),
+Q("Kabel UTP kategori umum untuk Ethernet menggunakan konektor ...","RJ45",["RJ11","USB-A","VGA","HDMI"]),
+Q("MAC address bekerja terutama pada layer ... OSI","Data Link",["Physical","Network","Transport","Application"]),
+Q("IP address bekerja terutama pada layer ... OSI","Network",["Physical","Data Link","Session","Presentation"]),
+Q("Port default HTTP adalah ...","80",["21","25","53","443"]),
+Q("Port default HTTPS adalah ...","443",["20","23","67","110"]),
+Q("Subnet mask 255.255.255.0 setara dengan prefix ...","/24",["/8","/16","/30","/32"]),
+Q("Sistem operasi jaringan berbasis Linux yang populer adalah ...","Ubuntu Server",["Paint","Notepad","Calculator","WordPad"]),
+Q("Perangkat untuk menyediakan daya sementara saat listrik padam adalah ...","UPS",["NIC","RAM","SSD","KVM"]),
+Q("NIC adalah perangkat yang digunakan untuk ...","menghubungkan komputer ke jaringan",["menyimpan data cadangan","mencetak dokumen","menampilkan video","mendinginkan prosesor"]),
+Q("Firewall digunakan untuk ...","mengontrol lalu lintas jaringan berdasarkan aturan",["menambah kapasitas RAM","menghapus semua log","mengganti keyboard","memperbesar layar"]),
+Q("LAN merupakan jaringan dengan cakupan ...","area lokal",["antarbenua saja","seluruh dunia saja","orbit satelit","seluruh samudra"])
+],
+bing:[
+Q("Choose the correct sentence.","She goes to school every day.",["She go to school every day.","She going to school every day.","She gone to school every day.","She goes school every day."]),
+Q("The past form of 'go' is ...","went",["goed","gone","going","goes"]),
+Q("The opposite of 'difficult' is ...","easy",["hard","heavy","slow","late"]),
+Q("Complete: I ___ a student.","am",["is","are","be","been"]),
+Q("Complete: They ___ playing football now.","are",["is","am","be","was"]),
+Q("'Library' means ...","perpustakaan",["laboratorium","kantin","lapangan","kelas"]),
+Q("Choose the correct plural form of 'child'.","children",["childs","childes","childrens","child"]),
+Q("Which word is an adjective?","beautiful",["quickly","run","table","and"]),
+Q("Complete: He ___ coffee every morning.","drinks",["drink","drinking","drank every","is drink"]),
+Q("The synonym of 'smart' is ...","clever",["lazy","weak","angry","noisy"]),
+Q("Complete: We ___ to Bali last year.","went",["go","goes","going","will go"]),
+Q("A person who teaches students is a ...","teacher",["doctor","driver","chef","farmer"]),
+Q("The correct question form is ...","Where do you live?",["Where you live?","Where does you live?","Where are live you?","Where living you?"]),
+Q("Complete: There ___ two books on the table.","are",["is","am","be","was"]),
+Q("The meaning of 'because' is ...","karena",["tetapi","dan","atau","kemudian"]),
+Q("Complete: My mother ___ cooking now.","is",["are","am","be","were"]),
+Q("Choose the correct comparative form of 'tall'.","taller",["more tall","tallest","most tall","talling"]),
+Q("The opposite of 'early' is ...","late",["fast","near","short","small"]),
+Q("Complete: I have ___ apple.","an",["a","the a","some an","one a"]),
+Q("Which is a greeting?","Good morning.",["See the table.","Open the door.","Write your name.","Close the book."]),
+Q("Complete: She can ___ very well.","sing",["sings","sang","singing","sung"]),
+Q("The meaning of 'careful' is ...","hati-hati",["ceroboh","marah","cepat","lapar"]),
+Q("Complete: This book is ___ than that one.","cheaper",["cheap","cheapest","more cheaper","most cheap"]),
+Q("Which sentence is in future tense?","I will study tonight.",["I studied last night.","I study every day.","I am studying now.","I was studying."]),
+Q("The word 'always' is an adverb of ...","frequency",["place","direction","color","material"])
+],
+pai:[
+Q("Kitab suci umat Islam adalah ...","Al-Qur'an",["Injil","Taurat","Zabur","Weda"]),
+Q("Rukun Islam berjumlah ...","5",["3","4","6","7"]),
+Q("Rukun iman berjumlah ...","6",["4","5","7","8"]),
+Q("Salat wajib dalam sehari semalam berjumlah ...","5 waktu",["3 waktu","4 waktu","6 waktu","7 waktu"]),
+Q("Puasa wajib dilaksanakan pada bulan ...","Ramadan",["Syawal","Safar","Rajab","Muharram"]),
+Q("Zakat fitrah dikeluarkan menjelang ...","Idul Fitri",["Idul Adha","Tahun Baru","Maulid Nabi","Isra Mikraj"]),
+Q("Nabi terakhir adalah ...","Nabi Muhammad SAW",["Nabi Musa AS","Nabi Isa AS","Nabi Ibrahim AS","Nabi Nuh AS"]),
+Q("Arah kiblat umat Islam menuju ...","Ka'bah",["Madinah","Masjid Nabawi","Bukit Safa","Mina"]),
+Q("Sikap jujur dalam Islam disebut ...","shiddiq",["amanah","tabligh","fathanah","riya"]),
+Q("Menjaga titipan termasuk sifat ...","amanah",["takabur","hasad","riya","ghibah"]),
+Q("Salat Jumat dilaksanakan pada hari ...","Jumat",["Senin","Rabu","Sabtu","Minggu"]),
+Q("Tempat ibadah umat Islam disebut ...","masjid",["gereja","pura","vihara","kelenteng"]),
+Q("Wahyu pertama diturunkan di Gua ...","Hira",["Tsur","Uhud","Quba","Safa"]),
+Q("Membaca basmalah diawali dengan lafaz ...","Bismillah",["Alhamdulillah","Subhanallah","Allahu Akbar","Astaghfirullah"]),
+Q("Ibadah haji dilaksanakan di ...","Makkah",["Jakarta","Kairo","Damaskus","Baghdad"]),
+Q("Orang yang berhak menerima zakat disebut ...","mustahik",["muzakki","imam","muazin","khatib"]),
+Q("Orang yang membayar zakat disebut ...","muzakki",["mustahik","musafir","muallaf","amil"]),
+Q("Salah satu syarat sah salat adalah ...","suci dari hadas",["memakai pakaian baru","berada di rumah","makan terlebih dahulu","berbicara saat salat"]),
+Q("Wudu dilakukan untuk ...","bersuci",["berdagang","tidur","bermain","berolahraga"]),
+Q("Surah pembuka Al-Qur'an adalah ...","Al-Fatihah",["Al-Baqarah","An-Nas","Al-Ikhlas","Al-Falaq"]),
+Q("Hari raya kurban disebut ...","Idul Adha",["Idul Fitri","Nuzulul Quran","Tahun Baru Hijriah","Asyura"]),
+Q("Sikap menghormati orang tua merupakan akhlak ...","terpuji",["tercela","makruh","sia-sia","netral"]),
+Q("Larangan membicarakan keburukan orang lain disebut menjauhi ...","ghibah",["silaturahmi","sedekah","amanah","syukur"]),
+Q("Sedekah dapat dilakukan dengan ...","harta maupun kebaikan",["hanya uang","hanya makanan","hanya pakaian","hanya saat hari raya"]),
+Q("Mengucapkan syukur atas nikmat merupakan bentuk ...","bersyukur kepada Allah",["takabur","hasad","riya","fitnah"])
+],
+pkn:[
+Q("Dasar negara Indonesia adalah ...","Pancasila",["UUD 1945","Bhinneka Tunggal Ika","Proklamasi","Garuda Indonesia"]),
+Q("Semboyan negara Indonesia adalah ...","Bhinneka Tunggal Ika",["Tut Wuri Handayani","Ing Ngarsa Sung Tuladha","Merdeka atau Mati","Jalesveva Jayamahe"]),
+Q("Konstitusi tertulis Indonesia adalah ...","UUD 1945",["KUHP","Perpres","Perda","Tapel"]),
+Q("Sila pertama Pancasila berbunyi ...","Ketuhanan Yang Maha Esa",["Kemanusiaan yang Adil dan Beradab","Persatuan Indonesia","Kerakyatan yang Dipimpin oleh Hikmat Kebijaksanaan","Keadilan Sosial bagi Seluruh Rakyat Indonesia"]),
+Q("Lambang sila ketiga Pancasila adalah ...","pohon beringin",["bintang","rantai","kepala banteng","padi dan kapas"]),
+Q("Indonesia adalah negara berbentuk ...","republik",["kerajaan","federasi monarki","kesultanan","protektorat"]),
+Q("Hak harus diimbangi dengan ...","kewajiban",["hukuman","hadiah","larangan","kebiasaan"]),
+Q("Musyawarah bertujuan mencapai ...","mufakat",["perselisihan","hukuman","persaingan","dominasi"]),
+Q("Contoh kewajiban siswa di sekolah adalah ...","menaati tata tertib",["mendapat nilai","menggunakan fasilitas","memilih guru","mendapat hadiah"]),
+Q("Sikap terhadap keberagaman sebaiknya ...","saling menghormati",["memaksakan kehendak","menghindari semua perbedaan","merendahkan kelompok lain","menutup komunikasi"]),
+Q("Pemilu merupakan salah satu sarana ...","pelaksanaan kedaulatan rakyat",["perdagangan","rekreasi","produksi","administrasi sekolah"]),
+Q("Warna bendera Indonesia adalah ...","merah putih",["merah biru","putih hijau","kuning merah","biru putih"]),
+Q("Lembaga yang memiliki fungsi legislasi di tingkat nasional adalah ...","DPR",["BPK","MA","BI","KPU saja"]),
+Q("Peraturan harus dipatuhi untuk menciptakan ...","ketertiban",["kekacauan","konflik","diskriminasi","ketidakpastian"]),
+Q("Gotong royong mencerminkan nilai ...","kebersamaan",["individualisme","egoisme","persaingan bebas","isolasi"]),
+Q("Salah satu hak warga negara adalah ...","mendapat perlindungan hukum",["melanggar hukum","mengabaikan pajak","merusak fasilitas umum","memaksakan kehendak"]),
+Q("Proklamasi Kemerdekaan Indonesia dibacakan pada ...","17 Agustus 1945",["1 Juni 1945","20 Mei 1908","28 Oktober 1928","10 November 1945"]),
+Q("Lagu kebangsaan Indonesia adalah ...","Indonesia Raya",["Bagimu Negeri","Garuda Pancasila","Hari Merdeka","Rayuan Pulau Kelapa"]),
+Q("Bahasa negara Indonesia adalah ...","Bahasa Indonesia",["Bahasa Jawa","Bahasa Sunda","Bahasa Inggris","Bahasa Melayu saja"]),
+Q("Sikap taat hukum berarti ...","mematuhi aturan yang berlaku",["memilih aturan sesuka hati","menghindari kewajiban","melanggar jika tidak diawasi","mengutamakan kepentingan pribadi"]),
+Q("Persatuan dapat diperkuat dengan ...","menghargai perbedaan",["menyebarkan kebencian","membedakan teman","memaksakan budaya","menghindari kerja sama"]),
+Q("Simbol negara Indonesia adalah ...","Garuda Pancasila",["elang jawa","komodo","harimau","cenderawasih"]),
+Q("Sila kelima berkaitan dengan ...","keadilan sosial",["ketuhanan","kemanusiaan","persatuan saja","musyawarah saja"]),
+Q("Keputusan bersama sebaiknya dilaksanakan dengan ...","tanggung jawab",["terpaksa tanpa aturan","egoisme","menghindar","menyalahkan orang lain"]),
+Q("Toleransi berarti ...","menghargai perbedaan",["menyamakan semua pendapat","memaksa orang setuju","mengabaikan aturan","menolak dialog"])
+],
+pjok:[
+Q("Pemanasan dilakukan sebelum olahraga untuk ...","mempersiapkan tubuh dan mengurangi risiko cedera",["membuat tubuh langsung lelah","menggantikan latihan inti","mengurangi konsentrasi","menghentikan pernapasan"]),
+Q("Pendinginan dilakukan setelah olahraga untuk ...","membantu tubuh kembali ke kondisi normal",["menaikkan intensitas maksimal","menggantikan pemanasan","membuat denyut terus naik","menghilangkan kebutuhan minum"]),
+Q("Dalam sepak bola, penjaga gawang disebut ...","goalkeeper",["striker","winger","referee","captain"]),
+Q("Jumlah pemain sepak bola dalam satu tim di lapangan adalah ...","11",["5","6","9","12"]),
+Q("Olahraga yang menggunakan raket dan shuttlecock adalah ...","bulu tangkis",["basket","voli","sepak bola","renang"]),
+Q("Dalam bola basket, memasukkan bola dari luar garis tiga angka bernilai ...","3 poin",["1 poin","2 poin","4 poin","5 poin"]),
+Q("Gerakan memantulkan bola dalam basket disebut ...","dribbling",["servis","smash","heading","blocking"]),
+Q("Servis merupakan pukulan awal dalam permainan ...","voli",["sepak bola","atletik","renang","senam lantai"]),
+Q("Lari jarak pendek disebut ...","sprint",["maraton","jogging","relay panjang","hiking"]),
+Q("Kebugaran jasmani berkaitan dengan kemampuan tubuh untuk ...","melakukan aktivitas tanpa kelelahan berlebihan",["tidur sepanjang hari","menghindari semua gerak","menahan napas","tidak minum"]),
+Q("Air penting saat olahraga untuk mencegah ...","dehidrasi",["konsentrasi","pemanasan","koordinasi","kelincahan"]),
+Q("Protein membantu tubuh terutama dalam ...","pertumbuhan dan perbaikan jaringan",["memberi warna pakaian","mengurangi tinggi badan","mengganti oksigen","menambah suara"]),
+Q("Latihan push-up terutama melatih ...","kekuatan otot tubuh bagian atas",["kelenturan jari kaki saja","kecepatan lari saja","pendengaran","penglihatan"]),
+Q("Sit-up terutama melatih ...","otot perut",["otot mata","otot telinga","otot jari tangan saja","otot wajah"]),
+Q("Peregangan membantu meningkatkan ...","kelenturan",["warna kulit","tinggi sepatu","jumlah napas nol","ukuran bola"]),
+Q("Wasit bertugas untuk ...","memimpin pertandingan sesuai aturan",["menjadi penonton","menjual tiket","mengganti semua pemain","membuat seragam"]),
+Q("Dalam renang, gaya yang gerakannya menyerupai katak disebut ...","gaya dada",["gaya bebas","gaya punggung","gaya kupu-kupu","gaya samping"]),
+Q("Start jongkok umum digunakan pada ...","lari sprint",["jalan santai","renang gaya dada","sepak bola","bulu tangkis"]),
+Q("Latihan teratur dapat membantu meningkatkan ...","kebugaran",["risiko cedera pasti","kelelahan permanen","kebiasaan pasif","dehidrasi"]),
+Q("Istirahat yang cukup penting untuk ...","pemulihan tubuh",["menghapus kebutuhan makan","menggantikan olahraga selamanya","menurunkan konsentrasi","menghilangkan cairan tubuh"]),
+Q("Dalam voli, teknik menerima servis sering menggunakan ...","passing bawah",["heading","dribbling kaki","lay-up","start jongkok"]),
+Q("Smash dalam bulu tangkis adalah pukulan ...","keras dan menukik",["pelan ke atas selalu","dengan kaki","tanpa raket","ke belakang lapangan sendiri"]),
+Q("Sepatu olahraga yang sesuai membantu ...","kenyamanan dan keamanan gerak",["menghilangkan semua risiko","menggantikan pemanasan","menambah skor otomatis","mengganti aturan"]),
+Q("Denyut nadi dapat meningkat saat olahraga karena ...","tubuh membutuhkan lebih banyak oksigen",["jantung berhenti bekerja","darah tidak bergerak","tubuh tidak butuh energi","paru-paru tidak berfungsi"]),
+Q("Fair play berarti ...","bermain jujur dan menghormati aturan",["menang dengan cara apa pun","mengabaikan wasit","mencurangi lawan","menolak berjabat tangan"])
+],
+ipas:[
+Q("Perubahan wujud dari cair menjadi gas disebut ...","menguap",["membeku","mencair","mengembun","menyublim"]),
+Q("Perubahan wujud dari gas menjadi cair disebut ...","mengembun",["menguap","mencair","membeku","menyublim"]),
+Q("Sumber energi utama bagi Bumi adalah ...","Matahari",["Bulan","Mars","angin saja","tanah"]),
+Q("Organ utama pernapasan manusia adalah ...","paru-paru",["lambung","ginjal","hati","usus"]),
+Q("Tumbuhan membuat makanan melalui proses ...","fotosintesis",["respirasi saja","fermentasi","evaporasi","kondensasi"]),
+Q("Zat hijau daun disebut ...","klorofil",["hemoglobin","karoten saja","glukosa","protein"]),
+Q("Air membeku pada suhu sekitar ...","0°C",["25°C","50°C","75°C","100°C"]),
+Q("Air mendidih pada tekanan normal sekitar ...","100°C",["0°C","20°C","50°C","80°C"]),
+Q("Gaya yang menarik benda ke arah Bumi disebut ...","gravitasi",["magnet","gesek","pegas","listrik"]),
+Q("Benda yang dapat menghantarkan listrik dengan baik disebut ...","konduktor",["isolator","generator","indikator","reaktor"]),
+Q("Contoh konduktor adalah ...","tembaga",["karet","plastik","kayu kering","kaca"]),
+Q("Contoh isolator adalah ...","karet",["tembaga","besi","aluminium","perak"]),
+Q("Planet tempat manusia hidup adalah ...","Bumi",["Mars","Venus","Jupiter","Saturnus"]),
+Q("Satelit alami Bumi adalah ...","Bulan",["Matahari","Mars","Venus","Merkurius"]),
+Q("Rantai makanan menunjukkan ...","hubungan makan dan dimakan",["urutan planet","siklus air saja","jenis batuan","lapisan atmosfer"]),
+Q("Produsen dalam ekosistem umumnya adalah ...","tumbuhan hijau",["harimau","ular","elang","jamur saja"]),
+Q("Hewan pemakan tumbuhan disebut ...","herbivora",["karnivora","omnivora","dekomposer","predator wajib"]),
+Q("Hewan pemakan daging disebut ...","karnivora",["herbivora","produsen","autotrof","dekomposer"]),
+Q("Campuran air dan gula yang larut sempurna disebut ...","larutan",["suspensi kasar","unsur","senyawa murni","gas"]),
+Q("Bagian sel yang mengatur aktivitas sel adalah ...","inti sel",["dinding luar saja","vakuola saja","membran luar saja","ribosom saja"]),
+Q("Alat untuk mengukur suhu adalah ...","termometer",["barometer","amperemeter","speedometer","higrometer"]),
+Q("Energi yang dimiliki benda karena geraknya disebut ...","energi kinetik",["energi potensial","energi kimia","energi nuklir","energi diam"]),
+Q("Proses peredaran air dari Bumi ke atmosfer dan kembali lagi disebut ...","siklus air",["fotosintesis","respirasi","metamorfosis","erosi saja"]),
+Q("Salah satu gas yang dibutuhkan manusia untuk bernapas adalah ...","oksigen",["karbon dioksida saja","nitrogen murni saja","metana","helium"]),
+Q("Pencemaran udara dapat dikurangi dengan ...","mengurangi emisi dan menanam pohon",["membakar sampah lebih banyak","menebang pohon","menambah asap kendaraan","membuang limbah ke sungai"])
+]
+};
+
+function generateMathQuestions(){
+  const out=[];
+  for(let i=0;i<20;i++){
+    const a=4+i, b=2+(i%7);
+    const answer=a+b;
+    const wrong=[answer+1,answer-1,answer+2,answer-2].map(String);
+    out.push(Q(`Hasil dari ${a} + ${b} adalah ...`,String(answer),wrong));
+  }
+  return out;
+}
+BANK.mtk=generateMathQuestions();
+
+function buildListeningBank(){
+  const data=[
+    ["The library opens at seven in the morning.","When does the library open?","At seven in the morning.",["At six.","At eight.","At noon.","At night."]],
+    ["Rina goes to school by bicycle every day.","How does Rina go to school?","By bicycle.",["By bus.","By car.","On foot.","By train."]],
+    ["The red bag is under the wooden table.","Where is the red bag?","Under the wooden table.",["On the table.","Beside the door.","In the cupboard.","Behind the chair."]],
+    ["Tom has two brothers and one sister.","How many brothers does Tom have?","Two.",["One.","Three.","Four.","Five."]],
+    ["The meeting starts at half past nine.","What time does the meeting start?","At 9:30.",["At 8:30.","At 9:00.","At 10:00.","At 10:30."]],
+    ["Sarah likes apples, but she does not like bananas.","Which fruit does Sarah like?","Apples.",["Bananas.","Oranges.","Grapes.","Mangoes."]],
+    ["The science class is on Monday afternoon.","When is the science class?","Monday afternoon.",["Tuesday morning.","Monday morning.","Friday afternoon.","Wednesday evening."]],
+    ["My father works in a hospital as a doctor.","Where does the speaker's father work?","In a hospital.",["In a school.","In a bank.","In a market.","In a hotel."]],
+    ["The weather today is cloudy and cool.","How is the weather today?","Cloudy and cool.",["Hot and sunny.","Stormy.","Snowy.","Very dry."]],
+    ["Please bring a pencil, an eraser, and a ruler.","Which item should be brought?","A ruler.",["A plate.","A spoon.","A towel.","A helmet."]]
+  ];
+  const out=[];
+  for(let i=0;i<25;i++){
+    const d=data[i%data.length];
+    out.push(Q(d[1],d[2],d[3],{audio:d[0]}));
+  }
+  return out;
+}
+const LISTENING_BANK=buildListeningBank();
+
+/* ---------- Penyusunan soal ---------- */
+function prepareQuestions(subject, mode){
+  const meta=SUBJECTS[subject];
+  let pool=(subject==="bing" && mode==="listening") ? LISTENING_BANK : BANK[subject];
+  pool=shuffle(pool).slice(0,meta.count);
+  return pool.map((item,idx)=>{
+    const options=shuffle([item.correct,...item.wrong]);
+    return {
+      id:`${subject}-${Date.now()}-${idx}-${Math.random().toString(36).slice(2,6)}`,
+      q:item.q,
+      audio:item.audio||null,
+      options,
+      correct:item.correct,
+      chosen:null,
+      isCorrect:null
+    };
+  });
+}
+
+/* ---------- Home / Login ---------- */
+function renderHome(){
+  clearWatermark();
+  $("#lockScreen").classList.add("hidden");
+  state.lastView="home"; saveState();
+  const p=state.profile;
+  app.innerHTML=layout(`
+    <section class="card hero">
+      <h1>Interactive Quiz & Exam Engine</h1>
+      <p class="muted">Ujian pilihan ganda A–E, timer, soal dan pilihan jawaban diacak, koreksi otomatis, penyimpanan LocalStorage, dashboard guru, serta proteksi dasar saat ujian.</p>
+      ${state.activeExam ? `<div class="notice warn"><b>Ada ujian yang belum selesai.</b><br>${esc(SUBJECTS[state.activeExam.subject].name)} — ${esc(state.activeExam.studentName)} (${esc(state.activeExam.className)})</div>`:""}
+      <div class="row" style="justify-content:center">
+        <button class="btn primary" id="studentBtn">Masuk sebagai Siswa</button>
+        <button class="btn" id="teacherBtn">Masuk sebagai Guru</button>
+        ${state.activeExam ? `<button class="btn success" id="resumeBtn">Lanjutkan Ujian</button>`:""}
+      </div>
+    </section>
+    <div class="grid two" style="margin-top:18px">
+      <section class="card">
+        <h3>Fitur Utama</h3>
+        <p class="muted small">Data pada versi ini disimpan di browser menggunakan <b>localStorage</b>. Refresh halaman tidak menghapus progres.</p>
+        <div class="notice">PIN guru demo: <b>1234</b>. Ganti nilai konstanta <code>TEACHER_PIN</code> di kode jika diperlukan.</div>
+      </section>
+      <section class="card">
+        <h3>Catatan Teknis</h3>
+        <p class="muted small">Monitoring guru berbasis LocalStorage hanya melihat data pada browser/origin yang sama. Untuk memantau banyak HP secara real-time diperlukan server/database bersama.</p>
+      </section>
+    </div>
+  `,"Beranda");
+  $("#studentBtn").onclick=renderStudentLogin;
+  $("#teacherBtn").onclick=renderTeacherLogin;
+  if($("#resumeBtn")) $("#resumeBtn").onclick=resumeExam;
+}
+
+function renderStudentLogin(){
+  const p=state.profile;
+  app.innerHTML=layout(`
+  <section class="card">
+    <h2>Identitas Siswa</h2>
+    <div class="grid two">
+      <div><label>Nama</label><input id="nameInput" maxlength="60" value="${esc(p.name)}" placeholder="Contoh: Andi Saputra"></div>
+      <div><label>Kelas</label><input id="classInput" maxlength="40" value="${esc(p.className)}" placeholder="Contoh: XI TKJ 1"></div>
+    </div>
+    <div class="row" style="margin-top:18px">
+      <button class="btn primary" id="saveProfileBtn">Simpan & Pilih Mapel</button>
+      <button class="btn" id="backBtn">Kembali</button>
+    </div>
+  </section>`,"Mode Siswa");
+  $("#saveProfileBtn").onclick=()=>{
+    const name=$("#nameInput").value.trim();
+    const className=$("#classInput").value.trim();
+    if(!name||!className){ alert("Nama dan kelas wajib diisi."); return; }
+    state.profile={name,className}; saveState(); renderSubjectSelection();
+  };
+  $("#backBtn").onclick=renderHome;
+}
+
+function renderSubjectSelection(){
+  if(!state.profile.name||!state.profile.className) return renderStudentLogin();
+  const cards=Object.entries(SUBJECTS).map(([k,v])=>`
+    <button class="subject" data-subject="${k}">
+      <b>${esc(v.name)}</b>
+      <small>${v.count} soal • ${v.minutes} menit${v.modes?" • 2 mode":""}</small>
+    </button>`).join("");
+  app.innerHTML=layout(`
+  <section class="card">
+    <div class="row" style="justify-content:space-between">
+      <div><h2 style="margin-bottom:4px">Pilih Mata Pelajaran</h2><div class="muted">${esc(state.profile.name)} • ${esc(state.profile.className)}</div></div>
+      <button class="btn" id="editProfileBtn">Ubah Nama/Kelas</button>
+    </div>
+    <hr>
+    <div class="subjects">${cards}</div>
+    <div class="row" style="margin-top:18px"><button class="btn" id="backBtn">Kembali</button></div>
+  </section>`,"Pilih Ujian");
+  document.querySelectorAll("[data-subject]").forEach(b=>b.onclick=()=>chooseSubject(b.dataset.subject));
+  $("#editProfileBtn").onclick=renderStudentLogin;
+  $("#backBtn").onclick=renderHome;
+}
+function chooseSubject(subject){
+  if(state.activeExam){
+    alert("Masih ada ujian aktif. Selesaikan atau minta guru mereset.");
+    return resumeExam();
+  }
+  if(subject==="bing"){
+    app.innerHTML=layout(`
+    <section class="card">
+      <h2>Bahasa Inggris</h2>
+      <p>Pilih jenis ujian.</p>
+      <div class="grid two">
+        <button class="subject" id="readingMode"><b>📖 Reading / Question Answer</b><small>25 soal • 60 menit</small></button>
+        <button class="subject" id="listeningMode"><b>🎧 Listening</b><small>25 soal • 60 menit • audio via Text-to-Speech browser</small></button>
+      </div>
+      <div class="row" style="margin-top:18px"><button class="btn" id="cancelMode">Kembali</button></div>
+    </section>`,"Bahasa Inggris");
+    $("#readingMode").onclick=()=>showStartExam("bing","reading");
+    $("#listeningMode").onclick=()=>showStartExam("bing","listening");
+    $("#cancelMode").onclick=renderSubjectSelection;
+  }else showStartExam(subject,null);
+}
+
+function showStartExam(subject,mode){
+  const m=SUBJECTS[subject];
+  app.innerHTML=layout(`
+  <section class="card">
+    <h2>Konfirmasi Ujian</h2>
+    <div class="grid two">
+      <div class="stat"><div class="muted">Mapel</div><div class="n" style="font-size:1.3rem">${esc(m.name)}</div></div>
+      <div class="stat"><div class="muted">Durasi</div><div class="n" style="font-size:1.3rem">${m.minutes} menit</div></div>
+      <div class="stat"><div class="muted">Jumlah Soal</div><div class="n">${m.count}</div></div>
+      <div class="stat"><div class="muted">Mode</div><div class="n" style="font-size:1.3rem">${mode?esc(mode):"Standar"}</div></div>
+    </div>
+    <div class="notice warn">
+      <b>Aturan demo:</b> selama ujian, pindah tab/aplikasi akan dicatat sebagai pelanggaran dan ujian dikunci sampai guru melakukan reset. Copy, paste, klik kanan, dan print diblokir.
+    </div>
+    <p class="muted small">Catatan: browser web biasa tidak dapat memblokir screenshot sistem operasi 100% dan tidak dapat mendeteksi split-screen secara sempurna.</p>
+    <div class="row">
+      <button class="btn primary" id="startExamBtn">Mulai Ujian</button>
+      <button class="btn" id="cancelExamBtn">Batal</button>
+    </div>
+  </section>`,"Siap Ujian");
+  $("#startExamBtn").onclick=()=>startExam(subject,mode);
+  $("#cancelExamBtn").onclick=renderSubjectSelection;
+}
+
+/* ---------- Exam ---------- */
+let timerHandle=null;
+let antiCheatActive=false;
+function startExam(subject,mode){
+  const meta=SUBJECTS[subject];
+  const questions=prepareQuestions(subject,mode);
+  const start=Date.now();
+  state.activeExam={
+    id:uid(),
+    studentName:state.profile.name,
+    className:state.profile.className,
+    subject, mode,
+    questions,
+    current:0,
+    startedAt:new Date(start).toISOString(),
+    deadline:start+(meta.minutes*60*1000),
+    status:"active",
+    violations:[],
+    finishedAt:null
+  };
+  state.attempts.push({
+    id:state.activeExam.id,
+    studentName:state.profile.name,
+    className:state.profile.className,
+    subject,mode,
+    startedAt:state.activeExam.startedAt,
+    status:"active",
+    correct:0,wrong:0,score:null,
+    violations:[],
+    answers:[]
+  });
+  saveState();
+  requestFullscreenSafe();
+  renderExam();
+}
+
+function resumeExam(){
+  if(!state.activeExam) return renderHome();
+  if(state.activeExam.status==="locked") return showLock(state.activeExam.violations.at(-1)?.reason||"Pelanggaran");
+  renderExam();
+}
+
+function requestFullscreenSafe(){
+  const el=document.documentElement;
+  if(el.requestFullscreen) el.requestFullscreen().catch(()=>{});
+}
+
+function renderExam(){
+  const ex=state.activeExam;
+  if(!ex) return renderHome();
+  if(ex.status==="locked") return showLock("Pelanggaran terdeteksi.");
+  const remaining=ex.deadline-Date.now();
+  if(remaining<=0){ finishExam(true); return; }
+  antiCheatActive=true;
+  installWatermark(ex.studentName,ex.className);
+  const q=ex.questions[ex.current];
+  const answered=q.chosen!==null;
+  const letters=["A","B","C","D","E"];
+  app.innerHTML=layout(`
+    <section class="card">
+      <div class="exam-head">
+        <div>
+          <h2 style="margin-bottom:4px">${esc(SUBJECTS[ex.subject].name)}</h2>
+          <div class="muted">${esc(ex.studentName)} • ${esc(ex.className)}</div>
+        </div>
+        <div class="timer" id="timerBox">--:--:--</div>
+      </div>
+      <div class="qmeta">Soal ${ex.current+1} dari ${ex.questions.length}</div>
+      <div class="progress"><div style="width:${((ex.current+1)/ex.questions.length)*100}%"></div></div>
+      ${q.audio?`<div class="notice"><b>🎧 Listening</b><br><button class="btn primary" id="playAudioBtn" style="margin-top:8px">Putar Audio</button><span class="muted small"> Gunakan speaker/headset.</span></div>`:""}
+      <p class="question">${esc(q.q)}</p>
+      <div class="options">
+        ${q.options.map((o,i)=>{
+          let cls="opt";
+          if(answered && o===q.correct) cls+=" correct";
+          if(answered && o===q.chosen && o!==q.correct) cls+=" wrong";
+          return `<button class="${cls}" data-option="${esc(o)}" ${answered?"disabled":""}>
+            <span class="letter">${letters[i]}</span><span>${esc(o)}</span>
+          </button>`;
+        }).join("")}
+      </div>
+      <div id="feedbackArea">
+        ${answered ? feedbackHTML(q) : ""}
+      </div>
+      <div class="row" style="margin-top:18px">
+        ${answered?`<button class="btn primary" id="nextBtn">${ex.current===ex.questions.length-1?"Selesaikan Ujian":"Soal Berikutnya"}</button>`:""}
+      </div>
+    </section>`,"Ujian Berlangsung");
+  document.querySelectorAll("[data-option]").forEach(b=>b.onclick=()=>answerCurrent(b.dataset.option));
+  if($("#nextBtn")) $("#nextBtn").onclick=nextQuestion;
+  if($("#playAudioBtn")) $("#playAudioBtn").onclick=()=>speak(q.audio);
+  startTimer();
+}
+
+function feedbackHTML(q){
+  return q.isCorrect
+    ? `<div class="feedback ok">✓ Benar. Jawaban: ${esc(q.correct)}</div>`
+    : `<div class="feedback bad">✕ Salah. Jawaban yang benar: ${esc(q.correct)}</div>`;
+}
+function answerCurrent(choice){
+  const ex=state.activeExam;
+  if(!ex||ex.status!=="active") return;
+  const q=ex.questions[ex.current];
+  if(q.chosen!==null) return;
+  q.chosen=choice;
+  q.isCorrect=choice===q.correct;
+  syncAttempt();
+  saveState();
+  renderExam();
+}
+function nextQuestion(){
+  const ex=state.activeExam;
+  if(!ex) return;
+  const q=ex.questions[ex.current];
+  if(q.chosen===null){ alert("Pilih jawaban terlebih dahulu."); return; }
+  if(ex.current>=ex.questions.length-1) finishExam(false);
+  else{ ex.current++; saveState(); renderExam(); }
+}
+function syncAttempt(){
+  const ex=state.activeExam; if(!ex) return;
+  const at=state.attempts.find(a=>a.id===ex.id); if(!at) return;
+  const answered=ex.questions.filter(q=>q.chosen!==null);
+  at.answers=answered.map(q=>({q:q.q,chosen:q.chosen,correct:q.correct,isCorrect:q.isCorrect}));
+  at.correct=answered.filter(q=>q.isCorrect).length;
+  at.wrong=answered.filter(q=>!q.isCorrect).length;
+  at.violations=[...ex.violations];
+}
+function startTimer(){
+  clearInterval(timerHandle);
+  const tick=()=>{
+    const ex=state.activeExam; if(!ex) return clearInterval(timerHandle);
+    const ms=ex.deadline-Date.now();
+    if(ms<=0){ clearInterval(timerHandle); finishExam(true); return; }
+    const s=Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+    const box=$("#timerBox");
+    if(box){
+      box.textContent=`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+      box.classList.toggle("low",s<300);
+    }
+  };
+  tick(); timerHandle=setInterval(tick,1000);
+}
+function finishExam(timeout=false){
+  clearInterval(timerHandle); antiCheatActive=false;
+  const ex=state.activeExam; if(!ex) return;
+  ex.status="done"; ex.finishedAt=nowISO();
+  syncAttempt();
+  const at=state.attempts.find(a=>a.id===ex.id);
+  const answered=ex.questions.filter(q=>q.chosen!==null);
+  const correct=answered.filter(q=>q.isCorrect).length;
+  const wrong=ex.questions.length-correct;
+  at.status="done"; at.finishedAt=ex.finishedAt; at.correct=correct; at.wrong=wrong; at.score=scoreOf(correct,ex.questions.length);
+  at.answers=ex.questions.map(q=>({q:q.q,chosen:q.chosen,correct:q.correct,isCorrect:q.isCorrect===true}));
+  saveState();
+  clearWatermark();
+  renderResult(at,timeout);
+  state.activeExam=null;
+  saveState();
+}
+function renderResult(at,timeout){
+  app.innerHTML=layout(`
+  <section class="card">
+    <h2>Hasil Ujian</h2>
+    ${timeout?`<div class="notice warn"><b>Waktu habis.</b> Ujian diselesaikan otomatis.</div>`:""}
+    <div class="grid three">
+      <div class="stat"><div class="muted">Nilai</div><div class="n">${at.score}</div></div>
+      <div class="stat"><div class="muted">Benar</div><div class="n">${at.correct}</div></div>
+      <div class="stat"><div class="muted">Salah/Kosong</div><div class="n">${at.wrong}</div></div>
+    </div>
+    <h3 style="margin-top:22px">Rekap Jawaban</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>No</th><th>Soal</th><th>Jawaban Kamu</th><th>Jawaban Benar</th><th>Status</th></tr></thead>
+        <tbody>${at.answers.map((a,i)=>`<tr>
+          <td>${i+1}</td><td>${esc(a.q)}</td><td>${esc(a.chosen??"-")}</td><td>${esc(a.correct)}</td>
+          <td>${a.isCorrect?'<span class="status done">Benar</span>':'<span class="status locked">Salah</span>'}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:18px"><button class="btn primary" id="homeBtn">Kembali ke Beranda</button></div>
+  </section>`,"Hasil Ujian");
+  $("#homeBtn").onclick=renderHome;
+}
+
+/* ---------- Anti-cheat dasar ---------- */
+function recordViolation(reason){
+  const ex=state.activeExam;
+  if(!antiCheatActive||!ex||ex.status!=="active") return;
+  const v={reason,time:nowISO()};
+  ex.violations.push(v);
+  ex.status="locked";
+  const at=state.attempts.find(a=>a.id===ex.id);
+  if(at){ at.status="locked"; at.violations=[...ex.violations]; }
+  saveState();
+  showLock(reason);
+}
+function showLock(reason){
+  antiCheatActive=false;
+  clearInterval(timerHandle);
+  $("#lockMessage").textContent=`Pelanggaran terdeteksi: ${reason}. Ujian harus direset oleh guru.`;
+  $("#lockScreen").classList.remove("hidden");
+  clearWatermark();
+}
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden) recordViolation("berpindah tab/aplikasi");
+});
+document.addEventListener("copy",e=>{ if(antiCheatActive){e.preventDefault();} });
+document.addEventListener("paste",e=>{ if(antiCheatActive){e.preventDefault();} });
+document.addEventListener("cut",e=>{ if(antiCheatActive){e.preventDefault();} });
+document.addEventListener("contextmenu",e=>{ if(antiCheatActive){e.preventDefault();} });
+document.addEventListener("keydown",e=>{
+  if(!antiCheatActive) return;
+  const k=e.key.toLowerCase();
+  if((e.ctrlKey||e.metaKey) && ["c","v","x","p","s","u"].includes(k)) e.preventDefault();
+  if(e.key==="PrintScreen"){ e.preventDefault(); recordViolation("tombol Print Screen ditekan"); }
+});
+window.addEventListener("beforeprint",()=>{ if(antiCheatActive) recordViolation("mencoba mencetak halaman"); });
+
+function speak(text){
+  if(!("speechSynthesis" in window)){ alert("Browser ini tidak mendukung Text-to-Speech."); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="en-US"; u.rate=.9;
+  speechSynthesis.speak(u);
+}
+function installWatermark(name,className){
+  const wm=$("#watermark");
+  wm.innerHTML=Array.from({length:15},()=>`<span>${esc(name)} • ${esc(className)}</span>`).join("");
+  wm.classList.remove("hidden");
+}
+function clearWatermark(){ $("#watermark").classList.add("hidden"); $("#watermark").innerHTML=""; }
+
+/* ---------- Guru ---------- */
+function renderTeacherLogin(){
+  app.innerHTML=layout(`
+  <section class="card" style="max-width:520px;margin:auto">
+    <h2>Login Guru</h2>
+    <label>PIN Guru</label>
+    <input id="pinInput" type="password" inputmode="numeric" placeholder="Masukkan PIN">
+    <div class="row" style="margin-top:16px">
+      <button class="btn primary" id="loginTeacherBtn">Masuk</button>
+      <button class="btn" id="backBtn">Kembali</button>
+    </div>
+  </section>`,"Mode Guru");
+  $("#loginTeacherBtn").onclick=()=>{
+    if($("#pinInput").value===TEACHER_PIN){
+      state.teacherLoggedIn=true; saveState(); renderTeacherDashboard();
+    }else alert("PIN guru salah.");
+  };
+  $("#backBtn").onclick=renderHome;
+}
+function renderTeacherDashboard(){
+  if(!state.teacherLoggedIn) return renderTeacherLogin();
+  const attempts=[...state.attempts].reverse();
+  const done=attempts.filter(a=>a.status==="done");
+  const avg=done.length?Math.round(done.reduce((s,a)=>s+(a.score||0),0)/done.length):0;
+  app.innerHTML=layout(`
+  <section class="card">
+    <div class="row" style="justify-content:space-between">
+      <div><h2 style="margin-bottom:4px">Dashboard Guru</h2><div class="muted">Monitoring data yang tersimpan pada browser ini.</div></div>
+      <div class="row"><button class="btn" id="qrBtn">QR / Akses HP</button><button class="btn danger" id="logoutTeacherBtn">Keluar Guru</button></div>
+    </div>
+    <div class="grid three" style="margin-top:18px">
+      <div class="stat"><div class="muted">Total Ujian</div><div class="n">${attempts.length}</div></div>
+      <div class="stat"><div class="muted">Selesai</div><div class="n">${done.length}</div></div>
+      <div class="stat"><div class="muted">Rata-rata Nilai</div><div class="n">${avg}</div></div>
+    </div>
+    <div class="notice warn small"><b>Penting:</b> LocalStorage tidak tersinkron antarperangkat. Untuk guru memantau HP siswa secara real-time, proyek perlu backend/database bersama (misalnya Firebase/Supabase/server sekolah).</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Siswa</th><th>Mapel</th><th>Status</th><th>Benar</th><th>Salah</th><th>Nilai</th><th>Pelanggaran</th><th>Aksi</th></tr></thead>
+        <tbody>
+          ${attempts.length?attempts.map(a=>`<tr>
+            <td><b>${esc(a.studentName)}</b><br><span class="muted small">${esc(a.className)}</span></td>
+            <td>${esc(SUBJECTS[a.subject]?.name||a.subject)}${a.mode?`<br><span class="small muted">${esc(a.mode)}</span>`:""}</td>
+            <td>${statusBadge(a.status)}</td>
+            <td>${a.correct??0}</td><td>${a.wrong??0}</td><td>${a.score??"-"}</td>
+            <td>${a.violations?.length||0}</td>
+            <td class="row">
+              <button class="btn" data-detail="${a.id}">Detail</button>
+              ${(a.status==="locked"||a.status==="active")?`<button class="btn warn" data-reset="${a.id}">Reset</button>`:""}
+              <button class="btn danger" data-delete="${a.id}">Hapus</button>
+            </td>
+          </tr>`).join(""):`<tr><td colspan="8" class="muted">Belum ada data ujian.</td></tr>`}
+        </tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:18px">
+      <button class="btn" id="refreshTeacherBtn">Refresh Data</button>
+      <button class="btn danger" id="clearAllBtn">Hapus Semua Riwayat</button>
+      <button class="btn" id="homeBtn">Beranda</button>
+    </div>
+  </section>`,"Dashboard Guru");
+  document.querySelectorAll("[data-detail]").forEach(b=>b.onclick=()=>renderAttemptDetail(b.dataset.detail));
+  document.querySelectorAll("[data-reset]").forEach(b=>b.onclick=()=>teacherReset(b.dataset.reset));
+  document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>teacherDelete(b.dataset.delete));
+  $("#refreshTeacherBtn").onclick=renderTeacherDashboard;
+  $("#clearAllBtn").onclick=()=>{
+    if(confirm("Hapus semua riwayat ujian?")){
+      state.attempts=[]; state.activeExam=null; saveState(); renderTeacherDashboard();
+    }
+  };
+  $("#qrBtn").onclick=renderQR;
+  $("#logoutTeacherBtn").onclick=()=>{state.teacherLoggedIn=false;saveState();renderHome();};
+  $("#homeBtn").onclick=renderHome;
+}
+function statusBadge(s){
+  const map={active:["active","Aktif"],done:["done","Selesai"],locked:["locked","Terkunci"]};
+  const x=map[s]||["active",s];
+  return `<span class="status ${x[0]}">${esc(x[1])}</span>`;
+}
+function renderAttemptDetail(id){
+  const a=state.attempts.find(x=>x.id===id); if(!a) return renderTeacherDashboard();
+  app.innerHTML=layout(`
+  <section class="card">
+    <h2>Detail Ujian</h2>
+    <div class="grid three">
+      <div class="stat"><div class="muted">Siswa</div><div style="font-weight:900;font-size:1.2rem">${esc(a.studentName)}<br><span class="muted">${esc(a.className)}</span></div></div>
+      <div class="stat"><div class="muted">Nilai</div><div class="n">${a.score??"-"}</div></div>
+      <div class="stat"><div class="muted">Status</div><div style="margin-top:8px">${statusBadge(a.status)}</div></div>
+    </div>
+    <h3 style="margin-top:22px">Pelanggaran</h3>
+    ${a.violations?.length?`<ul>${a.violations.map(v=>`<li>${esc(v.reason)} — ${new Date(v.time).toLocaleString("id-ID")}</li>`).join("")}</ul>`:`<p class="muted">Tidak ada pelanggaran tercatat.</p>`}
+    <h3>Jawaban</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>No</th><th>Soal</th><th>Jawaban Siswa</th><th>Jawaban Benar</th><th>Status</th></tr></thead>
+      <tbody>${(a.answers||[]).map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.q)}</td><td>${esc(x.chosen??"-")}</td><td>${esc(x.correct)}</td><td>${x.isCorrect?'<span class="status done">Benar</span>':'<span class="status locked">Salah</span>'}</td></tr>`).join("")||`<tr><td colspan="5" class="muted">Belum ada jawaban.</td></tr>`}</tbody>
+    </table></div>
+    <div class="row" style="margin-top:18px"><button class="btn primary" id="backTeacher">Kembali</button></div>
+  </section>`,"Detail Ujian");
+  $("#backTeacher").onclick=renderTeacherDashboard;
+}
+function teacherReset(id){
+  const a=state.attempts.find(x=>x.id===id);
+  if(!a) return;
+  if(!confirm(`Reset ujian ${a.studentName}? Progres aktif akan dihapus.`)) return;
+  if(state.activeExam && state.activeExam.id===id){
+    state.activeExam=null;
+    $("#lockScreen").classList.add("hidden");
+  }
+  a.status="reset";
+  a.score=null;
+  saveState();
+  alert("Ujian berhasil direset. Siswa dapat memulai ujian baru.");
+  renderTeacherDashboard();
+}
+function teacherDelete(id){
+  if(!confirm("Hapus data ujian ini?")) return;
+  state.attempts=state.attempts.filter(x=>x.id!==id);
+  if(state.activeExam?.id===id) state.activeExam=null;
+  saveState(); renderTeacherDashboard();
+}
+
+/* ---------- QR ---------- */
+function renderQR(){
+  const url=location.protocol==="file:" ? "" : location.href.split("#")[0];
+  const qrUrl=url ? `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(url)}` : "";
+  app.innerHTML=layout(`
+  <section class="card" style="text-align:center">
+    <h2>Akses dari HP</h2>
+    ${url?`
+      <img class="qr" src="${qrUrl}" alt="QR Code">
+      <p>Scan QR untuk membuka alamat yang sama:</p>
+      <input value="${esc(url)}" readonly style="max-width:720px">
+      <div class="notice warn small">Agar HP bisa membuka aplikasi, file harus dijalankan melalui web server yang dapat diakses HP pada jaringan yang sama. Jika memakai <code>localhost</code>, ganti dengan IP LAN laptop, misalnya <code>http://192.168.x.x:5500</code>.</div>
+    `:`
+      <div class="notice warn">QR belum dapat dibuat karena file dibuka langsung melalui <code>file://</code>.<br>Jalankan dengan Live Server / server lokal terlebih dahulu.</div>
+    `}
+    <p class="muted small">Gambar QR menggunakan layanan publik QR Server, sehingga pembuatan QR membutuhkan internet. Aplikasi ujian utamanya tetap HTML/CSS/JS native.</p>
+    <button class="btn primary" id="backTeacher">Kembali ke Dashboard</button>
+  </section>`,"QR Akses HP");
+  $("#backTeacher").onclick=renderTeacherDashboard;
+}
+
+/* ---------- Boot ---------- */
+if(state.activeExam?.status==="locked"){
+  renderHome();
+  showLock(state.activeExam.violations.at(-1)?.reason||"Pelanggaran");
+}else if(state.activeExam){
+  renderHome();
+}else{
+  renderHome();
+}
+</script>
+</body>
+</html>
