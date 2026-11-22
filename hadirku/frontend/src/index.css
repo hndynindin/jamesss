@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #0B1120;
+    color: #F8FAFC;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Scrollbar for Dark Dashboard */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B1120;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Card Glow Effects */
+.card-glow {
+  box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.05);
+}
+
+.card-glow-hover:hover {
+  box-shadow: 0 0 30px -2px rgba(59, 130, 246, 0.15);
+  border-color: #3B82F6;
+}
+
+/* Custom badge glow */
+.badge-hadir {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22C55E;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge-izin {
+  background: rgba(234, 179, 8, 0.15);
+  color: #EAB308;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.badge-sakit {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.badge-alpa {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}

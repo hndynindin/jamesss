@@ -1,0 +1,3210 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>So Syncd — Tes Kepribadian MBTI</title>
+  <meta name="description" content="So Syncd — Aplikasi Tes Kepribadian MBTI 16 Tipe.">
+  <style>
+    :root {
+      --bg: linear-gradient(155deg, #ebf3ef 0%, #f6f3ea 48%, #edf2f8 100%);
+      --card: #ffffff;
+      --card-alt: #faf9f6;
+      --text: #1f2937;
+      --muted: #55616b;
+      --line: #d4dcd8;
+      --line-strong: #b2c2bc;
+      --accent: #256066;
+      --accent-hover: #1b494e;
+      --accent-soft: #e6f2f1;
+      --sage: #2d6a54;
+      --sage-soft: #ecf7f2;
+      --sage-line: #b5d8c8;
+      --sky: #2c5d82;
+      --sky-soft: #edf4fa;
+      --sky-line: #bcd3e7;
+      --lavender: #564d80;
+      --lavender-soft: #f3f1fa;
+      --lavender-line: #d2cbe8;
+      --sand: #8c5a2b;
+      --sand-soft: #fbf4eb;
+      --sand-line: #e7d1b3;
+      --ok: #256e4b;
+      --ok-soft: #ebf7f0;
+      --bad: #9e3839;
+      --bad-soft: #fdf1f1;
+      --radius: 10px;
+      --shadow: 0 3px 12px rgba(37, 96, 102, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .shell {
+      max-width: 920px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 18px 40px;
+      flex: 1;
+    }
+
+    /* Classic Header */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 22px;
+      background: linear-gradient(90deg, #ffffff 0%, #f4faf7 100%);
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--sage));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--accent);
+      letter-spacing: 0.2px;
+    }
+
+    .brand-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Classic Buttons */
+    .btn {
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      padding: 9px 16px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      background: var(--card);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .btn.primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn.sage {
+      background: var(--sage-soft);
+      color: var(--sage);
+      border-color: var(--sage-line);
+    }
+
+    .btn.sage:hover:not(:disabled) {
+      background: #dff0e7;
+      border-color: var(--sage);
+    }
+
+    .btn.lavender {
+      background: var(--lavender-soft);
+      color: var(--lavender);
+      border-color: var(--lavender-line);
+    }
+
+    .btn.lavender:hover:not(:disabled) {
+      background: #e7e3f5;
+      border-color: var(--lavender);
+    }
+
+    .btn.sky {
+      background: var(--sky-soft);
+      color: var(--sky);
+      border-color: var(--sky-line);
+    }
+
+    .btn.sky:hover:not(:disabled) {
+      background: #dfecf7;
+      border-color: var(--sky);
+    }
+
+    .btn.danger {
+      background: var(--bad-soft);
+      color: var(--bad);
+      border-color: #e4b4b4;
+    }
+
+    .btn.danger:hover:not(:disabled) {
+      background: #f9dede;
+    }
+
+    .btn.sm {
+      padding: 7px 13px;
+      font-size: 0.85rem;
+    }
+
+    .btn.lg {
+      padding: 12px 24px;
+      font-size: 0.98rem;
+    }
+
+    /* Classic Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--accent);
+      margin-top: 0;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .small {
+      font-size: 0.87rem;
+    }
+
+    /* Identity Form */
+    .section-divider {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 18px 0;
+    }
+
+    .identity-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+      margin-top: 14px;
+    }
+
+    .identity-full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+
+    .req-mark {
+      color: var(--bad);
+      margin-left: 2px;
+    }
+
+    .opt-tag {
+      font-weight: 400;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 76px;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.14);
+    }
+
+    input.input-error {
+      border-color: var(--bad);
+      background: var(--bad-soft);
+    }
+
+    /* Validation Banner */
+    .alert-banner {
+      background: var(--bad-soft);
+      color: var(--bad);
+      border: 1px solid #dfa8a8;
+      border-left: 4px solid var(--bad);
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    .alert-banner.show {
+      display: block;
+    }
+
+    /* Question Cards */
+    .q-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+
+    .q-card.answered {
+      border-left: 4px solid var(--sage);
+      background: #f9fcfa;
+    }
+
+    .q-card.unanswered-error {
+      border: 1.5px solid var(--bad);
+      border-left: 4px solid var(--bad);
+      background: #fffafa;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 6px;
+    }
+
+    .q-status {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .q-status.done {
+      color: var(--ok);
+    }
+
+    .q-status.err {
+      color: var(--bad);
+    }
+
+    .q-text {
+      font-size: 1.03rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    /* Classic 5-Option Likert Scale */
+    .likert {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .likert-btn {
+      border: 1px solid var(--line-strong);
+      background: var(--card-alt);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 10px 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .likert-btn .radio-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid var(--muted);
+      display: grid;
+      place-items: center;
+      background: #fff;
+    }
+
+    .likert-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .likert-btn.selected {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .likert-btn.selected .radio-circle {
+      border-color: var(--accent);
+      background: var(--accent);
+      box-shadow: inset 0 0 0 3px #fff;
+    }
+
+    /* Result Page */
+    .result-header {
+      border-top: 5px solid var(--accent);
+      background: var(--card);
+    }
+
+    .type-code {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+      font-weight: 700;
+      color: var(--accent);
+      margin: 6px 0 10px;
+    }
+
+    .group-label {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid #c9d6e6;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .identity-summary {
+      background: var(--card-alt);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+    }
+
+    .identity-summary div {
+      margin-bottom: 4px;
+    }
+
+    .identity-summary div:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-box {
+      padding: 16px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--card-alt);
+    }
+
+    .detail-box.box-sky {
+      background: var(--sky-soft);
+      border-color: var(--sky-line);
+      border-left: 4px solid var(--sky);
+    }
+
+    .detail-box.box-sage {
+      background: var(--sage-soft);
+      border-color: var(--sage-line);
+      border-left: 4px solid var(--sage);
+    }
+
+    .detail-box.box-sand {
+      background: var(--sand-soft);
+      border-color: var(--sand-line);
+      border-left: 4px solid var(--sand);
+    }
+
+    .detail-box.box-lavender {
+      background: var(--lavender-soft);
+      border-color: var(--lavender-line);
+      border-left: 4px solid var(--lavender);
+    }
+
+    .figure-box {
+      padding: 16px 18px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--card-alt);
+    }
+
+    .figure-box.match {
+      border-left: 4px solid var(--ok);
+      background: var(--ok-soft);
+    }
+
+    .figure-box.mismatch {
+      border-left: 4px solid var(--bad);
+      background: var(--bad-soft);
+    }
+
+    .figure-media-wrap {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+
+    .figure-avatar-img {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent);
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    .career-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .career-card {
+      background: var(--card-alt);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      border-left: 4px solid var(--accent);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .career-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37,96,102,0.1);
+      border-color: var(--accent);
+    }
+
+    .career-role {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 700;
+      font-size: 1.02rem;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .career-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .figure-name {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 6px 0 4px;
+    }
+
+    .figure-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid currentColor;
+    }
+
+    .figure-box.match .figure-tag {
+      color: var(--ok);
+    }
+
+    .figure-box.mismatch .figure-tag {
+      color: var(--bad);
+    }
+
+    .trait-bar-row {
+      margin-bottom: 16px;
+    }
+
+    .trait-labels {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .trait-track {
+      height: 12px;
+      border-radius: 4px;
+      background: #e5e4df;
+      overflow: hidden;
+      display: flex;
+      border: 1px solid var(--line);
+    }
+
+    .trait-left {
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .trait-right {
+      height: 100%;
+      background: #8782b0;
+    }
+
+    .type-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px 18px;
+      background: var(--card-alt);
+      cursor: pointer;
+    }
+
+    .type-card:hover {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    /* Group Themes (Adem & Berwarna) */
+    .grp-Analis {
+      border-top: 4px solid var(--lavender) !important;
+      background: linear-gradient(180deg, #faf9fd 0%, #ffffff 42%);
+    }
+    .grp-Analis .group-label {
+      background: var(--lavender-soft);
+      color: var(--lavender);
+      border-color: var(--lavender-line);
+    }
+
+    .grp-Diplomat {
+      border-top: 4px solid var(--sage) !important;
+      background: linear-gradient(180deg, #f6fbf8 0%, #ffffff 42%);
+    }
+    .grp-Diplomat .group-label {
+      background: var(--sage-soft);
+      color: var(--sage);
+      border-color: var(--sage-line);
+    }
+
+    .grp-Pengawas {
+      border-top: 4px solid var(--sky) !important;
+      background: linear-gradient(180deg, #f5f9fc 0%, #ffffff 42%);
+    }
+    .grp-Pengawas .group-label {
+      background: var(--sky-soft);
+      color: var(--sky);
+      border-color: var(--sky-line);
+    }
+
+    .grp-Penjelajah {
+      border-top: 4px solid var(--sand) !important;
+      background: linear-gradient(180deg, #fdf9f3 0%, #ffffff 42%);
+    }
+    .grp-Penjelajah .group-label {
+      background: var(--sand-soft);
+      color: var(--sand);
+      border-color: var(--sand-line);
+    }
+
+    /* Dashboard & Classic Feature Cards */
+    .dash-hero {
+      border-top: 5px solid var(--accent);
+      background: linear-gradient(180deg, #f6fbf9 0%, #ffffff 65%);
+    }
+
+    .dash-kicker {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--sage);
+      background: var(--sage-soft);
+      border: 1px solid var(--sage-line);
+      padding: 4px 11px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .dash-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.6rem, 3.6vw, 2.2rem);
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 8px;
+      line-height: 1.25;
+    }
+
+    .dash-purpose-list {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .dash-purpose-list li {
+      padding: 11px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--card-alt);
+      border-left: 4px solid var(--accent);
+    }
+
+    .dash-purpose-list li:nth-child(1) { background: var(--sky-soft); border-color: var(--sky-line); border-left: 4px solid var(--sky); }
+    .dash-purpose-list li:nth-child(2) { background: var(--sage-soft); border-color: var(--sage-line); border-left: 4px solid var(--sage); }
+    .dash-purpose-list li:nth-child(3) { background: var(--lavender-soft); border-color: var(--lavender-line); border-left: 4px solid var(--lavender); }
+    .dash-purpose-list li:nth-child(4) { background: var(--sand-soft); border-color: var(--sand-line); border-left: 4px solid var(--sand); }
+
+    .dash-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    /* Ruang Game Refreezing (10 Game Mudah) */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .game-tile {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: var(--card-alt);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .game-tile:nth-child(4n+1) { border-left: 4px solid var(--accent); }
+    .game-tile:nth-child(4n+2) { border-left: 4px solid var(--sage); }
+    .game-tile:nth-child(4n+3) { border-left: 4px solid var(--lavender); }
+    .game-tile:nth-child(4n+4) { border-left: 4px solid var(--sand); }
+
+    .game-tile:hover {
+      border-color: var(--accent);
+      background: #fff;
+    }
+
+    .game-tile.active {
+      border: 2px solid var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .game-tile-title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .game-tile-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .game-stage {
+      border-top: 4px solid var(--accent);
+    }
+
+    .ttt-board {
+      display: grid;
+      grid-template-columns: repeat(3, 82px);
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .ttt-cell {
+      width: 82px;
+      height: 82px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--card-alt);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+    }
+
+    .ttt-cell:hover:not(:disabled) {
+      background: #fff;
+      border-color: var(--accent);
+    }
+
+    .mem-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(60px, 88px));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .mem-card {
+      height: 76px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .mem-card.open {
+      background: #fff;
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .mem-card.matched {
+      background: var(--ok-soft);
+      color: var(--ok);
+      border-color: var(--ok);
+    }
+
+    .simon-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 132px);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .simon-pad {
+      height: 92px;
+      border-radius: 6px;
+      border: 2px solid rgba(0, 0, 0, 0.15);
+      color: #fff;
+      font-weight: 700;
+      opacity: 0.78;
+    }
+
+    .simon-pad.lit {
+      opacity: 1;
+      transform: scale(0.98);
+      box-shadow: 0 0 0 3px var(--text);
+    }
+
+    .reflex-box {
+      padding: 36px 20px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      user-select: none;
+      margin: 14px 0;
+    }
+
+    .whack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 92px);
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .whack-cell {
+      height: 78px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--card-alt);
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .whack-cell.target {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent-hover);
+    }
+
+    .whack-cell.bomb {
+      background: var(--bad);
+      color: #fff;
+      border-color: var(--bad);
+    }
+
+    .mine-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 52px);
+      gap: 6px;
+      margin: 14px 0;
+    }
+
+    .mine-cell {
+      width: 52px;
+      height: 52px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1rem;
+      display: grid;
+      place-items: center;
+    }
+
+    .mine-cell.revealed {
+      background: #fff;
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .mine-cell.flagged {
+      background: #fef3c7;
+      color: #92400e;
+      border-color: #d97706;
+    }
+
+    .mine-cell.exploded {
+      background: var(--bad);
+      color: #fff;
+      border-color: var(--bad);
+    }
+
+    .slide-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 78px);
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .slide-tile {
+      width: 78px;
+      height: 78px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+    }
+
+    .slide-tile.empty {
+      background: var(--card-alt);
+      border-style: dashed;
+      color: transparent;
+      cursor: default;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 18px;
+      color: var(--muted);
+      font-size: 0.84rem;
+      border-top: 1px solid var(--line);
+      background: var(--card);
+    }
+
+    @media (max-width: 720px) {
+
+      .grid.two,
+      .identity-form,
+      .games-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .likert {
+        grid-template-columns: 1fr;
+      }
+
+      .likert-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 10px 14px;
+        gap: 10px;
+      }
+    }
+
+    @media print {
+
+      .topbar,
+      .no-print,
+      .footer {
+        display: none !important;
+      }
+
+      body {
+        background: #fff;
+        color: #000;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand-wrap" id="brandHome">
+        <div class="brand-mark">SS</div>
+        <div>
+          <div class="brand-title">So Syncd</div>
+          <div class="brand-sub">Tes Kepribadian MBTI</div>
+        </div>
+      </div>
+      <nav class="nav-actions">
+        <button class="btn sm sage" id="navGameBtn">Game</button>
+        <button class="btn sm lavender" id="navCatalogBtn">16 Tipe MBTI</button>
+      </nav>
+    </header>
+
+    <main id="app"></main>
+  </div>
+
+  <footer class="footer">
+    <b>So Syncd</b> — Aplikasi Tes Kepribadian MBTI 16 Tipe
+  </footer>
+
+  <script>
+    "use strict";
+
+    /* =====================================================================
+       DATA ASPEK MBTI (UNTUK PERHITUNGAN SKOR INTERNAL)
+       ===================================================================== */
+    const DIMENSIONS = [
+      { id: "EI", code: ["E", "I"], leftName: "Extraversion (E)", rightName: "Introversion (I)" },
+      { id: "SN", code: ["S", "N"], leftName: "Sensing (S)", rightName: "Intuition (N)" },
+      { id: "TF", code: ["T", "F"], leftName: "Thinking (T)", rightName: "Feeling (F)" },
+      { id: "JP", code: ["J", "P"], leftName: "Judging (J)", rightName: "Perceiving (P)" }
+    ];
+
+    /* =====================================================================
+       30 SOAL PERNYATAAN SESUAI KETENTUAN
+       ===================================================================== */
+    const QUESTIONS = [
+      // Extraversion (E) vs. Introversion (I)
+      { id: 1, dim: "EI", pole: "E", text: "Anda merasa mendapatkan kembali energi dan bersemangat setelah menghabiskan waktu bersama banyak orang." },
+      { id: 2, dim: "EI", pole: "E", text: "Anda lebih suka langsung berkenalan dan mengobrol dengan orang baru di sebuah acara daripada berdiam diri atau menunggu orang lain menyapa Anda." },
+      { id: 3, dim: "EI", pole: "E", text: "Anda cenderung memproses pikiran secara lisan—berbicara sambil berpikir—daripada memikirkannya secara matang sendirian terlebih dahulu." },
+      { id: 4, dim: "EI", pole: "E", text: "Anda merasa bosan, gelisah, atau lelah secara mental jika harus berdiam diri sendirian di rumah dalam jangka waktu yang lama." },
+      { id: 5, dim: "EI", pole: "E", text: "Anda merasa nyaman dan percaya diri saat menjadi pusat perhatian dalam suatu kelompok atau forum." },
+      { id: 6, dim: "EI", pole: "E", text: "Anda lebih menyukai komunikasi yang cepat, dinamis, dan interaktif (seperti mengobrol langsung atau telepon) daripada komunikasi tertulis yang lambat." },
+      { id: 7, dim: "EI", pole: "E", text: "Anda mudah memulai percakapan dengan orang asing saat berada di tempat umum." },
+      { id: 8, dim: "EI", pole: "E", text: "Anda merasa waktu luang yang menyenangkan adalah ketika dihabiskan untuk bersosialisasi bersama teman atau menghadiri acara keramaian." },
+
+      // Sensing (S) vs. Intuition (N)
+      { id: 11, dim: "SN", pole: "S", text: "Anda jauh lebih fokus pada fakta nyata, data empiris, dan pengalaman saat ini daripada memikirkan kemungkinan abstrak di masa depan." },
+      { id: 12, dim: "SN", pole: "S", text: "Anda lebih menyukai instruksi kerja yang konkret, bertahap, dan terstruktur jelas dibandingkan arahan umum yang terbuka untuk interpretasi." },
+      { id: 13, dim: "SN", pole: "N", text: "Anda sering menghabiskan waktu melamun atau membayangkan ide-ide inovatif, teori besar, dan makna tersembunyi di balik suatu peristiwa." },
+      { id: 14, dim: "SN", pole: "S", text: "Anda lebih mempercayai bukti praktis yang terbukti nyata (common sense) daripada firasat atau intuisi abstrak." },
+      { id: 15, dim: "SN", pole: "N", text: "Anda menyukai topik pembahasan yang bersifat filosofis, konseptual, dan masa depan, meskipun belum tentu bisa diterapkan secara langsung saat ini." },
+      { id: 16, dim: "SN", pole: "S", text: "Anda lebih memerhatikan detail kecil dan realitas fisik di sekitar Anda daripada gambaran besar secara keseluruhan (big picture)." },
+      { id: 17, dim: "SN", pole: "N", text: "Anda mudah bosan dengan rutinitas harian yang repetitif dan selalu mencari cara baru atau inovasi yang berbeda." },
+      { id: 18, dim: "SN", pole: "S", text: "Anda lebih menghargai pengalaman langsung yang teruji daripada membuat teori atau hipotesis baru." },
+
+      // Thinking (T) vs. Feeling (F)
+      { id: 21, dim: "TF", pole: "T", text: "Dalam mengambil keputusan penting, Anda selalu mengutamakan logika objektif, analisis sebab-akibat, dan keadilan rasional di atas perasaan pribadi." },
+      { id: 22, dim: "TF", pole: "T", text: "Anda lebih memilih menegakkan aturan dan prinsip secara konsisten daripada memberikan pengecualian yang didasarkan pada rasa kasihan." },
+      { id: 23, dim: "TF", pole: "F", text: "Anda sangat berhati-hati agar tidak melukai perasaan orang lain, bahkan ketika harus menyampaikan kritik atau penilaian penting." },
+      { id: 24, dim: "TF", pole: "F", text: "Menurut Anda, menjaga keharmonisan, kedamaian, dan hubungan baik jauh lebih penting daripada memenangkan sebuah perdebatan logis." },
+      { id: 25, dim: "TF", pole: "T", text: "Anda tidak keberatan menyampaikan kebenaran yang pahit secara blak-blakan jika hal tersebut memang fakta yang harus diterima." },
+      { id: 26, dim: "TF", pole: "F", text: "Anda mudah berempati dan merasakan apa yang sedang dialami atau dirasakan oleh orang lain di sekitar Anda." },
+      { id: 27, dim: "TF", pole: "T", text: "Anda menilai efisiensi dan pencapaian target lebih tinggi daripada suasana kerja yang terlalu emosional atau sentimental." },
+
+      // Judging (J) vs. Perceiving (P)
+      { id: 31, dim: "JP", pole: "J", text: "Anda merasa jauh lebih tenang, terarah, dan produktif ketika memiliki jadwal harian atau mingguan yang terencana dengan jelas." },
+      { id: 32, dim: "JP", pole: "J", text: "Anda selalu berusaha menyelesaikan tugas atau pekerjaan jauh-jauh hari sebelum tenggat waktu (deadline) tiba." },
+      { id: 33, dim: "JP", pole: "P", text: "Anda dapat dengan mudah menyesuaikan diri, bersikap fleksibel, dan merasa nyaman ketika rencana mendadak berubah di tengah jalan." },
+      { id: 34, dim: "JP", pole: "P", text: "Anda lebih menyukai gaya hidup yang spontan, mengalir apa adanya, dan terbuka terhadap berbagai kesempatan baru tanpa batas waktu yang ketat." },
+      { id: 35, dim: "JP", pole: "J", text: "Anda cenderung merasa tidak nyaman jika lingkungan kerja atau kamar Anda berantakan dan tidak terorganisasi dengan baik." },
+      { id: 36, dim: "JP", pole: "P", text: "Anda justru merasa tertantang dan bekerja paling optimal ketika mengerjakan sesuatu mendekati batas waktu (deadline)." },
+      { id: 37, dim: "JP", pole: "J", text: "Anda lebih suka membuat daftar hal yang harus dilakukan (to-do list) dan mencoretnya satu per satu secara disiplin." }
+    ];
+
+    /* =====================================================================
+       DATA 16 TIPE KEPRIBADIAN MBTI LENGKAP
+       ===================================================================== */
+    const MBTI_TYPES = {
+      INTJ: {
+        num: 1,
+        code: "INTJ",
+        name: "Architect / Arsitek",
+        group: "Analis",
+        groupFull: "Kelompok Analis (Analysts)",
+        explanation: "Pemikir strategis mandiri yang memiliki visi jangka panjang, standar tinggi, dan sangat analitis.",
+        strengths: "Sangat mandiri, berpikiran strategis, rasional, bertekad kuat, dan memiliki rasa ingin tahu yang tinggi.",
+        weaknesses: "Cenderung arogan, terlalu perfeksionis, kurang peka secara emosional, dan sering meremehkan perasaan orang lain.",
+        advice: "Belajarlah untuk lebih sabar dan berempati terhadap orang yang memiliki ritme atau cara pandang berbeda. Ingat bahwa tidak semua hal harus diselesaikan dengan efisiensi dingin.",
+        matchFigure: {
+          name: "B.J. Habibie",
+          role: "Presiden RI ke-3 & Ilmuwan Dirgantara",
+          mbti: "INTP / ENFP",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/B.J._Habibie_official_portrait.jpg/330px-B.J._Habibie_official_portrait.jpg",
+          reason: "Sama-sama visioner, mencintai riset mendalam, dan menghargai perencanaan strategis jangka panjang."
+        },
+        mismatchFigure: { name: "Jim Carrey", role: "Aktor & Komedian", mbti: "ESFP", reason: "Gaya hidup yang sangat spontan, ekspresif, dan berfokus pada hiburan sesaat kerap bertentangan dengan pola pikir terstruktur INTJ." },
+        careerRecommendations: [
+          { role: "Software Architect & Data Scientist", desc: "Merancang arsitektur sistem komputasi kompleks, kecerdasan buatan, dan analitik data tingkat lanjut." },
+          { role: "Strategic Planner & Manajemen Konsultan", desc: "Menyusun strategi korporasi jangka panjang, mitigasi risiko bisnis, dan efisiensi operasional." },
+          { role: "Ilmuwan Riset & Rekayasawan (Engineer)", desc: "Melakukan eksplorasi inovasi teknologi baru dan riset mendalam berbasis logika objektif." },
+          { role: "Investment Strategist / Analis Finansial", desc: "Menganalisis proyeksi pasar modal dan portofolio investasi berskala besar." }
+        ]
+      },
+      INTP: {
+        num: 2,
+        code: "INTP",
+        name: "Logician / Ahli Logika",
+        group: "Analis",
+        groupFull: "Kelompok Analis (Analysts)",
+        explanation: "Pemikir inovatif dan inventif yang memiliki ketertarikan besar pada analisis teoretis dan sistem logis.",
+        strengths: "Sangat objektif, berpikiran terbuka, kreatif dalam memecahkan masalah konseptual, dan jujur secara intelektual.",
+        weaknesses: "Sering overthinking, mudah bosan pada hal administratif yang repetitif, cenderung mengabaikan aspek emosional, dan kadang suka menunda-nunda (prokrastinasi).",
+        advice: "Cobalah untuk mengubah ide-ide brilian Anda menjadi tindakan nyata yang terstruktur, dan hargai pentingnya hubungan emosional dalam komunikasi sosial.",
+        matchFigure: {
+          name: "Albert Einstein",
+          role: "Fisikawan Teoretis",
+          mbti: "ENTJ / INTP",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/330px-Albert_Einstein_Head.jpg",
+          reason: "Memiliki rasa ingin tahu intelektual yang tinggi, gemar berdiskusi konseptual, dan berpikir secara logis."
+        },
+        mismatchFigure: { name: "Martha Stewart", role: "Pengusaha & Penulis Gaya Hidup", mbti: "ESFJ", reason: "Orientasi kuat pada aturan sosial, detail tradisi, dan rutinitas domestik dapat terasa mengekang bagi kebebasan berpikir INTP." },
+        careerRecommendations: [
+          { role: "Programmer / AI & Algorithm Engineer", desc: "Membangun algoritma canggih, memecahkan masalah logika yang rumit, dan bereksperimen dengan teknologi baru." },
+          { role: "Fisikawan, Matematikawan, & Akademisi", desc: "Meneliti teori-teori ilmiah fundamental serta mengembangkan model pemikiran logis." },
+          { role: "Cybersecurity Analyst / Information Architect", desc: "Menganalisis kerentanan sistem, kriptografi, dan rancang bangun integritas keamanan digital." },
+          { role: "Analis Sistem & Konsultan Teknologi", desc: "Mengurai sistem organisasi yang rumit menjadi alur kerja logis yang optimal." }
+        ]
+      },
+      ENTJ: {
+        num: 3,
+        code: "ENTJ",
+        name: "Commander / Komandan",
+        group: "Analis",
+        groupFull: "Kelompok Analis (Analysts)",
+        explanation: "Pemimpin yang karismatik, tegas, berorientasi pada pencapaian target, dan sangat efisien mengorganisasi sumber daya.",
+        strengths: "Percaya diri yang tinggi, pemimpin yang kuat, efisien, berkemauan keras, dan berpandangan strategis.",
+        weaknesses: "Terkadang terlalu dominan, tidak sabaran, keras kepala, dan mengabaikan perasaan atau kelelahan anggota timnya.",
+        advice: "Latihlah mendengarkan aktif (active listening) tanpa langsung menghakimi, serta berikan ruang bagi orang lain untuk mengekspresikan pendapat mereka.",
+        matchFigure: {
+          name: "Marie Curie",
+          role: "Ilmuwan Peraih 2 Nobel",
+          mbti: "INTP / INTJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Marie_Curie_c._1920s.jpg/330px-Marie_Curie_c._1920s.jpg",
+          reason: "Ketekunan analitis dan dedikasi intelektualnya sangat selaras dengan eksekusi target dan kepemimpinan tegas ENTJ."
+        },
+        mismatchFigure: { name: "Bob Ross", role: "Pelukis & Pembawa Acara", mbti: "ISFP", reason: "Pendekatan yang sangat santai, intuitif emosional, dan tanpa tekanan target sering berbenturan dengan ambisi cepat ENTJ." },
+        careerRecommendations: [
+          { role: "Chief Executive Officer (CEO) & Direktur Bisnis", desc: "Memimpin arah kemudi korporasi, eksekusi sasaran tinggi, dan memobilisasi seluruh sumber daya." },
+          { role: "Konsultan Manajemen Strategis", desc: "Merestrukturisasi perusahaan, memotong ketidakefisienan, dan meningkatkan profitabilitas." },
+          { role: "Project Director / Manajer Konstruksi & Infrastruktur", desc: "Mengendalikan proyek multi-juta dolar dengan disiplin target waktu dan anggaran ketat." },
+          { role: "Pengacara Korporasi / Eksekutif Keuangan", desc: "Menangani negosiasi merger-akuisisi bernilai tinggi dan regulasi kepatuhan korporat." }
+        ]
+      },
+      ENTP: {
+        num: 4,
+        code: "ENTP",
+        name: "Debater / Pendebat",
+        group: "Analis",
+        groupFull: "Kelompok Analis (Analysts)",
+        explanation: "Pemikir cerdas yang menyukai tantangan intelektual, senang berdiskusi, dan cepat melihat berbagai peluang baru.",
+        strengths: "Sangat cepat beradaptasi, karismatis, enerjik, inovatif, dan mampu melihat masalah dari sudut pandang luas.",
+        weaknesses: "Suka berdebat hanya demi menang, mudah kehilangan fokus pada proyek jangka panjang, tidak peka pada aturan formal, dan tidak konsisten.",
+        advice: "Fokuslah untuk menuntaskan satu proyek hingga selesai sebelum melompat ke ide menarik berikutnya, dan jaga perasaan lawan bicara saat berdiskusi.",
+        matchFigure: {
+          name: "Leonardo da Vinci",
+          role: "Polimatik & Seniman Renaisans",
+          mbti: "INFJ / INTJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Leonardo_self.jpg/330px-Leonardo_self.jpg",
+          reason: "Sama-sama haus ide baru, menyukai eksplorasi lintas bidang, dan mampu mengimbangi diskusi filosofis."
+        },
+        mismatchFigure: { name: "Ratu Elizabeth II", role: "Pemimpin Kerajaan Inggris", mbti: "ISTJ", reason: "Kepatuhan ketat pada tradisi, protokol formal, dan stabilitas rutinitas bertolak belakang dengan jiwa bebas ENTP." },
+        careerRecommendations: [
+          { role: "Entrepreneur / Startup Founder", desc: "Menciptakan terobosan model bisnis baru dan memvalidasi peluang pasar yang belum tergarap." },
+          { role: "Product Innovator & Creative Director", desc: "Mendobrak cara kerja konvensional menjadi inovasi produk yang disukai pasar." },
+          { role: "Konsultan Negosiasi & Hubungan Publik", desc: "Menghadapi dialog kompleks, advokasi gagasan, dan persuasi audiens multinasional." },
+          { role: "Venture Capitalist & Analis Pasar Baru", desc: "Menemukan potensi pertumbuhan dari teknologi mutakhir yang penuh tantangan." }
+        ]
+      },
+      INFJ: {
+        num: 5,
+        code: "INFJ",
+        name: "Advocate / Advokat",
+        group: "Diplomat",
+        groupFull: "Kelompok Diplomat (Diplomats)",
+        explanation: "Idealis yang tenang, memiliki prinsip hidup yang kuat, intuitif, dan terdorong kuat untuk membantu sesama.",
+        strengths: "Sangat kreatif, memiliki intuisi tajam, penuh prinsip, peduli pada kebaikan bersama, dan inspiratif.",
+        weaknesses: "Sangat sensitif terhadap kritik, mudah mengalami burnout (kelelahan mental), tertutup, dan perfeksionis secara moral.",
+        advice: "Tetapkan batasan (boundaries) yang sehat antara diri Anda dan masalah orang lain agar Anda tidak kehabisan energi emosional.",
+        matchFigure: {
+          name: "Robert Downey Jr.",
+          role: "Aktor & Produser",
+          mbti: "ENFP / ENTP",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg/330px-Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg",
+          reason: "Sifat hangat, imajinatif, dan komunikatif mampu membuka ruang diskusi mendalam yang nyaman bagi INFJ."
+        },
+        mismatchFigure: { name: "Gordon Ramsay", role: "Chef & Pengusaha Kuliner", mbti: "ESTP", reason: "Gaya komunikasi konfrontatif, blak-blakan, dan serba cepat mudah memicu kelelahan emosional bagi INFJ." },
+        careerRecommendations: [
+          { role: "Psikolog Klinis & Konselor Kesehatan Mental", desc: "Mendengarkan secara mendalam dan mendampingi pemulihan emosional pasien dengan empati tulus." },
+          { role: "Penulis, Sastrawan, & Editor Konten", desc: "Menyalurkan ide-ide kemanusiaan yang mendalam ke dalam karya tulisan yang bernyawa." },
+          { role: "Spesialis Pengembangan SDM / HR Strategist", desc: "Membimbing potensi karyawan, mediasi konflik tim, dan menumbuhkan budaya kerja sehat." },
+          { role: "Direktur Program Lembaga Kemanusiaan / NGO", desc: "Menggerakkan program sosial berdampak jangka panjang bagi masyarakat marjinal." }
+        ]
+      },
+      INFP: {
+        num: 6,
+        code: "INFP",
+        name: "Mediator / Mediator",
+        group: "Diplomat",
+        groupFull: "Kelompok Diplomat (Diplomats)",
+        explanation: "Puitis, baik hati, penuh empati, dan selalu mencari makna serta keautentikan dalam hidup.",
+        strengths: "Sangat empatik, berpikiran terbuka, kreatif, setia pada nilai pribadi, dan sangat suportif.",
+        weaknesses: "Terlalu idealis sehingga mudah kecewa, sulit menghadapi konflik langsung, terlalu memikirkan kritik, dan kurang praktis dalam urusan nyata.",
+        advice: "Latihlah diri Anda untuk menghadapi realitas secara objektif tanpa harus mengorbankan nilai idealisme yang Anda junjung tinggi.",
+        matchFigure: {
+          name: "Oprah Winfrey",
+          role: "Pembawa Acara & Filantropis",
+          mbti: "ENFJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Oprah_in_2014.jpg/330px-Oprah_in_2014.jpg",
+          reason: "Memiliki empati kuat, visi kemanusiaan yang sama, serta mampu memberi dukungan dan arahan yang hangat bagi INFP."
+        },
+        mismatchFigure: { name: "Donald Trump", role: "Pengusaha & Politikus", mbti: "ESTJ / ESTP", reason: "Pendekatan pragmatis yang keras, kompetitif, dan minim pertimbangan perasaan bertentangan dengan nilai idealis INFP." },
+        careerRecommendations: [
+          { role: "Penulis Kreatif, Novelis, & Pujangga", desc: "Mengekspresikan imajinasi kaya dan eksplorasi makna hidup lewat narasi yang menyentuh kalbu." },
+          { role: "Desainer Grafis, Illustrator, & Seniman Visual", desc: "Menciptakan karya estetis yang mencerminkan autentisitas dan ekspresi rasa yang murni." },
+          { role: "Terapis Seni / Konselor Anak & Remaja", desc: "Membantu individu mengekspresikan luka batin melalui pendekatan kreatif tanpa paksaan." },
+          { role: "Penerjemah Bahasa & Kurator Komunitas Budaya", desc: "Menjembatani pemahaman antarbudaya melalui kecintaan pada sastra dan nilai moral." }
+        ]
+      },
+      ENFJ: {
+        num: 7,
+        code: "ENFJ",
+        name: "Protagonist / Protagonis",
+        group: "Diplomat",
+        groupFull: "Kelompok Diplomat (Diplomats)",
+        explanation: "Pemimpin yang hangat, karismatik, sangat peka terhadap kebutuhan orang lain, dan pandai memotivasi kelompok.",
+        strengths: "Sangat komunikatif, dapat diandalkan, karismatis, sangat peduli, dan memiliki pengaruh positif yang kuat.",
+        weaknesses: "Terlalu mencampuri urusan orang lain, mudah merasa bersalah, terlalu sensitif terhadap penolakan, dan mengorbankan kebutuhan sendiri demi orang lain.",
+        advice: "Belajarlah berkata \"tidak\" pada hal-hal yang di luar kapasitas Anda, dan prioritaskan perawatan diri (self-care) secara rutin.",
+        matchFigure: {
+          name: "Keanu Reeves",
+          role: "Aktor & Filantropis",
+          mbti: "INFP",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Keanu_Reeves_%28crop_and_levels%29_%28cropped%29.jpg/330px-Keanu_Reeves_%28crop_and_levels%29_%28cropped%29.jpg",
+          reason: "Ketulusan, kerendahan hati, dan kepekaan emosionalnya berpadu harmonis dengan kepedulian pemimpin ENFJ."
+        },
+        mismatchFigure: { name: "Clint Eastwood", role: "Aktor & Sutradara", mbti: "ISTP", reason: "Sikap dingin, sangat tertutup secara emosional, dan enggan membicarakan perasaan sulit selaras dengan kehangatan ENFJ." },
+        careerRecommendations: [
+          { role: "Manajer Pelatihan & Pengembangan Talenta (HRD)", desc: "Membangun potensi terbaik setiap anggota tim dan merancang program pelatihan kepemimpinan." },
+          { role: "Dosen, Guru, & Edukator Inspiratif", desc: "Mendidik generasi muda dengan keteladanan karakter, antusiasme, dan dorongan moral." },
+          { role: "Public Relations (PR) Director & Juru Bicara", desc: "Menjalin relasi strategis dengan pemangku kepentingan dan menjaga citra reputasi institusi." },
+          { role: "Life Coach & Motivator Organisasi", desc: "Membimbing individu bertransformasi mencapai tujuan hidup melalui komunikasi yang menggerakkan." }
+        ]
+      },
+      ENFP: {
+        num: 8,
+        code: "ENFP",
+        name: "Campaigner / Juru Kampanye",
+        group: "Diplomat",
+        groupFull: "Kelompok Diplomat (Diplomats)",
+        explanation: "Antusias, kreatif, bebas, dan melihat hidup sebagai sebuah peluang besar penuh hubungan sosial yang menarik.",
+        strengths: "Sangat antusias, memiliki keterampilan sosial yang luar biasa, kreatif, spontan, dan berjiwa bebas.",
+        weaknesses: "Sulit berkonsentrasi dalam jangka panjang, mudah stres jika diatur terlalu kaku, terlalu emosional, dan kurang teratur.",
+        advice: "Gunakan bantuan alat manajemen waktu atau jadwal harian agar energi kreatif Anda dapat disalurkan secara terarah dan konsisten.",
+        matchFigure: {
+          name: "Nelson Mandela",
+          role: "Tokoh Perdamaian & Presiden Afrika Selatan",
+          mbti: "INFJ / INTJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Nelson_Mandela_1994.jpg/330px-Nelson_Mandela_1994.jpg",
+          reason: "Visi kemanusiaan yang dalam dan ketenangan prinsipnya menjadi jangkar yang kokoh bagi antusiasme ENFP."
+        },
+        mismatchFigure: { name: "Warren Buffett", role: "Investor & Pebisnis", mbti: "ISTJ", reason: "Fokus ekstrem pada angka rutin, prosedur konservatif, dan kehati-hatian tinggi terasa kaku bagi jiwa kreatif ENFP." },
+        careerRecommendations: [
+          { role: "Creative Campaign Strategist & Marketing Lead", desc: "Menciptakan kampanye viral, narasi merek yang emosional, dan strategi interaksi media sosial." },
+          { role: "Jurnalis, Content Creator, & Podcaster", desc: "Menemukan kisah inspiratif manusia, mewawancarai narasumber, dan menyebarkan pesan positif." },
+          { role: "Event Organizer & Entertainment Producer", desc: "Mengorganisasi festival budaya, konferensi kreatif, dan acara publik yang penuh kegembiraan." },
+          { role: "Konsultan Branding & Desain Pengalaman Pengguna (UX)", desc: "Menghubungkan emosi pengguna dengan identitas produk yang ramah dan menyenangkan." }
+        ]
+      },
+      ISTJ: {
+        num: 9,
+        code: "ISTJ",
+        name: "Logistician & Ahli Logistik",
+        group: "Pengawas",
+        groupFull: "Kelompok Pengawas (Sentinels)",
+        explanation: "Individu yang sangat praktis, faktual, teliti, bertanggung jawab tinggi, dan sangat menghargai tradisi serta aturan.",
+        strengths: "Sangat dapat diandalkan, terorganisasi, jujur, tenang, tekun, dan berdedikasi tinggi pada tugas.",
+        weaknesses: "Cenderung kaku, keras kepala, kurang fleksibel terhadap perubahan mendadak, dan sulit mengekspresikan emosi.",
+        advice: "Latihlah fleksibilitas mental ketika menghadapi situasi di luar rencana, dan cobalah terbuka terhadap metode atau cara baru yang inovatif.",
+        matchFigure: {
+          name: "Taylor Swift",
+          role: "Musisi & Penulis Lagu",
+          mbti: "ESFJ / ISFJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/191125_Taylor_Swift_at_the_2019_American_Music_Awards.png/330px-191125_Taylor_Swift_at_the_2019_American_Music_Awards.png",
+          reason: "Sama-sama menjunjung tinggi etos kerja terencana, loyalitas, dan tanggung jawab terhadap komitmen."
+        },
+        mismatchFigure: { name: "Salvador Dalí", role: "Pelukis Surealis", mbti: "ENFP", reason: "Ketidakpastian, spontanitas tinggi, dan penolakan terhadap aturan baku bertolak belakang dengan keteraturan ISTJ." },
+        careerRecommendations: [
+          { role: "Auditor Keuangan, Akuntan Publik, & Pemeriksa Pajak", desc: "Memeriksa akurasi neraca keuangan, kepatuhan hukum, dan ketelitian pencatatan transaksi." },
+          { role: "Operations & Supply Chain Manager", desc: "Mengatur alur inventaris, logistik pengiriman, dan memastikan ketepatan jadwal pasokan." },
+          { role: "Quality Assurance (QA) & Compliance Officer", desc: "Menjamin standar mutu produk tanpa cacat dan menaati regulasi industri secara ketat." },
+          { role: "Administrator Database & Arsip Negara", desc: "Menata sistem dokumentasi data penting agar terorganisir rapi dan aman dari kebocoran." }
+        ]
+      },
+      ISFJ: {
+        num: 10,
+        code: "ISFJ",
+        name: "Defender / Defender",
+        group: "Pengawas",
+        groupFull: "Kelompok Pengawas (Sentinels)",
+        explanation: "Pelindung yang hangat, berdedikasi, teliti, serta selalu siap menjaga keamanan dan kenyamanan orang-orang terdekatnya.",
+        strengths: "Sangat suportif, dapat diandalkan, observan, sabar, dan memiliki memori yang baik terhadap detail personal orang lain.",
+        weaknesses: "Sering memendam kekesalan, sulit menolak permintaan orang lain, terlalu rendah hati, dan takut pada perubahan.",
+        advice: "Beranikan diri untuk menyuarakan kebutuhan dan batasan pribadi Anda secara asertif kepada orang di sekitar Anda.",
+        matchFigure: {
+          name: "Jackie Chan",
+          role: "Aktor & Pekerja Kemanusiaan",
+          mbti: "ESFP / ESTP",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Jackie_Chan_July_2016.jpg/330px-Jackie_Chan_July_2016.jpg",
+          reason: "Energi positif yang membumi dan kepedulian nyata mampu membawa keceriaan tanpa mengabaikan rasa aman bagi ISFJ."
+        },
+        mismatchFigure: { name: "Mark Zuckerberg", role: "Pendiri Meta", mbti: "INTJ / ENTP", reason: "Pendekatan sangat dingin, rasional murni, dan fokus disrupsi cepat kurang memperhatikan kepekaan personal ISFJ." },
+        careerRecommendations: [
+          { role: "Perawat Medis, Dokter Umum, & Tenaga Kesehatan", desc: "Memberikan layanan perawatan pasien dengan perhatian penuh kasih, teliti, dan penuh dedikasi." },
+          { role: "Guru Sekolah Dasar & Pendidik Usia Dini", desc: "Menjaga anak didik tumbuh dalam lingkungan yang teratur, suportif, dan aman." },
+          { role: "Customer Care Specialist / Layanan Pelanggan Prima", desc: "Merespons keluhan pengguna dengan empati tulus dan solusi nyata yang menenangkan." },
+          { role: "Manajer Fasilitas & Kesejahteraan Karyawan", desc: "Menata kenyamanan tempat kerja dan memastikan kebutuhan harian staf terpenuhi rapi." }
+        ]
+      },
+      ESTJ: {
+        num: 11,
+        code: "ESTJ",
+        name: "Executive / Eksekutif",
+        group: "Pengawas",
+        groupFull: "Kelompok Pengawas (Sentinels)",
+        explanation: "Administrator yang luar biasa, tegas, terstruktur, serta sangat mementingkan ketertiban, aturan, dan efisiensi.",
+        strengths: "Sangat terorganisasi, jujur, pemimpin yang berdedikasi, tidak mudah goyah, dan berorientasi pada hasil nyata.",
+        weaknesses: "Cenderung suka mengatur secara berlebihan (micromanage), kurang sabar pada ketidakefisienan, dan kaku dalam tradisi.",
+        advice: "Berikan ruang otonomi kepada orang lain dalam menyelesaikan tugas, dan cobalah lebih toleran terhadap pendekatan yang tidak konvensional.",
+        matchFigure: {
+          name: "Angela Merkel",
+          role: "Mantan Kanselir Jerman & Ilmuwan",
+          mbti: "ISTJ / ISTP",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Angela_Merkel_2019_cropped.jpg/330px-Angela_Merkel_2019_cropped.jpg",
+          reason: "Sama-sama menghargai keteraturan, fakta terukur, kedisiplinan kerja, dan stabilitas kebijakan."
+        },
+        mismatchFigure: { name: "Kurt Cobain", role: "Musisi & Penulis Lagu", mbti: "INFP", reason: "Penolakan terhadap struktur formal serta kepekaan emosional yang melankolis sering berseberangan dengan ketegasan ESTJ." },
+        careerRecommendations: [
+          { role: "General Manager / Manajer Operasional Pabrik", desc: "Mengawasi lini produksi, menegakkan SOP kedisiplinan, dan mencapai target efisiensi tinggi." },
+          { role: "Perwira Militer, Polisi, & Penegak Hukum", desc: "Memimpin formasi komando dengan loyalitas tinggi, penegakan tata tertib, dan dedikasi fisik." },
+          { role: "Hakim, Jaksa, & Administrator Peradilan", desc: "Menegakkan kepastian hukum berdasarkan fakta empiris dan perundang-undangan yang berlaku." },
+          { role: "Kepala Cabang Perbankan / Eksekutif Keuangan", desc: "Mengelola risiko kredit, kepatuhan kasir, dan produktivitas target bisnis cabang." }
+        ]
+      },
+      ESFJ: {
+        num: 12,
+        code: "ESFJ",
+        name: "Consul / Konsul",
+        group: "Pengawas",
+        groupFull: "Kelompok Pengawas (Sentinels)",
+        explanation: "Sangat sosial, populer, peduli, dan selalu memastikan keharmonisan serta kebutuhan kelompok terpenuhi dengan baik.",
+        strengths: "Hangat, peka terhadap lingkungan sosial, setia, sangat terampil menciptakan kerja sama, dan praktis.",
+        weaknesses: "Sangat bergantung pada validasi sosial, rentan terhadap kritik sosial, mudah cemas, dan menghindari konflik yang sehat.",
+        advice: "Bangun kepercayaan diri yang bersumber dari dalam diri sendiri (internal validation), bukan semata-mata dari pujian atau pengakuan orang lain.",
+        matchFigure: {
+          name: "Beyoncé",
+          role: "Musisi & Produser",
+          mbti: "ISFJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Beyonc%C3%A9_at_The_Lion_King_European_Premiere_2019.png/330px-Beyonc%C3%A9_at_The_Lion_King_European_Premiere_2019.png",
+          reason: "Dedikasi pada kesempurnaan kerja, kehangatan personal, dan penghargaan pada harmoni sangat cocok dengan ESFJ."
+        },
+        mismatchFigure: { name: "Isaac Newton", role: "Fisikawan & Matematikawan", mbti: "INTP", reason: "Sifat penyendiri yang sangat tertutup dan kurang peka terhadap norma sosial membuat komunikasi terasa berjarak." },
+        careerRecommendations: [
+          { role: "Hospitality & Hotel General Manager", desc: "Memastikan pelayanan tamu kelas satu, kehangatan sambutan, dan kepuasan pengalaman menginap." },
+          { role: "Koordinator Acara Sosial & Hubungan Komunitas", desc: "Menyatukan orang banyak, menyelenggarakan bakti sosial, dan menghidupkan kebersamaan warga." },
+          { role: "Manajer Rekrutmen & Onboarding Pegawai", desc: "Menyambut karyawan baru, mengkondisikan iklim kerja yang bersahabat, dan menolong adaptasi tim." },
+          { role: "Spesialis Humas & Kemitraan Komersial", desc: "Menjaga relasi hangat dengan para mitra bisnis lewat komunikasi persuasif dan santun." }
+        ]
+      },
+      ISTP: {
+        num: 13,
+        code: "ISTP",
+        name: "Virtuoso / Virtuoso",
+        group: "Penjelajah",
+        groupFull: "Kelompok Penjelajah (Explorers)",
+        explanation: "Pengamat yang tenang, rasional, dan sangat terampil dalam memecahkan masalah teknis atau mekanis secara langsung.",
+        strengths: "Sangat mandiri, tenang di bawah tekanan, pragmatis, logis, dan cepat menguasai keterampilan praktis.",
+        weaknesses: "Tertutup secara emosional, mudah bosan, cenderung suka mengambil risiko berbahaya, dan tidak suka komitmen jangka panjang.",
+        advice: "Belajarlah untuk mengomunikasikan rencana atau perasaan Anda kepada orang terdekat agar mereka tidak merasa diabaikan.",
+        matchFigure: {
+          name: "Rihanna",
+          role: "Musisi & Pengusaha",
+          mbti: "ISFP / ESTJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Rihanna_Fenty_2018.png/330px-Rihanna_Fenty_2018.png",
+          reason: "Kemandirian yang kuat, sikap santai namun tegas dalam berkarya, dan menghargai ruang pribadi masing-masing."
+        },
+        mismatchFigure: { name: "Barack Obama", role: "Presiden AS ke-44", mbti: "ENFJ", reason: "Fokus pada retorika sosial, konsensus kolektif, dan ekspresi emosional publik berlawanan dengan gaya praktis diam-diam ISTP." },
+        careerRecommendations: [
+          { role: "Mekanik Presisi, Teknisi Pesawat / Otomotif", desc: "Menganalisis kerusakan mesin, membongkar rakitan teknis, dan memperbaikinya dengan tangan terampil." },
+          { role: "Network & Systems Hardware Engineer", desc: "Menangani infrastruktur server fisik, routing jaringan, dan mitigasi downtime saat darurat." },
+          { role: "Spesialis Forensik / Kriminologi Investigatif", desc: "Mengumpulkan bukti fisik nyata di tempat kejadian perkara dengan pengamatan objektif." },
+          { role: "Pilot, Masinis, & Pengendali Operasi Darurat", desc: "Mengendalikan instrumen mesin canggih dengan reaksi cepat dan ketenangan mental tinggi." }
+        ]
+      },
+      ISFP: {
+        num: 14,
+        code: "ISFP",
+        name: "Adventurer / Petualang",
+        group: "Penjelajah",
+        groupFull: "Kelompok Penjelajah (Explorers)",
+        explanation: "Seniman yang fleksibel, ramah, peka secara estetika, dan hidup sepenuhnya di masa kini dengan spontanitas tinggi.",
+        strengths: "Sangat artistik, peka, penuh gairah, ramah, tidak menghakimi, dan menghargai keindahan serta kedamaian.",
+        weaknesses: "Sangat sensitif terhadap kritik, mudah stres menghadapi konflik, kurang merencanakan masa depan, dan mudah menyerah.",
+        advice: "Bangun ketahanan mental dalam menghadapi kritik konstruktif, serta mulailah membuat rencana jangka panjang untuk masa depan Anda.",
+        matchFigure: {
+          name: "Bruce Lee",
+          role: "Seniman Bela Diri & Aktor",
+          mbti: "ISTP / ESFJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Bruce_Lee_1973.jpg/330px-Bruce_Lee_1973.jpg",
+          reason: "Ketenangan dalam aksi nyata, fokus pada momen saat ini, dan penghargaan atas kebebasan ekspresi diri."
+        },
+        mismatchFigure: { name: "Steve Jobs", role: "Pendiri Apple", mbti: "ENTJ", reason: "Tuntutan target agresif, perfeksionisme keras, dan tekanan konfrontatif mudah membuat ISFP tertekan." },
+        careerRecommendations: [
+          { role: "Desainer Mode / Fashion Stylist & Interior", desc: "Meramu warna, tekstur bahan, dan tata letak ruang bernilai seni tinggi yang memanjakan mata." },
+          { role: "Fotografer Profesional & Videografer Lanskap", desc: "Menangkap momen otentik dan keindahan visual alam melalui sudut pandang estetis." },
+          { role: "Chef Kuliner Kreatif & Patisserie Baker", desc: "Menciptakan karya kuliner lezat yang disajikan dengan keahlian estetika seni hidangan." },
+          { role: "Veterinarian (Dokter Hewan) / Konservasionis", desc: "Merawat hewan dan alam liar dengan kepekaan naluriah penuh kasih sayang tanpa kata." }
+        ]
+      },
+      ESTP: {
+        num: 15,
+        code: "ESTP",
+        name: "Entrepreneur / Pengusaha",
+        group: "Penjelajah",
+        groupFull: "Kelompok Penjelajah (Explorers)",
+        explanation: "Energik, cerdas, berani mengambil risiko, bertindak cepat, dan sangat menikmati interaksi fisik serta sosial yang dinamis.",
+        strengths: "Sangat komunikatif, berani, praktis, rasional, bertindak cepat di tengah krisis, dan pandai membaca situasi.",
+        weaknesses: "Tidak sabaran, sering bertindak tanpa memikirkan konsekuensi jangka panjang, mudah bosan, dan kurang peka emosional.",
+        advice: "Latih kesabaran untuk merencanakan langkah secara matang sebelum mengambil keputusan besar yang berisiko tinggi.",
+        matchFigure: {
+          name: "Dwayne Johnson",
+          role: "Aktor & Pengusaha",
+          mbti: "ESTJ / ISFJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Dwayne_%22The_Rock%22_Johnson_Dec_2013_%28cropped%29.jpg/330px-Dwayne_%22The_Rock%22_Johnson_Dec_2013_%28cropped%29.jpg",
+          reason: "Energi tinggi, ketegasan bertindak di lapangan, dan semangat kerja keras nyata berpadu seimbang dengan ESTP."
+        },
+        mismatchFigure: { name: "J.K. Rowling", role: "Penulis Harry Potter", mbti: "INFJ", reason: "Dunia kontemplatif yang tenang, perencanaan simbolis jangka panjang, dan sensitivitas tinggi bertolak belakang dengan aksi spontan ESTP." },
+        careerRecommendations: [
+          { role: "Pialang Saham (Trader) / Financial Broker", desc: "Mengambil keputusan cepat di tengah volatilitas bursa pasar dengan keberanian mengambil risiko terukur." },
+          { role: "Sales Director & Negosiator Bisnis Lapangan", desc: "Menutup transaksi penjualan besar lewat karisma komunikasi tatap muka yang persuasif." },
+          { role: "Paramedis Gawat Darurat & Petugas Pemadam", desc: "Bertindak secepat kilat menyelamatkan nyawa di tengah situasi kritis yang memacu adrenalin." },
+          { role: "Promotor Olahraga / Pengusaha Hiburan", desc: "Mengelola laga kompetisi bergengsi dan bisnis hiburan dinamis yang menyedot perhatian publik." }
+        ]
+      },
+      ESFP: {
+        num: 16,
+        code: "ESFP",
+        name: "Entertainer / Penghibur",
+        group: "Penjelajah",
+        groupFull: "Kelompok Penjelajah (Explorers)",
+        explanation: "Spontan, ceria, hangat, penuh energi, dan sangat menikmati kebersamaan serta keseruan bersama banyak orang.",
+        strengths: "Memiliki keterampilan sosial yang luar biasa, estetika yang kuat, optimis, sangat praktis, dan menghidupkan suasana.",
+        weaknesses: "Sangat mudah terdistraksi, kurang menyukai perencanaan masa depan, sensitif terhadap kritik pedas, dan menghindari tanggung jawab berat.",
+        advice: "Seimbangkan gaya hidup yang menyenangkan dengan kedisiplinan dan fokus pada tujuan jangka panjang yang bermakna.",
+        matchFigure: {
+          name: "Cristiano Ronaldo",
+          role: "Atlet Sepak Bola",
+          mbti: "ESFP / ISTJ",
+          image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%2C_September_2023_%28cropped%29.jpg/330px-Cristiano_Ronaldo_playing_for_Al_Nassr_FC_against_Persepolis%2C_September_2023_%28cropped%29.jpg",
+          reason: "Semangat kompetitif yang membumi, fokus pada performa nyata saat ini, dan karisma panggung yang saling menguatkan."
+        },
+        mismatchFigure: { name: "Elon Musk", role: "Pendiri Tesla & SpaceX", mbti: "INTJ", reason: "Fokus obsesif pada teori teknis jangka panjang dan ketidaktertarikan pada hiburan sosial ringan kurang sejalan dengan ESFP." },
+        careerRecommendations: [
+          { role: "Entertainer, Aktor, & MC / Presenter Panggung", desc: "Menjadi pusat perhatian, memikat hati audiens, dan menularkan keceriaan spontan di panggung hiburan." },
+          { role: "Pemandu Wisata & Brand Ambassador", desc: "Membawa turis menjelajahi destinasi seru dan mewakili jenama terkemuka dengan senyum ramah." },
+          { role: "Instruktur Kebugaran (Fitness Coach) / Tari", desc: "Membakar semangat peserta olahraga lewat musik ritmis, gerakan lincah, dan energi positif." },
+          { role: "Event Host & Spesialis Aktivasi Komunitas", desc: "Menghidupkan atmosfer acara publik agar meriah, akrab, dan meninggalkan kesan mendalam." }
+        ]
+      }
+    };
+
+    const LIKERT_OPTIONS = [
+      { val: 1, label: "Sangat Tidak Setuju" },
+      { val: 2, label: "Tidak Setuju" },
+      { val: 3, label: "Netral / Ragu-ragu" },
+      { val: 4, label: "Setuju" },
+      { val: 5, label: "Sangat Setuju" }
+    ];
+
+    /* =====================================================================
+       STATE & PENGACAKAN URUTAN SOAL
+       ===================================================================== */
+    const STORAGE_KEY = "sosyncd_mbti_v1";
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function defaultState() {
+      return {
+        respondent: { name: "", phone: "", email: "", social: "", reason: "" },
+        questionOrder: shuffleArray(QUESTIONS.map((q) => q.id)),
+        questionPage: 0,
+        answers: {},
+        history: [],
+        lastResult: null
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        const def = defaultState();
+        if (!Array.isArray(parsed.questionOrder) || parsed.questionOrder.length !== QUESTIONS.length) {
+          parsed.questionOrder = shuffleArray(QUESTIONS.map((q) => q.id));
+        }
+        const rawPage = Number(parsed.questionPage);
+        const questionPage = Number.isInteger(rawPage) ? Math.min(Math.max(0, rawPage), 3) : 0;
+        return {
+          ...def,
+          ...parsed,
+          questionPage,
+          respondent: { ...def.respondent, ...(parsed.respondent || {}) }
+        };
+      } catch (e) {
+        return defaultState();
+      }
+    }
+
+    let state = loadState();
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    const $ = (sel) => document.querySelector(sel);
+    const app = $("#app");
+
+    function esc(str = "") {
+      return String(str).replace(/[&<>"']/g, (m) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      }[m]));
+    }
+
+    /* =====================================================================
+       PERHITUNGAN SKOR MBTI
+       ===================================================================== */
+    function calculateMBTI(answersMap) {
+      const breakdown = {};
+
+      DIMENSIONS.forEach((dim) => {
+        const [leftPole, rightPole] = dim.code;
+        const qs = QUESTIONS.filter((q) => q.dim === dim.id);
+        let leftScoreSum = 0;
+
+        qs.forEach((q) => {
+          const v = Number(answersMap[q.id]);
+          const normalizedLeft = q.pole === leftPole ? (v - 1) / 4 : (5 - v) / 4;
+          leftScoreSum += normalizedLeft;
+        });
+
+        const leftPct = Math.round((leftScoreSum / qs.length) * 100);
+        const rightPct = 100 - leftPct;
+        const winner = leftPct >= rightPct ? leftPole : rightPole;
+
+        breakdown[dim.id] = {
+          leftPole,
+          rightPole,
+          leftPct,
+          rightPct,
+          winner,
+          dominantPct: Math.max(leftPct, rightPct)
+        };
+      });
+
+      const code =
+        breakdown.EI.winner +
+        breakdown.SN.winner +
+        breakdown.TF.winner +
+        breakdown.JP.winner;
+
+      return {
+        code,
+        typeData: MBTI_TYPES[code],
+        breakdown
+      };
+    }
+
+    let activeGameCleanup = null;
+    function cleanupActiveGame() {
+      if (typeof activeGameCleanup === "function") {
+        activeGameCleanup();
+        activeGameCleanup = null;
+      }
+    }
+
+    /* =====================================================================
+       DASHBOARD AWAL (TEMA, JUDUL, NAMA APLIKASI, TUJUAN & MENU GAME)
+       ===================================================================== */
+    function renderDashboard() {
+      cleanupActiveGame();
+
+      app.innerHTML = `
+    <section class="card dash-hero">
+      <span class="dash-kicker">Tema: Pengenalan Kepribadian &amp; Refleksi Karakter Diri</span>
+      <h1 class="dash-title">So Syncd — Aplikasi Tes Kepribadian MBTI</h1>
+      <p style="margin:0 0 12px">
+        Selamat datang di <b>So Syncd</b>. Aplikasi ini disusun secara ringkas dan klasik untuk membantu Anda mengenali pola kepribadian diri secara objektif melalui tes 16 tipe MBTI.
+      </p>
+      <div class="dash-actions">
+        <button class="btn lg sage" id="dashOpenGameBtn">Game</button>
+        <button class="btn lavender" id="dashCatalogBtn">Daftar 16 Tipe MBTI</button>
+      </div>
+    </section>
+
+    <section class="card" style="border-top:4px solid var(--sky)">
+      <h2>Tujuan &amp; Kegunaan Aplikasi</h2>
+      <ul class="dash-purpose-list">
+        <li><b>Mengenali Potensi &amp; Karakter Diri:</b> Memberikan gambaran terstruktur mengenai kecenderungan cara Anda berinteraksi, memproses informasi, mengambil keputusan, dan mengatur aktivitas.</li>
+        <li><b>Bahan Evaluasi Pengembangan Pribadi:</b> Menyajikan kelebihan, kekurangan, serta saran pengembangan yang praktis untuk diterapkan dalam studi, pekerjaan, maupun kehidupan sehari-hari.</li>
+        <li><b>Referensi Kecocokan Tokoh:</b> Menampilkan profil tokoh yang selaras dan bertolak belakang dengan tipe kepribadian Anda sebagai bahan perbandingan ringan.</li>
+        <li><b>Ruang Penyegaran Pikiran (Game Refreezing):</b> Menyediakan ruang khusus berisi 10 pilihan permainan menantang untuk menyegarkan pikiran sebelum atau sesudah mengerjakan tes.</li>
+      </ul>
+    </section>
+
+    <section class="card" style="border-top:4px solid var(--lavender);background:linear-gradient(180deg,#ffffff 0%,#f7f5fc 100%)">
+      <h2>Alur Penggunaan &amp; Memulai Tes</h2>
+      <p style="margin:0 0 16px">
+        Isi identitas singkat Anda terlebih dahulu, lalu jawab rangkaian pernyataan sesuai kondisi pribadi untuk mengetahui tipe MBTI lengkap beserta analisis karakter dan tokoh pembanding.
+      </p>
+      <button class="btn primary lg" id="dashStartTestBtn">Mulai Tes MBTI</button>
+    </section>
+  `;
+
+      $("#dashStartTestBtn").onclick = () => {
+        if (state.lastResult) {
+          state.answers = {};
+          state.questionPage = 0;
+          state.questionOrder = shuffleArray(QUESTIONS.map((q) => q.id));
+          state.respondent = { name: "", phone: "", email: "", social: "", reason: "" };
+          state.lastResult = null;
+          saveState();
+        }
+        renderIdentityForm();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      $("#dashOpenGameBtn").onclick = () => {
+        renderGamesHub();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      $("#dashCatalogBtn").onclick = () => {
+        renderCatalog();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    }
+
+    /* =====================================================================
+       LANGKAH 1: FORM IDENTITAS -> TOMBOL "SELANJUTNYA"
+       ===================================================================== */
+    function renderIdentityForm() {
+      cleanupActiveGame();
+      const r = state.respondent || {};
+
+      app.innerHTML = `
+    <section class="card" id="identitySection">
+      <h1>Tes Kepribadian MBTI</h1>
+      <hr class="section-divider">
+      <div id="identityBanner" class="alert-banner"></div>
+      <div class="identity-form">
+        <div>
+          <label for="inpName">Nama <span class="req-mark">*</span></label>
+          <input id="inpName" type="text" maxlength="80" placeholder="Masukkan nama" value="${esc(r.name || "")}" required>
+        </div>
+        <div>
+          <label for="inpPhone">Nomor Telepon</label>
+          <input id="inpPhone" type="tel" inputmode="tel" maxlength="25" placeholder="Contoh: 08123456789" value="${esc(r.phone || "")}">
+        </div>
+        <div>
+          <label for="inpEmail">Email <span class="req-mark">*</span></label>
+          <input id="inpEmail" type="email" maxlength="100" placeholder="googlemail@gmail.com" value="${esc(r.email || "")}" required>
+        </div>
+        <div>
+          <label for="inpSocial">Sosmed</label>
+          <input id="inpSocial" type="text" maxlength="100" placeholder="Contoh: @username" value="${esc(r.social || "")}">
+        </div>
+        <div class="identity-full">
+          <label for="inpReason">Alasan Melakukan MBTI</label>
+          <textarea id="inpReason" maxlength="300" placeholder="Tuliskan alasan Anda mengikuti tes MBTI...">${esc(r.reason || "")}</textarea>
+        </div>
+      </div>
+      <hr class="section-divider">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <button class="btn" id="backDashFromIdBtn">Kembali ke Dashboard</button>
+        <button class="btn primary lg" id="nextToQuestionsBtn">Selanjutnya</button>
+      </div>
+    </section>
+  `;
+
+      $("#backDashFromIdBtn").onclick = () => {
+        renderDashboard();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      const bindField = (selector, key) => {
+        const el = $(selector);
+        if (!el) return;
+        el.oninput = (e) => {
+          state.respondent[key] = e.target.value;
+          el.classList.remove("input-error");
+          saveState();
+        };
+      };
+      bindField("#inpName", "name");
+      bindField("#inpPhone", "phone");
+      bindField("#inpEmail", "email");
+      bindField("#inpSocial", "social");
+      bindField("#inpReason", "reason");
+
+      $("#nextToQuestionsBtn").onclick = () => {
+        const nameEl = $("#inpName");
+        const phoneEl = $("#inpPhone");
+        const emailEl = $("#inpEmail");
+        const socialEl = $("#inpSocial");
+        const reasonEl = $("#inpReason");
+
+        const nameVal = (nameEl?.value || "").trim();
+        const phoneVal = (phoneEl?.value || "").trim();
+        const emailVal = (emailEl?.value || "").trim();
+        const socialVal = (socialEl?.value || "").trim();
+        const reasonVal = (reasonEl?.value || "").trim();
+
+        const errors = [];
+        let firstErrorEl = null;
+        [nameEl, emailEl].forEach((el) => el?.classList.remove("input-error"));
+
+        if (!nameVal) {
+          errors.push("Nama wajib diisi");
+          nameEl?.classList.add("input-error");
+          if (!firstErrorEl) firstErrorEl = nameEl;
+        }
+
+        if (!emailVal) {
+          errors.push("Email wajib diisi (contoh: googlemail@gmail.com)");
+          emailEl?.classList.add("input-error");
+          if (!firstErrorEl) firstErrorEl = emailEl;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+          errors.push("Format email tidak valid (contoh: googlemail@gmail.com)");
+          emailEl?.classList.add("input-error");
+          if (!firstErrorEl) firstErrorEl = emailEl;
+        }
+
+        if (errors.length > 0) {
+          const banner = document.getElementById("identityBanner");
+          if (banner) {
+            banner.textContent = `Perhatian: ${errors.join(". ")}.`;
+            banner.classList.add("show");
+          }
+          firstErrorEl?.focus();
+          return;
+        }
+
+        const prevIdentityKey = `${(state.respondent?.name || "").trim().toLowerCase()}|${(state.respondent?.email || "").trim().toLowerCase()}`;
+        const newIdentityKey = `${nameVal.toLowerCase()}|${emailVal.toLowerCase()}`;
+        if (prevIdentityKey !== newIdentityKey || state.lastResult) {
+          state.answers = {};
+          state.questionOrder = shuffleArray(QUESTIONS.map((q) => q.id));
+          state.lastResult = null;
+        }
+
+        state.respondent = {
+          name: nameVal,
+          phone: phoneVal,
+          email: emailVal,
+          social: socialVal,
+          reason: reasonVal
+        };
+        state.questionPage = 0;
+        saveState();
+        renderQuestionsPage();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    }
+
+    /* =====================================================================
+       LANGKAH 2: KHUSUS MENGISI PERTANYAAN ACAK (10 PER HALAMAN, TANPA URUTAN NOMOR & PROGRES)
+       ===================================================================== */
+    function renderQuestionsPage() {
+      if (!(state.respondent?.name || "").trim() || !(state.respondent?.email || "").trim()) {
+        return renderIdentityForm();
+      }
+
+      const orderedQuestions = state.questionOrder
+        .map((id) => QUESTIONS.find((q) => q.id === id))
+        .filter(Boolean);
+
+      const PAGE_SIZE = 10;
+      const totalPages = Math.ceil(orderedQuestions.length / PAGE_SIZE);
+      const pageIdx = Math.min(Math.max(0, Number(state.questionPage) || 0), totalPages - 1);
+      if (state.questionPage !== pageIdx) {
+        state.questionPage = pageIdx;
+        saveState();
+      }
+
+      const pageQuestions = orderedQuestions.slice(pageIdx * PAGE_SIZE, (pageIdx + 1) * PAGE_SIZE);
+      const isLastPage = pageIdx === totalPages - 1;
+
+      app.innerHTML = `
+    <div id="validationBanner" class="alert-banner"></div>
+
+    <div id="questionsList">
+      ${pageQuestions.map((q) => {
+        const chosen = state.answers[q.id];
+        return `
+          <article class="q-card ${chosen ? "answered" : ""}" id="qcard-${q.id}">
+            <div class="q-meta">
+              <span class="q-status ${chosen ? "done" : ""}" id="qstatus-${q.id}">
+                ${chosen ? "Terjawab" : "Wajib diisi"}
+              </span>
+            </div>
+            <div class="q-text">${esc(q.text)}</div>
+            <div class="likert">
+              ${LIKERT_OPTIONS.map((opt) => `
+                <button type="button" class="likert-btn ${chosen === opt.val ? "selected" : ""}" data-qid="${q.id}" data-val="${opt.val}">
+                  <span class="radio-circle"></span>
+                  <span>${esc(opt.label)}</span>
+                </button>
+              `).join("")}
+            </div>
+          </article>
+        `;
+      }).join("")}
+    </div>
+
+    <section class="card no-print" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" id="backStepBtn">${pageIdx === 0 ? "Kembali ke Identitas" : "Sebelumnya"}</button>
+        <button class="btn danger" id="resetSheetBtn">Ulangi &amp; Acak Soal</button>
+      </div>
+      ${isLastPage
+          ? `<button class="btn primary lg" id="submitBottomBtn">Lihat Hasil Tes MBTI</button>`
+          : `<button class="btn primary lg" id="nextBatchBtn">Next</button>`
+        }
+    </section>
+  `;
+
+      document.querySelectorAll(".likert-btn").forEach((btn) => {
+        btn.onclick = () => {
+          const qid = Number(btn.dataset.qid);
+          const val = Number(btn.dataset.val);
+          state.answers[qid] = val;
+          saveState();
+
+          const card = document.getElementById(`qcard-${qid}`);
+          if (card) {
+            card.classList.add("answered");
+            card.classList.remove("unanswered-error");
+            card.querySelectorAll(".likert-btn").forEach((b) => {
+              b.classList.toggle("selected", Number(b.dataset.val) === val);
+            });
+          }
+          const st = document.getElementById(`qstatus-${qid}`);
+          if (st) {
+            st.textContent = "Terjawab";
+            st.className = "q-status done";
+          }
+
+          if (pageQuestions.every((pq) => state.answers[pq.id] !== undefined)) {
+            const banner = document.getElementById("validationBanner");
+            if (banner) banner.classList.remove("show");
+          }
+        };
+      });
+
+      $("#backStepBtn").onclick = () => {
+        if (pageIdx === 0) {
+          renderIdentityForm();
+        } else {
+          state.questionPage = pageIdx - 1;
+          saveState();
+          renderQuestionsPage();
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      $("#resetSheetBtn").onclick = () => {
+        if (Object.keys(state.answers).length > 0 && !confirm("Kosongkan semua jawaban dan acak ulang pertanyaan?")) return;
+        state.answers = {};
+        state.questionPage = 0;
+        state.questionOrder = shuffleArray(QUESTIONS.map((q) => q.id));
+        saveState();
+        renderQuestionsPage();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      function validateCurrentPage() {
+        let missingCount = 0;
+        let firstMissingCard = null;
+
+        pageQuestions.forEach((q) => {
+          if (state.answers[q.id] === undefined) {
+            missingCount++;
+            const card = document.getElementById(`qcard-${q.id}`);
+            const st = document.getElementById(`qstatus-${q.id}`);
+            if (!firstMissingCard) firstMissingCard = card;
+            if (card) card.classList.add("unanswered-error");
+            if (st) {
+              st.textContent = "Wajib diisi!";
+              st.className = "q-status err";
+            }
+          }
+        });
+
+        if (missingCount > 0) {
+          const banner = document.getElementById("validationBanner");
+          if (banner) {
+            banner.textContent = `Perhatian: Masih ada ${missingCount} pertanyaan pada bagian ini yang belum dijawab (semua pertanyaan wajib diisi).`;
+            banner.classList.add("show");
+          }
+          if (firstMissingCard) {
+            firstMissingCard.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          return false;
+        }
+        return true;
+      }
+
+      const nextBtn = document.getElementById("nextBatchBtn");
+      if (nextBtn) {
+        nextBtn.onclick = () => {
+          if (!validateCurrentPage()) return;
+          state.questionPage = pageIdx + 1;
+          saveState();
+          renderQuestionsPage();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+      }
+
+      const submitBtn = document.getElementById("submitBottomBtn");
+      if (submitBtn) {
+        submitBtn.onclick = () => {
+          if (!validateCurrentPage()) return;
+
+          const firstMissingGlobalIdx = orderedQuestions.findIndex((q) => state.answers[q.id] === undefined);
+          if (firstMissingGlobalIdx !== -1) {
+            state.questionPage = Math.floor(firstMissingGlobalIdx / PAGE_SIZE);
+            saveState();
+            renderQuestionsPage();
+            const banner = document.getElementById("validationBanner");
+            if (banner) {
+              banner.textContent = "Perhatian: Masih ada pertanyaan pada bagian sebelumnya yang belum dijawab.";
+              banner.classList.add("show");
+            }
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+          }
+
+          finalizeResult();
+        };
+      }
+    }
+
+    function renderTestSheet() {
+      renderIdentityForm();
+    }
+
+    function finalizeResult() {
+      const res = calculateMBTI(state.answers);
+      const r = state.respondent || {};
+      const record = {
+        id: Date.now().toString(36),
+        timestamp: new Date().toISOString(),
+        name: (r.name || "").trim(),
+        phone: (r.phone || "").trim(),
+        email: (r.email || "").trim(),
+        social: (r.social || "").trim(),
+        reason: (r.reason || "").trim(),
+        code: res.code,
+        breakdown: res.breakdown
+      };
+      state.lastResult = record;
+      state.history.unshift(record);
+      if (state.history.length > 30) state.history.length = 30;
+      saveState();
+      renderResult(record);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Otomatis kirim email hasil tes secara instan
+      setTimeout(() => {
+        sendResultToEmail(record, true);
+      }, 700);
+    }
+
+    /* =====================================================================
+       VIEW HASIL TES MBTI & PENJELASAN LENGKAP
+       ===================================================================== */
+    function renderResult(record = state.lastResult) {
+      cleanupActiveGame();
+      if (!record) return renderTestSheet();
+      const t = MBTI_TYPES[record.code];
+      const b = record.breakdown;
+
+      app.innerHTML = `
+    <div id="emailNoticeBanner" class="alert-banner show" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;border-left:5px solid #2563eb;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:1.3rem">📧</span>
+        <div>
+          <b>Pengiriman Otomatis ke Email:</b>
+          <div style="font-size:0.86rem;color:#1e3a8a">Hasil tes lengkap telah disiapkan untuk dikirim ke <b>${esc(record.email || "-")}</b>.</div>
+        </div>
+      </div>
+      <button class="btn primary sm" id="bannerSendEmailBtn">Kirim Sekarang</button>
+    </div>
+
+    <section class="card result-header grp-${esc(t.group)}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap">
+        <div style="flex:1;min-width:280px">
+          <span class="group-label">${esc(t.groupFull)}</span>
+          <div class="type-code">${esc(t.num)}. ${esc(t.code)} (${esc(t.name)})</div>
+          <p style="margin-bottom:0"><b>Penjelasan:</b> ${esc(t.explanation)}</p>
+        </div>
+        <div class="identity-summary" style="min-width:250px;max-width:340px">
+          <div><b>Nama:</b> ${esc(record.name)}</div>
+          ${record.phone ? `<div><b>No. Telepon:</b> ${esc(record.phone)}</div>` : ""}
+          ${record.email ? `<div><b>Email:</b> ${esc(record.email)}</div>` : ""}
+          ${record.social ? `<div><b>Sosmed:</b> ${esc(record.social)}</div>` : ""}
+          ${record.reason ? `<div><b>Alasan Tes:</b> ${esc(record.reason)}</div>` : ""}
+          <div class="muted small" style="margin-top:6px">${new Date(record.timestamp).toLocaleString("id-ID")}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Detail Karakter Kepribadian</h2>
+      <div class="grid two" style="margin-top:12px">
+        <div class="detail-box box-sky">
+          <h3>Penjelasan</h3>
+          <p style="margin:0">${esc(t.explanation)}</p>
+        </div>
+        <div class="detail-box box-sage">
+          <h3>Kelebihan</h3>
+          <p style="margin:0">${esc(t.strengths)}</p>
+        </div>
+        <div class="detail-box box-sand">
+          <h3>Kekurangan</h3>
+          <p style="margin:0">${esc(t.weaknesses)}</p>
+        </div>
+        <div class="detail-box box-lavender">
+          <h3>Saran Pengembangan</h3>
+          <p style="margin:0">${esc(t.advice)}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Tokoh yang Cocok &amp; Tidak Cocok</h2>
+      <div class="grid two" style="margin-top:12px">
+        <div class="figure-box match">
+          <div class="figure-tag">Tokoh yang Cocok</div>
+          <div class="figure-media-wrap">
+            ${t.matchFigure.image ? `
+              <img class="figure-avatar-img" src="${esc(t.matchFigure.image)}" alt="${esc(t.matchFigure.name)}" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(t.matchFigure.name)}&background=256066&color=fff&size=128&bold=true'">
+            ` : ""}
+            <div style="flex:1">
+              <div class="figure-name">${esc(t.matchFigure.name)} <span style="font-weight:normal;color:var(--muted);font-size:13px">(${esc(t.matchFigure.mbti)})</span></div>
+              <div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">${esc(t.matchFigure.role)}</div>
+              <p style="margin:0;font-size:13.5px">${esc(t.matchFigure.reason)}</p>
+            </div>
+          </div>
+        </div>
+        <div class="figure-box mismatch">
+          <div class="figure-tag">Tokoh yang Tidak Cocok</div>
+          <div class="figure-media-wrap">
+            <img class="figure-avatar-img" style="border-color:var(--bad)" src="https://ui-avatars.com/api/?name=${encodeURIComponent(t.mismatchFigure.name)}&background=9e3839&color=fff&size=128&bold=true" alt="${esc(t.mismatchFigure.name)}" loading="lazy">
+            <div style="flex:1">
+              <div class="figure-name">${esc(t.mismatchFigure.name)} <span style="font-weight:normal;color:var(--muted);font-size:13px">(${esc(t.mismatchFigure.mbti)})</span></div>
+              <div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">${esc(t.mismatchFigure.role)}</div>
+              <p style="margin:0;font-size:13.5px">${esc(t.mismatchFigure.reason)}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Rekomendasi Pekerjaan &amp; Karier yang Cocok</h2>
+      <p class="muted small" style="margin-top:2px;margin-bottom:12px">Berdasarkan profil kekuatan kognitif dan karakter alami kepribadian <b>${esc(t.code)} (${esc(t.name)})</b>:</p>
+      <div class="career-grid">
+        ${(t.careerRecommendations || []).map((c) => `
+          <div class="career-card">
+            <div class="career-role">${esc(c.role)}</div>
+            <div class="career-desc">${esc(c.desc)}</div>
+          </div>
+        `).join("")}
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Kecenderungan Kepribadian</h2>
+      <div style="margin-top:14px">
+        ${DIMENSIONS.map((dim) => {
+        const d = b[dim.id];
+        return `
+            <div class="trait-bar-row">
+              <div class="trait-labels">
+                <span>${esc(dim.leftName)} — ${d.leftPct}%</span>
+                <span>${d.rightPct}% — ${esc(dim.rightName)}</span>
+              </div>
+              <div class="trait-track">
+                <div class="trait-left" style="width:${d.leftPct}%"></div>
+                <div class="trait-right" style="width:${d.rightPct}%"></div>
+              </div>
+              <div class="muted small" style="margin-top:4px">
+                Dominan: <b>${d.winner === dim.code[0] ? esc(dim.leftName) : esc(dim.rightName)} (${d.dominantPct}%)</b>
+              </div>
+            </div>
+          `;
+      }).join("")}
+      </div>
+    </section>
+
+    <section class="card no-print" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn primary" id="backToDashboardBtn">Kembali ke Dashboard</button>
+        <button class="btn" id="retakeNewBtn">Kerjakan Ulang Tes Baru</button>
+        <button class="btn" id="viewAllTypesBtn">Lihat Semua 16 Tipe MBTI</button>
+        <button class="btn" id="resultGameBtn">Main Game</button>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn primary" id="emailResultBtn">Kirim Hasil ke Email</button>
+        <button class="btn" id="downloadTxtBtn">Unduh Hasil (.txt)</button>
+        <button class="btn" id="printResultBtn">Cetak / Simpan PDF</button>
+      </div>
+    </section>
+  `;
+
+      $("#backToDashboardBtn").onclick = () => {
+        renderDashboard();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      $("#retakeNewBtn").onclick = () => {
+        state.answers = {};
+        state.questionPage = 0;
+        state.questionOrder = shuffleArray(QUESTIONS.map((q) => q.id));
+        state.respondent = { name: "", phone: "", email: "", social: "", reason: "" };
+        state.lastResult = null;
+        saveState();
+        renderTestSheet();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      $("#viewAllTypesBtn").onclick = () => renderCatalog(t.code);
+      $("#resultGameBtn").onclick = () => {
+        renderGamesHub();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      $("#downloadTxtBtn").onclick = () => downloadReportTxt(record);
+      $("#printResultBtn").onclick = () => window.print();
+      $("#emailResultBtn").onclick = () => sendResultToEmail(record);
+      if ($("#bannerSendEmailBtn")) {
+        $("#bannerSendEmailBtn").onclick = () => sendResultToEmail(record);
+      }
+    }
+
+    function buildReportText(record) {
+      const t = MBTI_TYPES[record.code];
+      const b = record.breakdown;
+      const careers = (t.careerRecommendations || []).map((c) => `- ${c.role}: ${c.desc}`).join("\r\n");
+
+      return [
+        "====================================================",
+        "HASIL TES KEPRIBADIAN MBTI — SO SYNCD",
+        "====================================================",
+        `Nama          : ${record.name}`,
+        ...(record.phone ? [`Nomor Telepon : ${record.phone}`] : []),
+        ...(record.email ? [`Email         : ${record.email}`] : []),
+        ...(record.social ? [`Sosmed        : ${record.social}`] : []),
+        ...(record.reason ? [`Alasan Tes    : ${record.reason}`] : []),
+        `Waktu Tes     : ${new Date(record.timestamp).toLocaleString("id-ID")}`,
+        "",
+        `HASIL MBTI    : ${t.num}. ${t.code} (${t.name})`,
+        `KELOMPOK      : ${t.groupFull}`,
+        "",
+        `Penjelasan: ${t.explanation}`,
+        `Kelebihan: ${t.strengths}`,
+        `Kekurangan: ${t.weaknesses}`,
+        `Saran Pengembangan: ${t.advice}`,
+        "",
+        "REKOMENDASI PEKERJAAN & KARIER:",
+        careers,
+        "",
+        "TOKOH YANG COCOK & TIDAK COCOK:",
+        `- Tokoh yang Cocok: ${t.matchFigure.name} (${t.matchFigure.mbti}) - ${t.matchFigure.role}. ${t.matchFigure.reason}`,
+        `- Tokoh yang Tidak Cocok: ${t.mismatchFigure.name} (${t.mismatchFigure.mbti}) - ${t.mismatchFigure.role}. ${t.mismatchFigure.reason}`,
+        "",
+        "KECENDERUNGAN SKOR:",
+        `- Extraversion (${b.EI.leftPct}%) vs. Introversion (${b.EI.rightPct}%)`,
+        `- Sensing (${b.SN.leftPct}%) vs. Intuition (${b.SN.rightPct}%)`,
+        `- Thinking (${b.TF.leftPct}%) vs. Feeling (${b.TF.rightPct}%)`,
+        `- Judging (${b.JP.leftPct}%) vs. Perceiving (${b.JP.rightPct}%)`,
+        "===================================================="
+      ].join("\r\n");
+    }
+
+    function downloadReportTxt(record) {
+      const content = buildReportText(record);
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `So-Syncd-MBTI-${record.code}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function sendResultToEmail(record, isAuto = false) {
+      const targetEmail = (record.email || state.respondent?.email || "").trim();
+      if (!targetEmail) {
+        if (!isAuto) alert("Alamat email belum diisi. Silakan masukkan email terlebih dahulu.");
+        return;
+      }
+
+      const t = MBTI_TYPES[record.code];
+      const subject = `Hasil Tes Kepribadian MBTI (${record.code} - ${t.name}) — ${record.name}`;
+      const body = buildReportText(record);
+
+      const mailtoUrl = `mailto:${encodeURIComponent(targetEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      
+      // Update info banner
+      const banner = document.getElementById("emailNoticeBanner");
+      if (banner) {
+        banner.innerHTML = `
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:1.3rem">✅</span>
+            <div>
+              <b>Hasil Tes Berhasil Dikirimkan ke Email:</b>
+              <div style="font-size:0.86rem;color:#1e3a8a">Laporan kepribadian lengkap telah diteruskan ke <b>${esc(targetEmail)}</b>. Klik "Kirim Ulang" bila diperlukan.</div>
+            </div>
+          </div>
+          <button class="btn primary sm" id="bannerSendEmailBtn">Kirim Ulang</button>
+        `;
+        const retryBtn = document.getElementById("bannerSendEmailBtn");
+        if (retryBtn) retryBtn.onclick = () => sendResultToEmail(record, false);
+      }
+
+      window.location.href = mailtoUrl;
+    }
+
+    /* =====================================================================
+       VIEW DAFTAR 16 TIPE KEPRIBADIAN MBTI
+       ===================================================================== */
+    function renderCatalog(selectedCode = null) {
+      cleanupActiveGame();
+      const groups = [
+        { title: "Kelompok Analis (Analysts)", cls: "grp-Analis", codes: ["INTJ", "INTP", "ENTJ", "ENTP"] },
+        { title: "Kelompok Diplomat (Diplomats)", cls: "grp-Diplomat", codes: ["INFJ", "INFP", "ENFJ", "ENFP"] },
+        { title: "Kelompok Pengawas (Sentinels)", cls: "grp-Pengawas", codes: ["ISTJ", "ISFJ", "ESTJ", "ESFJ"] },
+        { title: "Kelompok Penjelajah (Explorers)", cls: "grp-Penjelajah", codes: ["ISTP", "ISFP", "ESTP", "ESFP"] }
+      ];
+
+      const activeType = selectedCode ? MBTI_TYPES[selectedCode] : null;
+
+      app.innerHTML = `
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+        <div>
+          <h2 style="margin-bottom:4px">Daftar Lengkap 16 Tipe Kepribadian MBTI</h2>
+          <p class="muted small" style="margin:0">Penjelasan, Kelebihan, Kekurangan, dan Saran Pengembangan untuk ke-16 tipe MBTI.</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn sm" id="catalogDashBtn">Kembali ke Dashboard</button>
+          <button class="btn primary sm" id="backToTestBtn">Mulai Tes</button>
+        </div>
+      </div>
+    </section>
+
+    ${activeType ? `
+      <section class="card grp-${esc(activeType.group)}" style="border:2px solid var(--accent)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div>
+            <span class="group-label">${esc(activeType.groupFull)}</span>
+            <h2 style="margin-top:8px;margin-bottom:4px">${activeType.num}. ${esc(activeType.code)} (${esc(activeType.name)})</h2>
+          </div>
+          <button class="btn sm" id="closeDetailTypeBtn">Tutup</button>
+        </div>
+        <div class="grid two" style="margin-top:14px">
+          <div class="detail-box box-sky"><h3>Penjelasan</h3><p style="margin:0">${esc(activeType.explanation)}</p></div>
+          <div class="detail-box box-sage"><h3>Kelebihan</h3><p style="margin:0">${esc(activeType.strengths)}</p></div>
+          <div class="detail-box box-sand"><h3>Kekurangan</h3><p style="margin:0">${esc(activeType.weaknesses)}</p></div>
+          <div class="detail-box box-lavender"><h3>Saran Pengembangan</h3><p style="margin:0">${esc(activeType.advice)}</p></div>
+        </div>
+        <div class="grid two" style="margin-top:12px">
+          <div class="figure-box match">
+            <div class="figure-tag">Tokoh yang Cocok</div>
+            <div class="figure-media-wrap">
+              ${activeType.matchFigure.image ? `
+                <img class="figure-avatar-img" src="${esc(activeType.matchFigure.image)}" alt="${esc(activeType.matchFigure.name)}" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(activeType.matchFigure.name)}&background=256066&color=fff&size=128&bold=true'">
+              ` : ""}
+              <div style="flex:1">
+                <div class="figure-name">${esc(activeType.matchFigure.name)} <span style="font-weight:normal;color:var(--muted);font-size:13px">(${esc(activeType.matchFigure.mbti)})</span></div>
+                <div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">${esc(activeType.matchFigure.role)}</div>
+                <p style="margin:0;font-size:13.5px">${esc(activeType.matchFigure.reason)}</p>
+              </div>
+            </div>
+          </div>
+          <div class="figure-box mismatch">
+            <div class="figure-tag">Tokoh yang Tidak Cocok</div>
+            <div class="figure-media-wrap">
+              <img class="figure-avatar-img" style="border-color:var(--bad)" src="https://ui-avatars.com/api/?name=${encodeURIComponent(activeType.mismatchFigure.name)}&background=9e3839&color=fff&size=128&bold=true" alt="${esc(activeType.mismatchFigure.name)}" loading="lazy">
+              <div style="flex:1">
+                <div class="figure-name">${esc(activeType.mismatchFigure.name)} <span style="font-weight:normal;color:var(--muted);font-size:13px">(${esc(activeType.mismatchFigure.mbti)})</span></div>
+                <div style="font-size:12.5px;color:var(--muted);margin-bottom:6px">${esc(activeType.mismatchFigure.role)}</div>
+                <p style="margin:0;font-size:13.5px">${esc(activeType.mismatchFigure.reason)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        ${activeType.careerRecommendations ? `
+          <div style="margin-top:14px">
+            <h3 style="font-size:1.05rem;color:var(--accent);margin-bottom:10px">Rekomendasi Karier &amp; Profesi Terkait:</h3>
+            <div class="career-grid">
+              ${activeType.careerRecommendations.map((c) => `
+                <div class="career-card">
+                  <div class="career-role">${esc(c.role)}</div>
+                  <div class="career-desc">${esc(c.desc)}</div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        ` : ""}
+      </section>
+    ` : ""}
+
+    ${groups.map((g) => `
+      <section class="card ${g.cls}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <h3 style="margin:0">${esc(g.title)}</h3>
+        </div>
+        <div class="grid two">
+          ${g.codes.map((code) => {
+        const item = MBTI_TYPES[code];
+        return `
+              <div class="type-card" data-typecard="${code}">
+                <div style="font-size:1.15rem;font-weight:700;color:var(--accent);margin-bottom:8px;font-family:Georgia,serif">
+                  ${item.num}. ${esc(item.code)} (${esc(item.name)})
+                </div>
+                <p class="small" style="margin-bottom:6px"><b>Penjelasan:</b> ${esc(item.explanation)}</p>
+                <p class="small muted" style="margin-bottom:6px"><b>Kelebihan:</b> ${esc(item.strengths)}</p>
+                <p class="small muted" style="margin-bottom:6px"><b>Kekurangan:</b> ${esc(item.weaknesses)}</p>
+                <p class="small" style="margin-bottom:0"><b>Saran Pengembangan:</b> ${esc(item.advice)}</p>
+              </div>
+            `;
+      }).join("")}
+        </div>
+      </section>
+    `).join("")}
+  `;
+
+      $("#catalogDashBtn").onclick = renderDashboard;
+      $("#backToTestBtn").onclick = () => renderTestSheet();
+      if ($("#closeDetailTypeBtn")) {
+        $("#closeDetailTypeBtn").onclick = () => renderCatalog(null);
+      }
+      document.querySelectorAll("[data-typecard]").forEach((card) => {
+        card.onclick = () => {
+          renderCatalog(card.dataset.typecard);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+      });
+    }
+
+    /* =====================================================================
+       RUANG GAME REFREEZING (10 PILIHAN GAME MENANTANG & MENYENANGKAN)
+       ===================================================================== */
+    const GAME_LIST = [
+      { id: "ttt", title: "1. Tic-Tac-Toe 3×3 (AI Cerdas)", desc: "Tantang AI yang aktif mencari kemenangan dan memblokir langkah Anda." },
+      { id: "mine", title: "2. Minesweeper Mini (5×5)", desc: "Buka seluruh kotak aman dan hindari 5 ranjau tersembunyi menggunakan petunjuk angka." },
+      { id: "code", title: "3. Tebak Kode 4 Angka", desc: "Pecahkan kombinasi 4 digit unik (0–9) dalam maksimal 10 kali tebakan." },
+      { id: "memory", title: "4. Cocokkan Kartu 4×4", desc: "Temukan 8 pasang simbol pada 16 kartu tertutup dengan jumlah langkah seminim mungkin." },
+      { id: "math", title: "5. Hitung Cepat Kombo (3 Nyawa)", desc: "Jawab soal hitungan dalam 45 detik. Hati-hati, Anda hanya memiliki 3 nyawa." },
+      { id: "reflex", title: "6. Uji Refleks & Fokus Warna", desc: "Klik hanya saat muncul HIJAU, dan tahan diri saat muncul umpan MERAH!" },
+      { id: "anagram", title: "7. Susun Kata Acak", desc: "Susun kata 6–11 huruf dari huruf acak dengan batas maksimal 3 kesalahan per kata." },
+      { id: "simon", title: "8. Ingat Pola Warna (Cepat)", desc: "Ikuti urutan nyala 4 warna yang semakin cepat pada setiap level." },
+      { id: "whack", title: "9. Tangkap Target & Hindari Bom", desc: "Klik TARGET (+10) dan hindari BOM (-15) yang berpindah cepat selama 25 detik." },
+      { id: "slide", title: "10. Puzzle Geser Angka (3×3)", desc: "Geser ubin angka 1 sampai 8 hingga tersusun rapi secara berurutan." }
+    ];
+
+    function renderGamesHub(selectedGameId = "ttt") {
+      cleanupActiveGame();
+      const currentGame = GAME_LIST.find((g) => g.id === selectedGameId) || GAME_LIST[0];
+
+      app.innerHTML = `
+    <section class="card dash-hero">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+        <div>
+          <span class="dash-kicker">Ruang Game Refreezing</span>
+          <h1 class="dash-title" style="margin-bottom:4px">10 Pilihan Game Seru &amp; Menantang</h1>
+          <p class="muted" style="margin:0">Pilih salah satu permainan di bawah ini untuk melatih fokus, menyegarkan pikiran, dan bersenang-senang.</p>
+        </div>
+        <button class="btn primary" id="gamesBackDashBtn">Kembali ke Dashboard</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Pilih Permainan (10 Game)</h2>
+      <div class="games-grid" style="margin-top:12px">
+        ${GAME_LIST.map((g) => `
+          <button type="button" class="game-tile ${g.id === currentGame.id ? "active" : ""}" data-gameid="${g.id}">
+            <span class="game-tile-title">${esc(g.title)}</span>
+            <span class="game-tile-desc">${esc(g.desc)}</span>
+          </button>
+        `).join("")}
+      </div>
+    </section>
+
+    <section class="card game-stage" id="gameStage"></section>
+  `;
+
+      $("#gamesBackDashBtn").onclick = () => {
+        renderDashboard();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+
+      document.querySelectorAll("[data-gameid]").forEach((btn) => {
+        btn.onclick = () => {
+          renderGamesHub(btn.dataset.gameid);
+          const stage = document.getElementById("gameStage");
+          if (stage) stage.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+      });
+
+      mountSelectedGame(currentGame.id, document.getElementById("gameStage"));
+    }
+
+    function mountSelectedGame(gameId, stage) {
+      cleanupActiveGame();
+      if (!stage) return;
+
+      if (gameId === "ttt") {
+        let board = Array(9).fill("");
+        let finished = false;
+        let status = "Giliran Anda (X). AI akan memblokir dan mencari kemenangan!";
+        const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+        const checkWin = (b) => {
+          for (const [a, c, d] of wins) {
+            if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a];
+          }
+          return b.every(Boolean) ? "SERI" : null;
+        };
+        const findSmartMove = (b) => {
+          const empties = b.map((v, idx) => v === "" ? idx : -1).filter((idx) => idx !== -1);
+          for (const idx of empties) {
+            const copy = [...b]; copy[idx] = "O";
+            if (checkWin(copy) === "O") return idx;
+          }
+          for (const idx of empties) {
+            const copy = [...b]; copy[idx] = "X";
+            if (checkWin(copy) === "X") return idx;
+          }
+          if (b[4] === "") return 4;
+          const corners = [0, 2, 6, 8].filter((c) => b[c] === "");
+          if (corners.length > 0) return corners[Math.floor(Math.random() * corners.length)];
+          return empties[Math.floor(Math.random() * empties.length)];
+        };
+        const render = () => {
+          stage.innerHTML = `
+            <h2>1. Tic-Tac-Toe 3×3 (AI Cerdas)</h2>
+            <p class="muted" id="tttStatus">${esc(status)}</p>
+            <div class="ttt-board">
+              ${board.map((val, idx) => `<button type="button" class="ttt-cell" data-idx="${idx}" ${val || finished ? "disabled" : ""}>${esc(val)}</button>`).join("")}
+            </div>
+            <button class="btn primary sm" id="tttResetBtn">Main Lagi</button>
+          `;
+          stage.querySelectorAll(".ttt-cell").forEach((cell) => {
+            cell.onclick = () => {
+              const i = Number(cell.dataset.idx);
+              if (board[i] || finished) return;
+              board[i] = "X";
+              let res = checkWin(board);
+              if (res) {
+                finished = true;
+                status = res === "SERI" ? "Hasil Seri! Pertandingan ketat." : "Luar biasa! Anda berhasil mengalahkan AI cerdas.";
+                return render();
+              }
+              const empties = board.map((v, idx) => v === "" ? idx : -1).filter((idx) => idx !== -1);
+              if (empties.length > 0) {
+                const pick = findSmartMove(board);
+                board[pick] = "O";
+                res = checkWin(board);
+                if (res) {
+                  finished = true;
+                  status = res === "SERI" ? "Hasil Seri! Pertandingan ketat." : "Komputer (O) menang! Coba strategi lain.";
+                } else {
+                  status = "Giliran Anda (X).";
+                }
+              }
+              render();
+            };
+          });
+          stage.querySelector("#tttResetBtn").onclick = () => {
+            board = Array(9).fill("");
+            finished = false;
+            status = "Giliran Anda (X). AI akan memblokir dan mencari kemenangan!";
+            render();
+          };
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "mine") {
+        const SIZE = 5, MINES = 5;
+        let mines = new Set(), revealed = new Set(), flagged = new Set(), flagMode = false, gameOver = false, won = false, status = "Klik kotak untuk membuka, atau aktifkan Mode Bendera untuk menandai ranjau.";
+        const neighbors = (idx) => {
+          const r = Math.floor(idx / SIZE), c = idx % SIZE, res = [];
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              if (dr === 0 && dc === 0) continue;
+              const nr = r + dr, nc = c + dc;
+              if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE) res.push(nr * SIZE + nc);
+            }
+          }
+          return res;
+        };
+        const countAround = (idx) => neighbors(idx).filter((n) => mines.has(n)).length;
+        const init = () => {
+          mines = new Set(); revealed = new Set(); flagged = new Set();
+          gameOver = false; won = false; flagMode = false;
+          status = "Buka semua 20 kotak aman tanpa mengenai 5 ranjau!";
+          while (mines.size < MINES) mines.add(Math.floor(Math.random() * (SIZE * SIZE)));
+        };
+        const flood = (start) => {
+          const stack = [start];
+          while (stack.length > 0) {
+            const cur = stack.pop();
+            if (revealed.has(cur) || mines.has(cur)) continue;
+            revealed.add(cur);
+            flagged.delete(cur);
+            if (countAround(cur) === 0) {
+              neighbors(cur).forEach((n) => { if (!revealed.has(n)) stack.push(n); });
+            }
+          }
+        };
+        init();
+        const render = () => {
+          stage.innerHTML = `
+            <h2>2. Minesweeper Mini (5×5 — 5 Ranjau)</h2>
+            <p class="muted">${esc(status)} (Bendera terpasang: ${flagged.size}/${MINES})</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+              <button type="button" class="btn sm ${flagMode ? "primary" : ""}" id="mineFlagToggle">${flagMode ? "Mode: Pasang Bendera (Aktif)" : "Mode: Buka Kotak"}</button>
+              <button type="button" class="btn sm" id="mineResetBtn">Acak Papan Baru</button>
+            </div>
+            <div class="mine-grid">
+              ${Array.from({ length: SIZE * SIZE }, (_, idx) => {
+                const isRev = revealed.has(idx);
+                const isFlag = flagged.has(idx);
+                const isMine = mines.has(idx);
+                let cls = "mine-cell", txt = "";
+                if (gameOver && isMine) { cls += " exploded"; txt = "BOM"; }
+                else if (isRev) { cls += " revealed"; const cnt = countAround(idx); txt = cnt > 0 ? String(cnt) : ""; }
+                else if (isFlag) { cls += " flagged"; txt = "F"; }
+                return `<button type="button" class="${cls}" data-midx="${idx}" ${gameOver || won ? "disabled" : ""}>${txt}</button>`;
+              }).join("")}
+            </div>
+          `;
+          stage.querySelector("#mineFlagToggle").onclick = () => { flagMode = !flagMode; render(); };
+          stage.querySelector("#mineResetBtn").onclick = () => { init(); render(); };
+          stage.querySelectorAll("[data-midx]").forEach((cell) => {
+            const idx = Number(cell.dataset.midx);
+            cell.oncontextmenu = (e) => {
+              e.preventDefault();
+              if (gameOver || won || revealed.has(idx)) return;
+              if (flagged.has(idx)) flagged.delete(idx); else flagged.add(idx);
+              render();
+            };
+            cell.onclick = () => {
+              if (gameOver || won) return;
+              if (flagMode) {
+                if (!revealed.has(idx)) {
+                  if (flagged.has(idx)) flagged.delete(idx); else flagged.add(idx);
+                  render();
+                }
+                return;
+              }
+              if (flagged.has(idx) || revealed.has(idx)) return;
+              if (mines.has(idx)) {
+                gameOver = true;
+                status = "Duar! Anda menginjak ranjau. Coba acak papan baru!";
+                return render();
+              }
+              flood(idx);
+              if (revealed.size === SIZE * SIZE - MINES) {
+                won = true;
+                status = "Hebat! Semua kotak aman berhasil dibuka tanpa menyentuh ranjau.";
+              }
+              render();
+            };
+          });
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "code") {
+        const makeSecret = () => shuffleArray(["0","1","2","3","4","5","6","7","8","9"]).slice(0, 4).join("");
+        let secret = makeSecret();
+        let logs = [];
+        let maxTries = 10;
+        let finished = false;
+        let msg = "Tebak 4 digit angka UNIK (contoh: 4821). Maksimal 10 percobaan.";
+        const render = () => {
+          stage.innerHTML = `
+            <h2>3. Tebak Kode 4 Angka (Mastermind)</h2>
+            <p class="muted">${esc(msg)} (Sisa percobaan: <b>${maxTries - logs.length}</b>)</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0">
+              <input id="codeInput" type="text" inputmode="numeric" maxlength="4" placeholder="4 digit unik" style="max-width:160px;letter-spacing:3px;font-weight:700" ${finished ? "disabled" : ""}>
+              <button class="btn primary" id="codeSubmitBtn" ${finished ? "disabled" : ""}>Cek Kode</button>
+              <button class="btn" id="codeNewBtn">Kode Baru</button>
+            </div>
+            ${logs.length > 0 ? `
+              <div class="detail-box" style="margin-top:10px">
+                <b>Riwayat Tebakan:</b>
+                <ul style="margin:6px 0 0;padding-left:20px">
+                  ${logs.map((l) => `<li><code>${esc(l.guess)}</code> → <b>${l.exact}</b> Tepat Posisi, <b>${l.misplaced}</b> Benar Angka (Salah Posisi)</li>`).join("")}
+                </ul>
+              </div>
+            ` : ""}
+          `;
+          const inp = stage.querySelector("#codeInput");
+          const doCheck = () => {
+            const g = (inp?.value || "").trim();
+            if (!/^\d{4}$/.test(g) || new Set(g.split("")).size !== 4) {
+              msg = "Masukkan tepat 4 digit angka yang semuanya berbeda (tidak ada angka kembar).";
+              return render();
+            }
+            let exact = 0, misplaced = 0;
+            for (let i = 0; i < 4; i++) {
+              if (g[i] === secret[i]) exact++;
+              else if (secret.includes(g[i])) misplaced++;
+            }
+            logs.unshift({ guess: g, exact, misplaced });
+            if (exact === 4) {
+              finished = true;
+              msg = `Kode terpecahkan! Angka rahasia adalah ${secret} (${logs.length} percobaan).`;
+            } else if (logs.length >= maxTries) {
+              finished = true;
+              msg = `Kesempatan habis! Kode rahasia sebenarnya adalah ${secret}.`;
+            } else {
+              msg = `Tebakan ${g}: ${exact} Tepat Posisi, ${misplaced} Salah Posisi.`;
+            }
+            render();
+          };
+          stage.querySelector("#codeSubmitBtn").onclick = doCheck;
+          if (inp) {
+            inp.focus();
+            inp.onkeydown = (e) => { if (e.key === "Enter") doCheck(); };
+          }
+          stage.querySelector("#codeNewBtn").onclick = () => {
+            secret = makeSecret(); logs = []; finished = false;
+            msg = "Kode 4 digit unik baru sudah dibuat. Silakan pecahkan!";
+            render();
+          };
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "memory") {
+        let cards = [];
+        let openIdx = [];
+        let matched = new Set();
+        let moves = 0;
+        let lock = false;
+        let memTimer = null;
+        const init = () => {
+          clearTimeout(memTimer);
+          const symbols = ["A", "B", "C", "D", "E", "F", "G", "H"];
+          cards = shuffleArray([...symbols, ...symbols]);
+          openIdx = [];
+          matched = new Set();
+          moves = 0;
+          lock = false;
+        };
+        init();
+        cleanupActiveGame = () => clearTimeout(memTimer);
+        const render = () => {
+          const won = matched.size === cards.length;
+          stage.innerHTML = `
+            <h2>4. Cocokkan Kartu 4×4 (Memory 16 Kartu)</h2>
+            <p class="muted">${won ? `Selesai! Semua 8 pasangan cocok dalam ${moves} langkah.` : `Langkah: ${moves} | Pasangan ditemukan: ${matched.size / 2} / 8`}</p>
+            <div class="mem-grid">
+              ${cards.map((sym, idx) => {
+                const isMatched = matched.has(idx);
+                const isOpen = isMatched || openIdx.includes(idx);
+                return `<button type="button" class="mem-card ${isOpen ? "open" : ""} ${isMatched ? "matched" : ""}" data-cidx="${idx}">${isOpen ? esc(sym) : "?"}</button>`;
+              }).join("")}
+            </div>
+            <button class="btn primary sm" id="memResetBtn">Acak Ulang 16 Kartu</button>
+          `;
+          stage.querySelectorAll("[data-cidx]").forEach((btn) => {
+            btn.onclick = () => {
+              const i = Number(btn.dataset.cidx);
+              if (lock || matched.has(i) || openIdx.includes(i)) return;
+              openIdx.push(i);
+              if (openIdx.length === 2) {
+                moves++;
+                const [i1, i2] = openIdx;
+                if (cards[i1] === cards[i2]) {
+                  matched.add(i1);
+                  matched.add(i2);
+                  openIdx = [];
+                } else {
+                  lock = true;
+                  render();
+                  memTimer = setTimeout(() => {
+                    openIdx = [];
+                    lock = false;
+                    render();
+                  }, 520);
+                  return;
+                }
+              }
+              render();
+            };
+          });
+          stage.querySelector("#memResetBtn").onclick = () => { init(); render(); };
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "math") {
+        let timeLeft = 45, score = 0, lives = 3, streak = 0, running = false, qText = "Tekan Mulai untuk tantangan 45 detik (3 Nyawa).", ans = 0, timerId = null;
+        const nextQ = () => {
+          const type = Math.floor(Math.random() * 4);
+          if (type === 0) {
+            const a = Math.floor(Math.random() * 35) + 12;
+            const b = Math.floor(Math.random() * 28) + 8;
+            ans = a + b; qText = `${a} + ${b} = ?`;
+          } else if (type === 1) {
+            let a = Math.floor(Math.random() * 50) + 25;
+            let b = Math.floor(Math.random() * 25) + 7;
+            ans = a - b; qText = `${a} - ${b} = ?`;
+          } else if (type === 2) {
+            const a = Math.floor(Math.random() * 11) + 4;
+            const b = Math.floor(Math.random() * 11) + 3;
+            ans = a * b; qText = `${a} × ${b} = ?`;
+          } else {
+            const a = Math.floor(Math.random() * 9) + 3;
+            const b = Math.floor(Math.random() * 8) + 2;
+            const c = Math.floor(Math.random() * 15) + 5;
+            ans = a * b + c; qText = `(${a} × ${b}) + ${c} = ?`;
+          }
+        };
+        cleanupActiveGame = () => clearInterval(timerId);
+        const render = () => {
+          stage.innerHTML = `
+            <h2>5. Hitung Cepat Kombo (3 Nyawa)</h2>
+            <p class="muted">Skor: <b>${score}</b> &nbsp;|&nbsp; Kombo: <b>${streak}x</b> &nbsp;|&nbsp; Nyawa: <b>${lives}/3</b> &nbsp;|&nbsp; Sisa Waktu: <b>${timeLeft} dtk</b></p>
+            <div class="detail-box" style="margin:12px 0;font-size:1.35rem;font-family:Georgia,serif;font-weight:700;text-align:center">${esc(qText)}</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              ${running ? `
+                <input id="mathAnsInput" type="number" placeholder="Jawaban" style="max-width:140px">
+                <button class="btn primary" id="mathSendBtn">Jawab</button>
+              ` : `
+                <button class="btn primary" id="mathStartBtn">${timeLeft === 0 || lives === 0 ? "Main Lagi" : "Mulai 45 Detik"}</button>
+              `}
+            </div>
+          `;
+          if (running) {
+            const inp = stage.querySelector("#mathAnsInput");
+            const check = () => {
+              if (inp.value === "") return;
+              if (Number(inp.value) === ans) {
+                streak++;
+                score += 10 + Math.min(streak * 2, 20);
+              } else {
+                streak = 0;
+                lives--;
+                if (lives <= 0) {
+                  clearInterval(timerId);
+                  running = false;
+                  qText = `Nyawa Habis! Skor akhir Anda: ${score}`;
+                  return render();
+                }
+              }
+              nextQ();
+              render();
+            };
+            stage.querySelector("#mathSendBtn").onclick = check;
+            inp.focus();
+            inp.onkeydown = (e) => { if (e.key === "Enter") check(); };
+          } else {
+            stage.querySelector("#mathStartBtn").onclick = () => {
+              clearInterval(timerId);
+              timeLeft = 45; score = 0; lives = 3; streak = 0; running = true;
+              nextQ();
+              timerId = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                  clearInterval(timerId);
+                  running = false;
+                  qText = `Waktu Habis! Skor akhir Anda: ${score}`;
+                }
+                render();
+              }, 1000);
+              render();
+            };
+          }
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "reflex") {
+        let phase = "idle", startTime = 0, bestMs = null, msg = "Klik kotak di bawah untuk memulai. Hati-hati jebakan MERAH!", tId = null, tId2 = null;
+        const clearAll = () => { clearTimeout(tId); clearTimeout(tId2); };
+        cleanupActiveGame = clearAll;
+        const render = () => {
+          let bg = "var(--card-alt)", color = "var(--text)", boxText = msg;
+          if (phase === "wait") { bg = "#fef3c7"; color = "#92400e"; boxText = "Bersiap... tunggu warna HIJAU!"; }
+          if (phase === "decoy") { bg = "var(--bad)"; color = "#fff"; boxText = "UMPAN MERAH! JANGAN KLIK!"; }
+          if (phase === "go") { bg = "var(--ok)"; color = "#fff"; boxText = "HIJAU — KLIK SEKARANG!"; }
+          stage.innerHTML = `
+            <h2>6. Uji Refleks &amp; Fokus Warna</h2>
+            <p class="muted">${bestMs !== null ? `Rekor terbaik: <b>${bestMs} ms</b>` : "Belum ada rekor tercatat. Jangan klik saat layar merah!"}</p>
+            <div class="reflex-box" id="reflexBox" style="background:${bg};color:${color}">${esc(boxText)}</div>
+          `;
+          stage.querySelector("#reflexBox").onclick = () => {
+            if (phase === "idle") {
+              clearAll();
+              phase = "wait";
+              render();
+              const hasDecoy = Math.random() < 0.65;
+              const firstDelay = 900 + Math.floor(Math.random() * 1400);
+              if (hasDecoy) {
+                tId = setTimeout(() => {
+                  phase = "decoy";
+                  render();
+                  tId2 = setTimeout(() => {
+                    phase = "wait";
+                    render();
+                    tId = setTimeout(() => {
+                      phase = "go";
+                      startTime = performance.now();
+                      render();
+                    }, 700 + Math.floor(Math.random() * 1500));
+                  }, 1100);
+                }, firstDelay);
+              } else {
+                tId = setTimeout(() => {
+                  phase = "go";
+                  startTime = performance.now();
+                  render();
+                }, firstDelay + 600);
+              }
+            } else if (phase === "wait" || phase === "decoy") {
+              clearAll();
+              const wasDecoy = phase === "decoy";
+              phase = "idle";
+              msg = wasDecoy ? "Tertipu umpan MERAH! Klik lagi untuk mencoba ulang." : "Terlalu cepat sebelum HIJAU! Klik lagi untuk mencoba ulang.";
+              render();
+            } else if (phase === "go") {
+              clearAll();
+              const diff = Math.round(performance.now() - startTime);
+              if (bestMs === null || diff < bestMs) bestMs = diff;
+              phase = "idle";
+              msg = `Fokus tajam! Waktu reaksi Anda: ${diff} ms. Klik kotak ini untuk bermain lagi.`;
+              render();
+            }
+          };
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "anagram") {
+        const words = shuffleArray([
+          { word: "PERFEKSIONIS", hint: "Orang yang menuntut kesempurnaan tinggi" },
+          { word: "INTROVERSI", hint: "Orientasi energi mental ke dalam diri" },
+          { word: "PSIKOLOGI", hint: "Ilmu yang mempelajari perilaku dan proses mental" },
+          { word: "STRATEGI", hint: "Rencana cermat untuk mencapai sasaran" },
+          { word: "PERSPEKTIF", hint: "Sudut pandang dalam melihat masalah" },
+          { word: "KOLABORASI", hint: "Kerja sama untuk mencapai tujuan bersama" },
+          { word: "ANALITIK", hint: "Bersifat tajam dalam menguraikan masalah" },
+          { word: "RASIONAL", hint: "Menurut pikiran dan pertimbangan logis" },
+          { word: "DIPLOMASI", hint: "Keahlian bernegosiasi menjaga hubungan" },
+          { word: "EKSPRESIF", hint: "Mampu mengungkapkan perasaan dengan jelas" },
+          { word: "KARAKTER", hint: "Sifat batin atau akhlak khas seseorang" },
+          { word: "OTENTIK", hint: "Asli, tulus, dan apa adanya" }
+        ]);
+        let idx = 0, chances = 3, showHint = false, msg = "Susun huruf acak di bawah menjadi kata yang benar (maks. 3 salah per kata).", score = 0;
+        const makeScramble = (w) => {
+          let arr = shuffleArray(w.split(""));
+          if (arr.join("") === w) arr.reverse();
+          return arr.join(" ");
+        };
+        let scrambled = makeScramble(words[idx].word);
+        const nextWord = () => {
+          idx = (idx + 1) % words.length;
+          chances = 3; showHint = false;
+          scrambled = makeScramble(words[idx].word);
+        };
+        const render = () => {
+          stage.innerHTML = `
+            <h2>7. Susun Kata Acak (3 Kesempatan)</h2>
+            <p class="muted">Skor benar: <b>${score}</b> &nbsp;|&nbsp; Kesempatan kata ini: <b>${chances}/3</b></p>
+            <p class="muted small">${esc(msg)}</p>
+            <div class="detail-box" style="margin:12px 0;text-align:center;font-size:1.35rem;letter-spacing:3.5px;font-family:Georgia,serif;font-weight:700;color:var(--accent)">${esc(scrambled)}</div>
+            ${showHint ? `<p class="small muted"><b>Petunjuk:</b> ${esc(words[idx].hint)}</p>` : ""}
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <input id="anaInput" type="text" placeholder="Ketik jawaban..." style="max-width:220px;text-transform:uppercase">
+              <button class="btn primary" id="anaCheckBtn">Periksa</button>
+              <button class="btn sm" id="anaHintBtn">Lihat Petunjuk</button>
+            </div>
+          `;
+          const inp = stage.querySelector("#anaInput");
+          const check = () => {
+            const guess = (inp?.value || "").trim().toUpperCase();
+            if (!guess) return;
+            if (guess === words[idx].word) {
+              score++;
+              msg = `Benar! Kata tersebut adalah ${words[idx].word}. Lanjut ke kata berikutnya!`;
+              nextWord();
+            } else {
+              chances--;
+              if (chances <= 0) {
+                msg = `Kesempatan habis! Jawaban kata sebelumnya adalah ${words[idx].word}. Ini kata baru:`;
+                nextWord();
+              } else {
+                msg = `Belum tepat ("${guess}"). Sisa kesempatan: ${chances}.`;
+              }
+            }
+            render();
+          };
+          stage.querySelector("#anaCheckBtn").onclick = check;
+          stage.querySelector("#anaHintBtn").onclick = () => { showHint = true; render(); };
+          if (inp) {
+            inp.focus();
+            inp.onkeydown = (e) => { if (e.key === "Enter") check(); };
+          }
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "simon") {
+        const pads = [
+          { id: 0, label: "Biru", color: "#1e3a5f" },
+          { id: 1, label: "Hijau", color: "#1f6f43" },
+          { id: 2, label: "Merah", color: "#9e2a2b" },
+          { id: 3, label: "Emas", color: "#a16207" }
+        ];
+        let seq = [], userIdx = 0, playingSeq = false, litId = null, bestLvl = 0, status = "Tekan Mulai Permainan. Tempo kedipan makin cepat tiap level!", timers = [];
+        const clearAll = () => { timers.forEach(clearTimeout); timers = []; };
+        cleanupActiveGame = clearAll;
+        const playSequence = () => {
+          clearAll();
+          playingSeq = true;
+          userIdx = 0;
+          const stepMs = Math.max(290, 580 - seq.length * 32);
+          status = `Perhatikan pola Level ${seq.length}...`;
+          render();
+          seq.forEach((padId, step) => {
+            timers.push(setTimeout(() => { litId = padId; render(); }, step * stepMs + 220));
+            timers.push(setTimeout(() => { litId = null; render(); }, step * stepMs + Math.round(stepMs * 0.8)));
+          });
+          timers.push(setTimeout(() => {
+            playingSeq = false;
+            status = `Ulangi ${seq.length} urutan warna dengan benar!`;
+            render();
+          }, seq.length * stepMs + 280));
+        };
+        const render = () => {
+          stage.innerHTML = `
+            <h2>8. Ingat Pola Warna (Simon Cepat)</h2>
+            <p class="muted">${esc(status)} (Rekor Level: <b>${bestLvl}</b>)</p>
+            <div class="simon-grid">
+              ${pads.map((p) => `<button type="button" class="simon-pad ${litId === p.id ? "lit" : ""}" style="background:${p.color}" data-pad="${p.id}" ${playingSeq || seq.length === 0 ? "disabled" : ""}>${p.label}</button>`).join("")}
+            </div>
+            <button class="btn primary sm" id="simonStartBtn">${seq.length === 0 ? "Mulai Permainan" : "Ulangi dari Level 1"}</button>
+          `;
+          stage.querySelectorAll("[data-pad]").forEach((btn) => {
+            btn.onclick = () => {
+              if (playingSeq || seq.length === 0) return;
+              const picked = Number(btn.dataset.pad);
+              if (picked === seq[userIdx]) {
+                userIdx++;
+                if (userIdx === seq.length) {
+                  if (seq.length > bestLvl) bestLvl = seq.length;
+                  status = `Level ${seq.length} lolos! Bersiap lebih cepat...`;
+                  seq.push(Math.floor(Math.random() * 4));
+                  timers.push(setTimeout(playSequence, 550));
+                  render();
+                }
+              } else {
+                status = `Salah urutan pada Level ${seq.length}! Klik tombol di bawah untuk mulai ulang.`;
+                seq = [];
+                render();
+              }
+            };
+          });
+          stage.querySelector("#simonStartBtn").onclick = () => {
+            seq = [Math.floor(Math.random() * 4), Math.floor(Math.random() * 4)];
+            playSequence();
+          };
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "whack") {
+        let targetIdx = -1, bombIdx = -1, score = 0, ticksLeft = 33, running = false, intId = null;
+        const spawn = () => {
+          targetIdx = Math.floor(Math.random() * 9);
+          do { bombIdx = Math.floor(Math.random() * 9); } while (bombIdx === targetIdx);
+        };
+        cleanupActiveGame = () => clearInterval(intId);
+        const render = () => {
+          const secs = Math.ceil((ticksLeft * 750) / 1000);
+          stage.innerHTML = `
+            <h2>9. Tangkap Target &amp; Hindari Bom</h2>
+            <p class="muted">Skor: <b>${score}</b> &nbsp;|&nbsp; Sisa Waktu: <b>${running ? secs : 0} detik</b> (TARGET +10, BOM -15)</p>
+            <div class="whack-grid">
+              ${Array.from({ length: 9 }, (_, i) => {
+                const isT = running && targetIdx === i;
+                const isB = running && bombIdx === i;
+                return `
+                  <button type="button" class="whack-cell ${isT ? "target" : ""} ${isB ? "bomb" : ""}" data-widx="${i}" ${!running ? "disabled" : ""}>
+                    ${isT ? "TARGET" : isB ? "BOM!" : ""}
+                  </button>
+                `;
+              }).join("")}
+            </div>
+            <button class="btn primary sm" id="whackStartBtn">${running ? "Sedang Berjalan..." : "Mulai 25 Detik"}</button>
+          `;
+          stage.querySelectorAll("[data-widx]").forEach((b) => {
+            b.onclick = () => {
+              if (!running) return;
+              const idx = Number(b.dataset.widx);
+              if (idx === targetIdx) {
+                score += 10;
+                spawn();
+                render();
+              } else if (idx === bombIdx) {
+                score -= 15;
+                spawn();
+                render();
+              }
+            };
+          });
+          const startBtn = stage.querySelector("#whackStartBtn");
+          if (startBtn && !running) {
+            startBtn.onclick = () => {
+              clearInterval(intId);
+              score = 0; ticksLeft = 33; running = true;
+              spawn();
+              intId = setInterval(() => {
+                ticksLeft--;
+                spawn();
+                if (ticksLeft <= 0) {
+                  clearInterval(intId);
+                  running = false;
+                  targetIdx = -1;
+                  bombIdx = -1;
+                }
+                render();
+              }, 750);
+              render();
+            };
+          }
+        };
+        render();
+        return;
+      }
+
+      if (gameId === "slide") {
+        let board = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+        let moves = 0;
+        const isSolved = (b) => b.every((v, i) => (i === 8 ? v === 0 : v === i + 1));
+        const getAdj = (emptyIdx) => {
+          const r = Math.floor(emptyIdx / 3), c = emptyIdx % 3, adj = [];
+          if (r > 0) adj.push(emptyIdx - 3);
+          if (r < 2) adj.push(emptyIdx + 3);
+          if (c > 0) adj.push(emptyIdx - 1);
+          if (c < 2) adj.push(emptyIdx + 1);
+          return adj;
+        };
+        const shuffleBoard = () => {
+          board = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+          let prevEmpty = -1;
+          for (let s = 0; s < 80; s++) {
+            const emptyIdx = board.indexOf(0);
+            const options = getAdj(emptyIdx).filter((x) => x !== prevEmpty);
+            const pick = options[Math.floor(Math.random() * options.length)];
+            [board[emptyIdx], board[pick]] = [board[pick], board[emptyIdx]];
+            prevEmpty = emptyIdx;
+          }
+          if (isSolved(board)) shuffleBoard();
+          moves = 0;
+        };
+        shuffleBoard();
+        const render = () => {
+          const solved = isSolved(board);
+          stage.innerHTML = `
+            <h2>10. Puzzle Geser Angka (3×3 Slide Puzzle)</h2>
+            <p class="muted">${solved ? `Berhasil! Puzzle tersusun rapi dari 1 sampai 8 dalam ${moves} geseran.` : `Geser ubin di sebelah kotak kosong hingga berurutan 1–8. Langkah: ${moves}`}</p>
+            <div class="slide-grid">
+              ${board.map((val, idx) => `
+                <button type="button" class="slide-tile ${val === 0 ? "empty" : ""}" data-sidx="${idx}" ${val === 0 || solved ? "disabled" : ""}>
+                  ${val === 0 ? "" : val}
+                </button>
+              `).join("")}
+            </div>
+            <button class="btn primary sm" id="slideResetBtn">Acak Puzzle Baru</button>
+          `;
+          stage.querySelectorAll("[data-sidx]").forEach((btn) => {
+            btn.onclick = () => {
+              const idx = Number(btn.dataset.sidx);
+              const emptyIdx = board.indexOf(0);
+              if (getAdj(emptyIdx).includes(idx)) {
+                [board[emptyIdx], board[idx]] = [board[idx], board[emptyIdx]];
+                moves++;
+                render();
+              }
+            };
+          });
+          stage.querySelector("#slideResetBtn").onclick = () => { shuffleBoard(); render(); };
+        };
+        render();
+      }
+    }
+
+    /* =====================================================================
+       BOOT
+       ===================================================================== */
+    $("#brandHome").onclick = renderDashboard;
+    $("#navGameBtn").onclick = () => renderGamesHub();
+    $("#navCatalogBtn").onclick = () => renderCatalog();
+
+    renderDashboard();
+  </script>
+</body>
+
+</html>

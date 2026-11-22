@@ -1,0 +1,15 @@
+{
+  "name": "hadirku",
+  "version": "1.0.0",
+  "description": "HADIRKU - Sistem Absensi Digital Sekolah (Tugas Akhir SMK TKJ)",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run seed",
+    "build": "cd frontend && npm run build"
+  },
+  "keywords": ["absensi", "sekolah", "react", "express", "mysql", "tailwind", "tkj"],
+  "author": "SMK Kejuruan TKJ",
+  "license": "MIT"
+}
